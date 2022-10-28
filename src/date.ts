@@ -1,5 +1,5 @@
 import dayjs, { OpUnitType } from 'dayjs'
-import { isDate, isString, isNumber, isNil } from 'lodash-es'
+import { isDate, isString, isNumber, isNil } from './common'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 

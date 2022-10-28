@@ -1,6 +1,5 @@
-import { React, FC, cx } from './common'
+import { React, FC, cx, isNil } from './common'
 import { colors } from './theme'
-import { isNil } from 'lodash-es'
 import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
 import ReactSelectCreate from 'react-select/creatable'
 import ReactSelectAsync from 'react-select/async'

@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es'
+import { omit } from './util'
 
 export interface BSVariants {
     primary?: boolean

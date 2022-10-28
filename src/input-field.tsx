@@ -1,7 +1,6 @@
-import { React, useMemo, cx, useId } from './common'
+import { React, useMemo, isNil, cx, useId } from './common'
 import styled from '@emotion/styled'
 import { useField } from 'formik'
-import { isNil } from 'lodash-es'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { useFormContext } from './form'
 import { useCallback } from 'react'

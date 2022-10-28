@@ -1,8 +1,7 @@
-import { React, useId, useMemo, useState, useEffect, useCallback, cx } from './common'
+import { React, compact, useId, useMemo, useState, useEffect, useCallback, cx } from './common'
 import FlatPickr from 'flatpickr'
 import { Box } from 'boxible'
 import { rangePlugin } from './flatpickr-range-plugin'
-import { compact } from 'lodash-es'
 import { useFormContext } from './form'
 import { toDateTime } from './date'
 

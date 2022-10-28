@@ -1,6 +1,5 @@
 import { React, PropsWithOptionalChildren, cx } from './common'
 import styled, { CSSObject } from '@emotion/styled'
-import { merge } from 'lodash-es'
 import { BSVariants, bsClassNames } from './bs'
 import { LoadingDots as LD } from './loading-dots'
 import { IconKey, Icon } from './icon'
@@ -42,7 +41,7 @@ const StyledButton = styled.button<{ iconOnly: boolean; rowReverse: boolean }>(
                 borderColor: 'transparent',
             },
         }
-        return iconOnly ? merge(baseStyle, iconStyle) : baseStyle
+        return iconOnly ? { ...baseStyle, ...iconStyle } : baseStyle
     }
 )
 

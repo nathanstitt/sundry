@@ -1,4 +1,14 @@
-import { isNil } from 'lodash-es'
+export function isDate(d: any): d is Date {
+    return d instanceof Date && !isNaN(d as any)
+}
+export function isString(s: any): s is string {
+    return typeof s === 'string'
+}
+export function isNumber(n: any): n is number {
+    return typeof n === 'number'
+}
+export const isNil = (val: any) => val == null
+export const compact = (a: any[]) => a.filter(Boolean)
 
 export function coalesce<T>(target?: any, defaultVal?: T): T {
     return isNil(target) ? defaultVal : target
@@ -8,6 +18,12 @@ interface RetryOptions {
     times?: number
     interval?: number
     exponentialBackoff?: boolean
+}
+
+export const omit = (obj: Record<string, any>, props: string[]) => {
+    obj = { ...obj }
+    props.forEach((prop) => delete obj[prop])
+    return obj
 }
 
 // https://github.com/gregberge/loadable-components/issues/667

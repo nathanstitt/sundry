@@ -77,23 +77,21 @@
         "vite-plugin-external": "^1.2.6"
     },
     "dependencies": {
-        "@iconify-icons/bi": "^1.2.10",
+        "@iconify/icons-bi": "^1.2.10",
         "@iconify/react": "^4.0.0",
         "@popperjs/core": "^2.11.6",
         "@react-types/shared": "^3.15.0",
         "@types/flatpickr": "^3.1.2",
-        "@types/lodash-es": "^4.17.6",
-        "@types/yup": "^0.32.0",
         "boxible": "^1.7.0",
         "dayjs": "^1.11.6",
         "flatpickr": "^4.6.13",
         "formik": "^2.2.9",
         "graphql": "^16.6.0",
-        "lodash-es": "^4.17.21",
         "patch-package": "^6.5.0",
         "react-popper": "^2.3.0",
         "react-select": "^5.5.7",
         "rooks": "^7.4.1",
-        "urql": "^3.0.3"
+        "urql": "^3.0.3",
+        "yup": "^0.32.11"
     }
 }

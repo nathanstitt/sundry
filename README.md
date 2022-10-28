@@ -2,7 +2,7 @@
 
 This contains a collection of Typescript and React components and other utils that I've found useful across multiple projects.
 
-Basically whenever I start a new project I always seem to need something that I've created in a prior project. Rather than copy the file(s) into the newer project I copy them into this library and maintain it here.
+whenever I start a new project I always seem to need something that I've created in a prior project. Rather than copy the file(s) into the newer project I copy them into this library and maintain it here.
 
 ## Features
 
