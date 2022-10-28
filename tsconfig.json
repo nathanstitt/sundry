@@ -1,0 +1,27 @@
+{
+    "include": ["./src", "./types"],
+
+    "compilerOptions": {
+        "rootDir": "./src",
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        "moduleResolution": "Node",
+        "strict": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "@emotion/react",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "declaration": true,
+        "noEmit": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": ["vite/client", "node", "jest"],
+        "typeRoots": ["node_modules/@types", "./types"]
+    },
+    "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
+}
