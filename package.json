@@ -3,13 +3,14 @@
     "private": false,
     "sideEffects": false,
     "version": "0.0.2",
-    "main": "./dist/sundry.cjs",
-    "module": "./dist/sundry.mjs",
+    "source": "src/index.ts",
+    "main": "dist/sundry.js",
+    "umd:main": "dist/sundry.umd.js",
+    "module": "dist/sundry.mjs",
     "exports": {
-        ".": {
-            "require": "./dist/sundry.cjs",
-            "import": "./dist/sundry.mjs"
-        }
+        "types": "./dist/sundry.d.ts",
+        "require": "./dist/sundry.js",
+        "default": "./dist/sundry.modern.mjs"
     },
     "files": [
         "src",
@@ -21,7 +22,7 @@
         "pf": "run-p typecheck lint",
         "lint": "eslint src",
         "typecheck": "tsc --noemit",
-        "build": "vite build && tsc --emitDeclarationOnly",
+        "build": "microbundle --no-compress --jsx React.createElement",
         "test": "jest --runInBand",
         "test:coverage": "jest --runInBand --coverage",
         "lint:scripts": "eslint . --ext .ts",
@@ -32,9 +33,9 @@
         "format": "npm run format:scripts && npm run format:styles"
     },
     "peerDependencies": {
-        "@emotion/css": "^11.10.5",
-        "@emotion/styled": "^11.10.5",
-        "react": "^18.1.0"
+        "@emotion/css": "^11.0",
+        "@emotion/styled": "^11.0",
+        "react": "^18.0"
     },
     "devDependencies": {
         "@emotion/css": "^11.10.5",
@@ -81,12 +82,12 @@
         "@iconify/react": "^4.0.0",
         "@popperjs/core": "^2.11.6",
         "@react-types/shared": "^3.15.0",
-        "@types/flatpickr": "^3.1.2",
         "boxible": "^1.7.0",
         "dayjs": "^1.11.6",
         "flatpickr": "^4.6.13",
         "formik": "^2.2.9",
         "graphql": "^16.6.0",
+        "microbundle": "^0.15.1",
         "patch-package": "^6.5.0",
         "react-popper": "^2.3.0",
         "react-select": "^5.5.7",
