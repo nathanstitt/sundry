@@ -2,7 +2,7 @@
     "name": "@nathanstitt/sundry",
     "private": false,
     "sideEffects": false,
-    "version": "0.0.2",
+    "version": "0.0.3",
     "source": "src/index.ts",
     "main": "dist/sundry.js",
     "umd:main": "dist/sundry.umd.js",
