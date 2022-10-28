@@ -3,14 +3,13 @@
     "private": false,
     "sideEffects": false,
     "version": "0.0.3",
-    "source": "src/index.ts",
-    "main": "dist/sundry.js",
-    "umd:main": "dist/sundry.umd.js",
-    "module": "dist/sundry.mjs",
+    "main": "./dist/sundry.cjs",
+    "module": "./dist/sundry.mjs",
     "exports": {
-        "types": "./dist/sundry.d.ts",
-        "require": "./dist/sundry.js",
-        "default": "./dist/sundry.modern.mjs"
+        ".": {
+            "require": "./dist/sundry.cjs",
+            "import": "./dist/sundry.mjs"
+        }
     },
     "files": [
         "src",
@@ -22,7 +21,7 @@
         "pf": "run-p typecheck lint",
         "lint": "eslint src",
         "typecheck": "tsc --noemit",
-        "build": "rm -f dist/* ; microbundle --no-compress --jsx React.createElement",
+        "build": "vite build && tsc --emitDeclarationOnly",
         "test": "jest --runInBand",
         "test:coverage": "jest --runInBand --coverage",
         "lint:scripts": "eslint . --ext .ts",
@@ -87,7 +86,6 @@
         "flatpickr": "^4.6.13",
         "formik": "^2.2.9",
         "graphql": "^16.6.0",
-        "microbundle": "^0.15.1",
         "patch-package": "^6.5.0",
         "react-popper": "^2.3.0",
         "react-select": "^5.5.7",
