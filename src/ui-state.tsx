@@ -5,7 +5,7 @@ import { Box } from 'boxible'
 import { Icon } from './icon'
 import { CombinedError } from 'urql'
 import { colors } from './theme'
-import BouncingDots from './loading-dots'
+import { LoadingDots as LD } from './loading-dots'
 
 const DEFAULT_DISPLAY_AFTER = 250
 
@@ -86,7 +86,7 @@ export const BusyMessage: FC<BusyMessageProps> = ({ variant, message, className,
         className={className}
         variant={variant || 'busy'}
         message={message}
-        suffixIcon={<BouncingDots color="black" />}
+        suffixIcon={<LD color="black" />}
         {...props}
     />
 )
@@ -122,7 +122,7 @@ export interface SavingProps {
     name: string
 }
 export const Saving: FC<SavingProps> = ({ name }) => (
-    <Message message={`Saving ${name}`} suffixIcon={<BouncingDots color="black" />} />
+    <Message message={`Saving ${name}`} suffixIcon={<LD color="black" />} />
 )
 
 export interface ErrorProps extends Omit<MessageProps, 'message'> {

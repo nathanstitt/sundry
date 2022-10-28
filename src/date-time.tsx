@@ -1,8 +1,8 @@
-import { React, useMemo, useState, useEffect, useCallback, cx } from './common'
+import { React, useId, useMemo, useState, useEffect, useCallback, cx } from './common'
 import FlatPickr from 'flatpickr'
 import { Box } from 'boxible'
 import { rangePlugin } from './flatpickr-range-plugin'
-import { uniqueId, compact } from 'lodash-es'
+import { compact } from 'lodash-es'
 import { useFormContext } from './form'
 import { toDateTime } from './date'
 
@@ -45,7 +45,8 @@ export const DateTime: React.FC<DateTimeProps> = ({
     const form = useFormContext()
     const { setFieldValue, getFieldHelpers } = form
     const readOnly = propsReadonly == null ? form.readOnly : propsReadonly
-    const id = useMemo(() => providedId || uniqueId('date-time'), [providedId])
+    const autoId = useId()
+    const id = providedId || autoId
     const [flatpickrEl, setFlatpickrEl] = useState<HTMLInputElement | null>(null)
     const [endRangePickrEl, setEndRangePickrEl] = useState<HTMLInputElement | null>(null)
     const [flatpickr, setFlatpickr] = useState<FlatPickr.Instance | null>(null)

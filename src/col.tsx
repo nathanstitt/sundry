@@ -1,4 +1,4 @@
-import { FCWC, cx } from './common'
+import { React, FCWC, cx } from './common'
 
 export interface ColProps {
     className?: string

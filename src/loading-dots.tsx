@@ -1,4 +1,4 @@
-import { FC } from './common'
+import { React, FC } from './common'
 import styled from '@emotion/styled'
 import { keyframes } from '@emotion/react'
 
@@ -32,12 +32,10 @@ interface LoadingDotsProps {
     color?: string
 }
 
-const LoadingDots: FC<LoadingDotsProps> = ({ color = 'white' }) => (
+export const LoadingDots: FC<LoadingDotsProps> = ({ color = 'white' }) => (
     <DotWrapper>
         <Dot color={color} delay="0s" />
         <Dot color={color} delay=".1s" />
         <Dot color={color} delay=".2s" />
     </DotWrapper>
 )
-
-export default LoadingDots

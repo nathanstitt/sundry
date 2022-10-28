@@ -1,10 +1,9 @@
-import { FCWC, cx } from './common'
+import { React, FCWC, cx } from './common'
 import { Box, BoxProps } from 'boxible'
 import styled from '@emotion/styled'
+import { Theme } from './theme'
 
-const FooterWrapper = styled(Box)((props) => ({
-    ...props.theme.css.topLine,
-}))
+const FooterWrapper = styled(Box)(Theme.css.topLine)
 
 export const Footer: FCWC<{ className?: string } & BoxProps> = ({
     className,

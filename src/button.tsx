@@ -1,10 +1,8 @@
 import { React, PropsWithOptionalChildren, cx } from './common'
 import styled, { CSSObject } from '@emotion/styled'
 import { merge } from 'lodash-es'
-
-//import type { CSSObject } from '@emotion/react'
 import { BSVariants, bsClassNames } from './bs'
-import LD from './loading-dots'
+import { LoadingDots as LD } from './loading-dots'
 import { IconKey, Icon } from './icon'
 import { usePendingState } from './pending'
 import { media } from './theme'

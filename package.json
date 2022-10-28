@@ -2,23 +2,34 @@
     "name": "@nathanstitt/sundry",
     "private": false,
     "sideEffects": false,
-    "version": "0.0.1",
+    "version": "0.0.0",
     "main": "./dist/sundry.cjs",
     "module": "./dist/sundry.mjs",
+    "exports": {
+        ".": {
+            "require": "./dist/sundry.cjs",
+            "import": "./dist/sundry.mjs"
+        }
+    },
+    "files": [
+        "src",
+        "dist"
+    ],
+    "typings": "dist/index.d.ts",
     "scripts": {
         "dev": "vite --host",
         "pf": "run-p typecheck lint",
         "lint": "eslint src",
         "typecheck": "tsc --noemit",
-        "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+        "build": "vite build && tsc --emitDeclarationOnly",
         "test": "jest --runInBand",
         "test:coverage": "jest --runInBand --coverage",
         "lint:scripts": "eslint . --ext .ts",
         "lint:styles": "stylelint ./**/*.{css,scss}",
         "format:scripts": "prettier . --write",
+        "postinstall": "patch-package",
         "format:styles": "stylelint ./**/*.{css,scss} --fix",
-        "format": "npm run format:scripts && npm run format:styles",
-        "prepare": "husky install && husky add .husky/pre-commit 'npx lint-staged' && git add .husky/pre-commit"
+        "format": "npm run format:scripts && npm run format:styles"
     },
     "peerDependencies": {
         "@emotion/css": "^11.10.5",
@@ -26,6 +37,8 @@
         "react": "^18.1.0"
     },
     "devDependencies": {
+        "@emotion/css": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
         "@types/jest": "^29.0.0",
         "@types/jsdom": "^20.0.0",
         "@types/node": "^18.7.16",
@@ -35,8 +48,6 @@
         "@typescript-eslint/parser": "^5.36.2",
         "dts-bundle-generator": "^6.13.0",
         "eslint": "^8.23.0",
-        "@emotion/css": "^11.10.5",
-        "@emotion/styled": "^11.10.5",
         "eslint-config-prettier": "^8.5.0",
         "eslint-config-react-app": "^7.0.1",
         "eslint-plugin-prettier": "^4.2.1",
@@ -48,6 +59,7 @@
         "prettier": "^2.7.1",
         "react": "^18.1.0",
         "react-dom": "^18.1.0",
+        "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.22",
         "stylelint": "^14.11.0",
         "stylelint-config-recommended": "^9.0.0",
         "stylelint-config-sass-guidelines": "^9.0.1",
@@ -71,6 +83,8 @@
         "formik": "^2.2.9",
         "graphql": "^16.6.0",
         "lodash-es": "^4.17.21",
+        "patch-package": "^6.5.0",
+        "react-hook-form": "^7.38.0",
         "react-popper": "^2.3.0",
         "react-select": "^5.5.7",
         "rooks": "^7.4.1",

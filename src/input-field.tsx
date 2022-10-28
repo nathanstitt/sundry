@@ -1,10 +1,9 @@
-import { React, useMemo, cx } from './common'
+import { React, useMemo, cx, useId } from './common'
 import styled from '@emotion/styled'
 import { useField } from 'formik'
 import { isNil } from 'lodash-es'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { useFormContext } from './form'
-import { uniqueId } from 'lodash-es'
 import { useCallback } from 'react'
 
 const inputFieldToggleStyle = {
@@ -57,8 +56,8 @@ export interface InputProps
     onBlur?: any
     autoFocus?: boolean
     rows?: number
-    id?: string
     label?: React.ReactNode
+    id?: string
 }
 
 export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
@@ -73,8 +72,8 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             onChange: onChangeProp,
             ...props
         } = forwardedProps
-
-        const id = useMemo(() => providedId || uniqueId('date-time-field'), [providedId])
+        const autoId = useId()
+        const id = providedId || autoId
         const [field, meta] = useField({ type, name, ...(props as any) })
         const hasError = Boolean(meta.touched && meta.error)
         const InputComponent: any = (INPUTS as any)[type] || 'input'

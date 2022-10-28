@@ -1,11 +1,10 @@
-import { useState, cx, FC, useMemo } from './common'
+import { React, useId, useState, cx, FC } from './common'
 import styled from '@emotion/styled'
 import { useField } from 'formik'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
 import { useFormContext } from './form'
 import { Select, SelectOption, SelectProps, SelectValue } from './select'
-import { uniqueId } from 'lodash-es'
 
 export interface SelectFieldProps
     extends SelectProps,
@@ -60,7 +59,9 @@ export const SelectField: FC<SelectFieldProps> = ({
     onCreateOption,
     ...props
 }) => {
-    const id = useMemo(() => providedId || uniqueId('select-field'), [providedId])
+    const autoId = useId()
+    const id = providedId || autoId
+
     const [isFocused, setFocusState] = useState(false)
     const [field, meta] = useField({ name, ...(props as any) })
 

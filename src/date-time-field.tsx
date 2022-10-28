@@ -1,8 +1,8 @@
-import { React, useMemo, useState, useCallback, cx } from './common'
+import { React, useId, useMemo, useState, useCallback, cx } from './common'
 import { Box } from 'boxible'
 import styled from '@emotion/styled'
 import { DateTime, DateTimeProps } from './date-time'
-import { uniqueId, compact } from 'lodash-es'
+import { compact } from 'lodash-es'
 import { useFormContext } from './form'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { FloatingLabel } from './label'
@@ -51,13 +51,13 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     withTime,
     name,
     readOnly,
-
     rangeNames,
-
     ...props
 }) => {
     const form = useFormContext()
-    const id = useMemo(() => providedId || uniqueId('date-time-field'), [providedId])
+    const autoId = useId()
+    const id = providedId || autoId
+
     const fieldNames = useMemo<string[]>(
         () => (rangeNames ? rangeNames : [name]),
         [rangeNames, name]
