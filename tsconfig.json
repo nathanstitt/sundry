@@ -8,6 +8,7 @@
         "module": "ESNext",
         "moduleResolution": "Node",
         "useDefineForClassFields": true,
+        "allowJs": true,
         "lib": ["ESNext", "DOM"],
         "strict": true,
         "jsx": "react",
@@ -20,8 +21,8 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["vite/client", "node", "jest"],
-        "typeRoots": ["node_modules/@types", "./types"]
+        "types": ["vite/client", "node", "jest", "@types/testing-library__jest-dom"],
+        "typeRoots": ["node_modules/@types", "./types", "@types/testing-library__jest-dom"]
     },
     "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
 }
