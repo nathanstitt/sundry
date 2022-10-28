@@ -22,7 +22,7 @@
         "pf": "run-p typecheck lint",
         "lint": "eslint src",
         "typecheck": "tsc --noemit",
-        "build": "microbundle --no-compress --jsx React.createElement",
+        "build": "rm -f dist/* ; microbundle --no-compress --jsx React.createElement",
         "test": "jest --runInBand",
         "test:coverage": "jest --runInBand --coverage",
         "lint:scripts": "eslint . --ext .ts",
