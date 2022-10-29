@@ -1,7 +1,7 @@
 import { React, useMemo, isNil, cx, useId } from './common'
 import styled from '@emotion/styled'
 import { FloatingField, FloatingFieldProps } from './floating-field'
-import { useFormContext, useField } from './form'
+import { useField } from './form'
 import { useCallback } from 'react'
 
 const inputFieldToggleStyle = {
@@ -75,14 +75,10 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         const autoId = useId()
         const id = providedId || autoId
 
-        const { isReadOnly, control } = useFormContext() // ield({ type, name, ...(props as any) })
-        const { field, fieldState } = useField({ name, control })
+        const { field, fieldState, isReadOnly } = useField(name)
 
-        //const field = register(name)
-        //        fieldState.
-        const hasError = Boolean(fieldState.isTouched && fieldState.error)
         const InputComponent: any = (INPUTS as any)[type] || 'input'
-        //        const formContext = useFormContext()
+
         const isCheckLike = type === 'radio' || type === 'checkbox'
         const Wrapper = isCheckLike ? CheckboxFieldWrapper : FloatingField
         const labelEl = (
@@ -122,7 +118,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 className={cx({
                     'form-control': !isCheckLike,
                     'form-check-input': isCheckLike,
-                    'is-invalid': hasError,
+                    'is-invalid': !!fieldState.error,
                 })}
             />
         )

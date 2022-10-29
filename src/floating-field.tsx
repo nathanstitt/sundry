@@ -20,9 +20,7 @@ export interface FloatingFieldProps extends BoxProps, ColProps {
     marginBottom?: boolean | number
 }
 
-const Wrapper = styled(Col)({
-    //display: 'flex',
-})
+const Wrapper = styled(Col)({})
 
 const Body = styled.div({
     flex: 1,
@@ -52,9 +50,7 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
             {label}
             <ExtraInfo>
                 {hint && <span className="hint">{hint}</span>}
-                {fieldState?.error && fieldState?.isTouched && (
-                    <span className="invalid">{fieldState?.error.message}</span>
-                )}
+                {fieldState?.error && <span className="invalid">{fieldState?.error.message}</span>}
             </ExtraInfo>
         </Body>
     )

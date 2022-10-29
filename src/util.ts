@@ -9,7 +9,9 @@ export function isNumber(n: any): n is number {
 }
 export const isNil = (val: any) => val == null
 
-export const compact = (a: any[]) => a.filter(Boolean)
+export function compact<T>(a: Array<any>): Array<T> {
+    return a.filter(Boolean)
+}
 
 export function coalesce<T>(target?: any, defaultVal?: T): T {
     return isNil(target) ? defaultVal : target

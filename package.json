@@ -25,7 +25,7 @@
         "pf": "run-p typecheck lint",
         "lint": "eslint src",
         "typecheck": "tsc --noemit",
-        "build": "vite build && tsc --emitDeclarationOnly",
+        "build": "vite build && tsc",
         "test": "jest --runInBand",
         "test:coverage": "jest --runInBand --coverage",
         "lint:scripts": "eslint . --ext .ts",

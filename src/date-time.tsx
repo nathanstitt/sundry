@@ -2,9 +2,7 @@ import { React, compact, useId, useMemo, useState, useEffect, useCallback, cx } 
 import FlatPickr from 'flatpickr'
 import { Box } from 'boxible'
 import { rangePlugin } from './flatpickr-range-plugin'
-import { useFormContext } from './form'
-import type { Field } from 'react-hook-form'
-// import { toDateTime } from './date'
+import { FieldWithState, useFormContext } from './form'
 
 export interface DateTimeProps {
     id?: string
@@ -58,8 +56,10 @@ export const DateTime: React.FC<DateTimeProps> = ({
         () => (Array.isArray(rangeNames) ? rangeNames : [name]),
         [rangeNames, name]
     )
-    const fields = compact(fieldNames.map((fn) => control._fields[fn]?._f)) as Array<Field['_f']>
-
+    const fields = useMemo(
+        () => compact<FieldWithState>(fieldNames.map((fn) => getField(fn))),
+        [fieldNames, getField]
+    )
     const values = useMemo(() => fields.map((f) => f.value), [fields])
 
     const onChange = useCallback(

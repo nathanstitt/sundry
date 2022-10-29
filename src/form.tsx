@@ -1,5 +1,5 @@
 import { FCWC, React, cx, useState, PropsWithChildren, useContext, useMemo } from './common'
-import { useForm, useController as useField } from 'react-hook-form'
+import { useForm, useController } from 'react-hook-form'
 import type {
     Field,
     Control,
@@ -8,6 +8,7 @@ import type {
     SubmitHandler,
     UseFormWatch,
     UseFormReset,
+    UseFormGetFieldState,
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
@@ -15,7 +16,11 @@ import { Footer } from './footer'
 import { ErrorAlert, ErrorTypes } from './alert'
 import { Button, ButtonProps } from './button'
 
-export { useField, FieldState }
+export type FieldWithState = Field['_f'] & {
+    state: ReturnType<UseFormGetFieldState<Record<string, string>>>
+}
+
+export { FieldState }
 export interface FormContext<FV extends FormValues> {
     isDirty: boolean
     control: Control<FV, any>
@@ -27,13 +32,27 @@ export interface FormContext<FV extends FormValues> {
     watch: UseFormWatch<FV>
     resetForm: UseFormReset<FV>
     setFieldValue(name: string, value: any): void
-    getField(name: string): Field['_f'] | undefined
+    getField(name: string): FieldWithState | undefined
 }
 
 export const FORM_CONTEXT = React.createContext<FormContext<any> | undefined>(undefined)
 
 export function useFormContext<FV extends FormValues>(): FormContext<FV> {
     return useContext(FORM_CONTEXT) as FormContext<FV>
+}
+
+export function useField<FV extends FormValues>(name: string) {
+    const { control, setFieldValue, isReadOnly } = useFormContext<FV>()
+    const fld = useController({ name: name as any, control })
+    return useMemo(
+        () => ({
+            isReadOnly,
+            setValue: (value: any) => setFieldValue(name, value),
+
+            ...fld,
+        }),
+        [fld, name, setFieldValue, isReadOnly]
+    )
 }
 
 export type FormSubmitHandler<FV extends FormValues> = (
@@ -43,12 +62,8 @@ export type FormSubmitHandler<FV extends FormValues> = (
 export type FormCancelHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 export type FormDeleteHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 
-type FormValues = Record<string, any>
+export type FormValues = Record<string, any>
 
-// interface FormHelpers<FV extends FormValues> {
-//     values: T
-// }
-//
 interface FormProps<FV extends FormValues> {
     children: React.ReactNode
     className?: string
@@ -63,6 +78,7 @@ interface FormProps<FV extends FormValues> {
     validationSchema?: any | (() => any)
 }
 
+//validationSchema ? yupResolver(validationSchema) : undefined,
 export function Form<FV extends FormValues>({
     children,
     onSubmit,
@@ -78,10 +94,11 @@ export function Form<FV extends FormValues>({
         watch,
         formState: { isSubmitting, isDirty },
     } = useForm<FV>({
+        mode: 'onBlur',
         defaultValues: defaultValues as any,
         resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     })
-
+    //    console.log(errors, control)
     const [formError, setFormError] = useState<ErrorTypes>()
     const context = useMemo(
         () => ({
@@ -92,7 +109,13 @@ export function Form<FV extends FormValues>({
             isDirty,
             watch,
             formError,
-            getField: (name: string) => control._fields[name]?._f,
+            getField: (name: string) =>
+                control._fields[name]
+                    ? {
+                          state: control.getFieldState(name as any),
+                          ...control._fields[name]!._f, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+                      }
+                    : undefined,
             setFieldValue(name: string, value: any) {
                 control._formValues[name] = value
             },

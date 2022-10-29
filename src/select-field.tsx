@@ -1,6 +1,6 @@
 import { React, useId, useState, cx, FC } from './common'
 import styled from '@emotion/styled'
-import { useFormContext, useField } from './form'
+import { useField } from './form'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
 import { Select, SelectOption, SelectProps, SelectValue } from './select'
@@ -63,12 +63,12 @@ export const SelectField: FC<SelectFieldProps> = ({
     const autoId = useId()
     const id = providedId || autoId
 
-    const { isReadOnly, control } = useFormContext()
-    const { field, fieldState } = useField({ name, control })
+    //const { isReadOnly, control } = useFormContext()
+    const { field, isReadOnly, fieldState } = useField(name) // { name, control })
 
     const [isFocused, setFocusState] = useState(false)
 
-    const hasError = Boolean(fieldState.isTouched && fieldState.error)
+    const hasError = Boolean(field && fieldState.error)
 
     const v = field.value || value
     const hasValue = Array.isArray(v) ? v.length > 0 : !!v

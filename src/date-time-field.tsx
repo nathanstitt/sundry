@@ -1,8 +1,9 @@
-import { React, useId, useMemo, useState, useCallback, cx } from './common'
+import { React, useId, useMemo, useState, useCallback, compact, cx } from './common'
+// import { compact } from './util'
 import { Box } from 'boxible'
 import styled from '@emotion/styled'
 import { DateTime, DateTimeProps } from './date-time'
-import { useFormContext, useField } from './form'
+import { useFormContext, FieldWithState } from './form'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { FloatingLabel } from './label'
 import { Icon } from './icon'
@@ -53,8 +54,8 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     rangeNames,
     ...props
 }) => {
-    const { setFieldValue, control } = useFormContext()
-    const { fieldState } = useField({ name, control })
+    const { setFieldValue, getField } = useFormContext()
+    //    const { fieldState } = useField({ name, control })
 
     const autoId = useId()
     const id = providedId || autoId
@@ -64,13 +65,18 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
         [rangeNames, name]
     )
 
-    const hasValue = fieldNames.length > 0
-
     const [isFocused, setFocused] = useState(false)
     const onClear = useCallback(() => {
         fieldNames.forEach((fn) => setFieldValue(fn, null))
     }, [fieldNames, setFieldValue])
-    const hasError = Boolean(fieldState.isTouched && fieldState.error)
+
+    const fields = useMemo(
+        () => compact<FieldWithState>(fieldNames.map(getField)),
+        [fieldNames, getField]
+    )
+    const hasValue = useMemo(() => !!fields.find((f) => f.value), [fields])
+    const hasError = useMemo(() => !!fields.find((f) => f.state.error), [fields])
+
     const onOpen = useCallback(() => setFocused(true), [setFocused])
     const onClose = useCallback(() => setFocused(false), [setFocused])
 
@@ -87,7 +93,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
                 'is-invalid': hasError,
             })}
             id={id}
-            fieldState={fieldState}
+            fieldState={fields[0]?.state}
         >
             <div className="controls">
                 <Box flex>
