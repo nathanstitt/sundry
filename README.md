@@ -1,3 +1,5 @@
+Sundry: _adjective: of various kinds; several_
+
 # Sundry widgets and utils
 
 This contains a collection of Typescript and React components and other utils that I've found useful across multiple projects.
