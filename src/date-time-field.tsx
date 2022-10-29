@@ -1,8 +1,8 @@
-import { React, compact, useId, useMemo, useState, useCallback, cx } from './common'
+import { React, useId, useMemo, useState, useCallback, cx } from './common'
 import { Box } from 'boxible'
 import styled from '@emotion/styled'
 import { DateTime, DateTimeProps } from './date-time'
-import { useFormContext } from './form'
+import { useFormContext, useField } from './form'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { FloatingLabel } from './label'
 import { Icon } from './icon'
@@ -53,7 +53,9 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     rangeNames,
     ...props
 }) => {
-    const form = useFormContext()
+    const { setFieldValue, control } = useFormContext()
+    const { fieldState } = useField({ name, control })
+
     const autoId = useId()
     const id = providedId || autoId
 
@@ -62,29 +64,13 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
         [rangeNames, name]
     )
 
-    const values = useMemo(
-        () => compact(fieldNames.map((fn) => form.getFieldProps(fn).value)),
-        [form, fieldNames]
-    )
-    const metas = useMemo(
-        () => fieldNames.map((fn) => form.getFieldMeta<Date>(fn)),
-        [fieldNames, form]
-    )
-
-    const hasValue = values.length > 0
-    const meta = useMemo(
-        () => ({
-            error: metas.reduce<string | undefined>((acc, m) => acc || m.error, ''),
-            touched: metas.reduce((acc, m) => acc || m.touched, false),
-        }),
-        [metas]
-    )
+    const hasValue = fieldNames.length > 0
 
     const [isFocused, setFocused] = useState(false)
     const onClear = useCallback(() => {
-        fieldNames.map((fn) => form.getFieldHelpers<Date | null>(fn).setValue(null))
-    }, [fieldNames, form])
-
+        fieldNames.forEach((fn) => setFieldValue(fn, null))
+    }, [fieldNames, setFieldValue])
+    const hasError = Boolean(fieldState.isTouched && fieldState.error)
     const onOpen = useCallback(() => setFocused(true), [setFocused])
     const onClose = useCallback(() => setFocused(false), [setFocused])
 
@@ -92,15 +78,16 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
         <Wrapper
             data-field-name={name}
             label={
-                <FloatingLabel isRaised={hasValue || isFocused || readOnly}>{label}</FloatingLabel>
+                <FloatingLabel htmlFor={id} isRaised={hasValue || isFocused || readOnly}>
+                    {label}
+                </FloatingLabel>
             }
             className={cx('form-control', {
                 valued: hasValue,
-                'is-invalid': !!meta.error,
+                'is-invalid': hasError,
             })}
             id={id}
-            meta={meta}
-            {...props}
+            fieldState={fieldState}
         >
             <div className="controls">
                 <Box flex>

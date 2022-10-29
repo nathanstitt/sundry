@@ -1,8 +1,7 @@
 import { React, useMemo, isNil, cx, useId } from './common'
 import styled from '@emotion/styled'
-import { useField } from 'formik'
 import { FloatingField, FloatingFieldProps } from './floating-field'
-import { useFormContext } from './form'
+import { useFormContext, useField } from './form'
 import { useCallback } from 'react'
 
 const inputFieldToggleStyle = {
@@ -38,8 +37,9 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
 })
 
 export interface InputProps
-    extends Omit<React.HTMLProps<HTMLInputElement>, 'height' | 'width' | 'wrap' | 'label'>,
+    extends Omit<React.HTMLProps<HTMLInputElement>, 'name' | 'height' | 'width' | 'wrap' | 'label'>,
         Omit<FloatingFieldProps, 'label' | 'id'> {
+    name: string
     type?:
         | 'checkbox'
         | 'radio'
@@ -64,6 +64,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         const {
             label,
             name,
+            className,
             id: providedId,
             onBlur: propsOnBlur,
             readOnly: propsReadonly,
@@ -73,10 +74,15 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         } = forwardedProps
         const autoId = useId()
         const id = providedId || autoId
-        const [field, meta] = useField({ type, name, ...(props as any) })
-        const hasError = Boolean(meta.touched && meta.error)
+
+        const { isReadOnly, control } = useFormContext() // ield({ type, name, ...(props as any) })
+        const { field, fieldState } = useField({ name, control })
+
+        //const field = register(name)
+        //        fieldState.
+        const hasError = Boolean(fieldState.isTouched && fieldState.error)
         const InputComponent: any = (INPUTS as any)[type] || 'input'
-        const formContext = useFormContext()
+        //        const formContext = useFormContext()
         const isCheckLike = type === 'radio' || type === 'checkbox'
         const Wrapper = isCheckLike ? CheckboxFieldWrapper : FloatingField
         const labelEl = (
@@ -84,10 +90,10 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 {label}
             </label>
         )
-        const readOnly = propsReadonly == null ? formContext.readOnly : propsReadonly
+        const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
         const onBlur = useMemo(
             () => (e: React.FocusEvent<HTMLInputElement>) => {
-                field.onBlur(e)
+                field.onBlur()
                 propsOnBlur && propsOnBlur(e)
             },
             [field, propsOnBlur]
@@ -126,10 +132,9 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         return (
             <Wrapper
                 id={id}
-                meta={meta}
-                {...props}
+                fieldState={fieldState}
                 label={labelEl}
-                className={cx({
+                className={cx(className, {
                     'form-floating': !isCheckLike,
                 })}
             >

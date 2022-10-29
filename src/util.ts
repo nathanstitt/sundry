@@ -8,6 +8,7 @@ export function isNumber(n: any): n is number {
     return typeof n === 'number'
 }
 export const isNil = (val: any) => val == null
+
 export const compact = (a: any[]) => a.filter(Boolean)
 
 export function coalesce<T>(target?: any, defaultVal?: T): T {
@@ -20,7 +21,11 @@ interface RetryOptions {
     exponentialBackoff?: boolean
 }
 
-export const omit = (obj: Record<string, any>, props: string[]) => {
+export const omit = (obj: Record<string, any>, ...ignore: string[] | [Array<string>]) => {
+    const props =
+        ignore.length && Array.isArray(ignore[0])
+            ? (ignore[0] as Array<string>)
+            : (ignore as string[])
     obj = { ...obj }
     props.forEach((prop) => delete obj[prop])
     return obj

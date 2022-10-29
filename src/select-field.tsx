@@ -1,15 +1,15 @@
 import { React, useId, useState, cx, FC } from './common'
 import styled from '@emotion/styled'
-import { useField } from 'formik'
+import { useFormContext, useField } from './form'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
-import { useFormContext } from './form'
 import { Select, SelectOption, SelectProps, SelectValue } from './select'
 
 export interface SelectFieldProps
     extends SelectProps,
         Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
     id?: string
+    name: string
     readOnly?: boolean
     display?: string
     innerRef?: any
@@ -55,6 +55,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     className,
     theme,
     allowCreate,
+
     value,
     onCreateOption,
     ...props
@@ -62,24 +63,29 @@ export const SelectField: FC<SelectFieldProps> = ({
     const autoId = useId()
     const id = providedId || autoId
 
-    const [isFocused, setFocusState] = useState(false)
-    const [field, meta] = useField({ name, ...(props as any) })
+    const { isReadOnly, control } = useFormContext()
+    const { field, fieldState } = useField({ name, control })
 
-    const formContext = useFormContext()
-    const hasError = Boolean(meta.touched && meta.error)
+    const [isFocused, setFocusState] = useState(false)
+
+    const hasError = Boolean(fieldState.isTouched && fieldState.error)
 
     const v = field.value || value
     const hasValue = Array.isArray(v) ? v.length > 0 : !!v
-    const readOnly = propsReadonly == null ? formContext.readOnly : propsReadonly
+    const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
     const onFocus = () => {
         setFocusState(true)
     }
     const onBlur = () => {
         setFocusState(false)
-        field.onBlur({ target: { name: field.name } })
+        field.onBlur()
     }
     const labelEl = (
-        <FloatingLabel displayHigh={!!isMulti} isRaised={hasValue || isFocused || readOnly}>
+        <FloatingLabel
+            htmlFor={id}
+            displayHigh={!!isMulti}
+            isRaised={hasValue || isFocused || readOnly}
+        >
             {label}
         </FloatingLabel>
     )
@@ -92,20 +98,19 @@ export const SelectField: FC<SelectFieldProps> = ({
         <SelectWrapper
             id={id}
             name={name}
-            meta={meta}
+            fieldState={fieldState}
             label={labelEl}
             className={cx('form-control', className, {
                 valued: hasValue,
                 'is-invalid': hasError,
             })}
             data-field-name={field.name}
-            {...props}
         >
             <Select
-                {...field}
                 {...props}
+                innerRef={field.ref}
                 value={v}
-                id={id}
+                inputId={id}
                 name={name}
                 onCreateOption={onCreateOption}
                 allowCreate={allowCreate}

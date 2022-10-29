@@ -118,7 +118,6 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
                 iconOnly={icon && !message}
                 className={cx(
                     'btn',
-                    className,
                     bsClasses,
                     align ? `justify-content-${align}` : '',
                     {
@@ -126,7 +125,8 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
                         active,
                         'btn-sm': small,
                         'btn-lg': large,
-                    }
+                    },
+                    className
                 )}
                 {...props}
             >

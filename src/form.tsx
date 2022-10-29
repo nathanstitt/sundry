@@ -1,83 +1,123 @@
-import { FCWC, React, cx, PropsWithChildren, useContext, useMemo } from './common'
-import {
-    FormikValues,
-    Formik,
-    Form as FormikForm,
-    useFormikContext,
-    FormikConfig,
-    FormikProps,
-    FormikHelpers,
-} from 'formik'
+import { FCWC, React, cx, useState, PropsWithChildren, useContext, useMemo } from './common'
+import { useForm, useController as useField } from 'react-hook-form'
+import type {
+    Field,
+    Control,
+    ControllerFieldState as FieldState,
+    UseFormRegister,
+    SubmitHandler,
+    UseFormWatch,
+    UseFormReset,
+} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
 import { Footer } from './footer'
 import { ErrorAlert, ErrorTypes } from './alert'
 import { Button, ButtonProps } from './button'
-import { emptyFn } from './util'
 
-const ERROR_FIELD_KEY = 'FORM_ERROR'
-
-export type FormContext<T> = FormContextI & FormikProps<T>
-
-interface FormContextI {
-    readOnly?: boolean
+export { useField, FieldState }
+export interface FormContext<FV extends FormValues> {
+    isDirty: boolean
+    control: Control<FV, any>
+    isReadOnly?: boolean
+    isSubmitting: boolean
+    formError?: ErrorTypes
     setFormError(error?: ErrorTypes): void
+    register: UseFormRegister<FV>
+    watch: UseFormWatch<FV>
+    resetForm: UseFormReset<FV>
+    setFieldValue(name: string, value: any): void
+    getField(name: string): Field['_f'] | undefined
 }
 
-export function setFormError(form: FormikHelpers<any>, error: ErrorTypes) {
-    form.setFieldError(ERROR_FIELD_KEY, error as any)
+export const FORM_CONTEXT = React.createContext<FormContext<any> | undefined>(undefined)
+
+export function useFormContext<FV extends FormValues>(): FormContext<FV> {
+    return useContext(FORM_CONTEXT) as FormContext<FV>
 }
 
-export const FORM_CONTEXT = React.createContext<FormContextI>({
-    setFormError: emptyFn,
-})
+export type FormSubmitHandler<FV extends FormValues> = (
+    values: FV,
+    ctx: FormContext<FV>
+) => void | Promise<any>
+export type FormCancelHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
+export type FormDeleteHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 
-export function useFormContext<T>(): FormContextI & FormikProps<T> {
-    return useContext(FORM_CONTEXT) as FormContextI & FormikProps<T>
-}
+type FormValues = Record<string, any>
 
-export type FormSubmitHandler<T> = FormikConfig<T>['onSubmit']
-export type FormCancelHandler<T> = (fc: FormContext<T>) => void
-export type FormDeleteHandler<T> = (fc: FormContext<T>) => void
-
-interface FormProps<T extends FormikValues> extends FormikConfig<T> {
+// interface FormHelpers<FV extends FormValues> {
+//     values: T
+// }
+//
+interface FormProps<FV extends FormValues> {
     children: React.ReactNode
     className?: string
     readOnly?: boolean
-    onDelete?: FormDeleteHandler<T>
-    onCancel?: FormCancelHandler<T>
+    onDelete?: FormDeleteHandler<FV>
+    onCancel?: FormCancelHandler<FV>
     showControls?: boolean
     action?: string
+    defaultValues: FV
+    onReset?: (values: FV, ctx: FormContext<FV>) => void
+    onSubmit: FormSubmitHandler<FV>
+    validationSchema?: any | (() => any)
 }
 
-function InnerForm<T extends FormikValues>(formProps: FormProps<T>) {
-    const { className, action, children, readOnly } = formProps
+export function Form<FV extends FormValues>({
+    children,
+    onSubmit,
+    readOnly,
+    defaultValues,
+    validationSchema,
+}: PropsWithChildren<FormProps<FV>>): JSX.Element {
+    const {
+        control,
+        register,
+        handleSubmit,
+        reset,
+        watch,
+        formState: { isSubmitting, isDirty },
+    } = useForm<FV>({
+        defaultValues: defaultValues as any,
+        resolver: validationSchema ? yupResolver(validationSchema) : undefined,
+    })
 
-    const C: React.ComponentType<FormikProps<T>> = (props) => {
-        const context = useMemo(
-            () => ({
-                readOnly,
-                setFormError: (err: ErrorTypes) => props.setFieldError(ERROR_FIELD_KEY, err as any),
-                ...props,
-            }),
-            [props]
-        )
+    const [formError, setFormError] = useState<ErrorTypes>()
+    const context = useMemo(
+        () => ({
+            isSubmitting,
+            control,
+            isReadOnly: readOnly,
+            register,
+            isDirty,
+            watch,
+            formError,
+            getField: (name: string) => control._fields[name]?._f,
+            setFieldValue(name: string, value: any) {
+                control._formValues[name] = value
+            },
+            resetForm: reset,
+            setFormError,
+        }),
+        [register, control, isSubmitting, setFormError, formError, isDirty, watch, reset, readOnly]
+    )
 
-        return (
-            <FormikForm method="POST" className={className} action={action}>
-                <FORM_CONTEXT.Provider value={context}>{children}</FORM_CONTEXT.Provider>
-            </FormikForm>
-        )
+    const triggerSubmit: SubmitHandler<FV> = async (values) => {
+        try {
+            await onSubmit(values, context)
+        } catch (err: any) {
+            context.setFormError(err)
+        }
     }
-    return C
-}
-
-export function Form<T extends FormikValues>(props: PropsWithChildren<FormProps<T>>): JSX.Element {
-    const inner = useMemo(() => InnerForm<T>(props) as React.ComponentType<FormikProps<T>>, [props])
-    return <Formik {...props} component={inner} />
+    return (
+        <form onSubmit={handleSubmit(triggerSubmit)}>
+            <FORM_CONTEXT.Provider value={context}>{children}</FORM_CONTEXT.Provider>
+        </form>
+    )
 }
 
 export const FormCancelButton: FCWC<ButtonProps> = ({ children, ...props }) => {
-    const fc = useFormikContext()
+    const fc = useFormContext()
     const { isSubmitting } = fc
     return (
         <Button disabled={isSubmitting} {...props}>
@@ -92,35 +132,36 @@ export const FormSaveButton: FCWC<ButtonProps> = ({
     type = 'submit',
     ...props
 }) => {
-    const fc = useFormikContext()
-
+    const fc = useFormContext()
     const { isSubmitting } = fc
     return (
-        <Button type={type} busyMessage={busyMessage} busy={isSubmitting} {...props}>
+        <Button
+            type="submit"
+            busyMessage={busyMessage}
+            busy={isSubmitting}
+            data-test-id="form-save-btn"
+            {...props}
+        >
             {children}
         </Button>
     )
 }
 
-interface SaveCancelBtnProps<T extends FormikValues> {
+interface SaveCancelBtnProps<FV extends FormValues> {
     showControls?: boolean
-    onDelete?: FormDeleteHandler<T>
-    onCancel?: FormCancelHandler<T>
+    onDelete?: FormDeleteHandler<FV>
+    onCancel?: FormCancelHandler<FV>
 }
-function SaveCancelBtn<T extends FormikValues>({
+
+function SaveCancelBtn<FV extends FormValues>({
     onCancel,
     onDelete,
     showControls,
-}: SaveCancelBtnProps<T>): JSX.Element | null {
-    const fc = useFormContext<T>()
-    const { isSubmitting, resetForm, dirty } = fc
-    if (!showControls && !dirty) {
+}: SaveCancelBtnProps<FV>): JSX.Element | null {
+    const fc = useFormContext<FV>()
+    const { isSubmitting, resetForm, isDirty } = fc
+    if (!showControls && !isDirty) {
         return null
-    }
-
-    const onSubmit = async (ev: React.MouseEvent<HTMLButtonElement>) => {
-        ev.preventDefault() // stop form from submit
-        await fc.submitForm()
     }
 
     const onFormCancel = async () => {
@@ -152,30 +193,30 @@ function SaveCancelBtn<T extends FormikValues>({
                         Cancel
                     </Button>
                 )}
-                <Button data-test-id="form-save-btn" busy={isSubmitting} onClick={onSubmit} primary>
+                <FormSaveButton busy={isSubmitting} primary>
                     Save
-                </Button>
+                </FormSaveButton>
             </Box>
         </Footer>
     )
 }
 
-export function FormSaveError<T extends FormikValues>() {
-    const fc = useFormikContext<T>()
+export function FormSaveError<FV extends FormValues>() {
+    const fc = useFormContext<FV>()
     const onDismiss = () => {
-        fc.setFieldError(ERROR_FIELD_KEY, undefined)
+        fc.setFormError(false)
     }
-    return <ErrorAlert error={(fc.errors as any)['FORM_ERROR'] as any} onDismiss={onDismiss} />
+    return <ErrorAlert error={fc.formError} onDismiss={onDismiss} />
 }
 
-export function EditingForm<T extends FormikValues>({
+export function EditingForm<FV extends FormValues>({
     children,
     showControls,
     className,
     onCancel,
     onDelete,
     ...props
-}: FormProps<T>): JSX.Element {
+}: FormProps<FV>): JSX.Element {
     return (
         <Form {...props} className={cx('editing', 'row', className)}>
             {children}

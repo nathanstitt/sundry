@@ -162,6 +162,7 @@ export interface SelectProps extends Omit<ReactSelectProps, 'isMulti' | 'onChang
     className?: string
     name?: string
     loadOptions?: SelectLoadOptionsFn
+    innerRef?: React.RefCallback<HTMLInputElement>
 }
 
 export const Select: FC<SelectProps> = ({
@@ -175,9 +176,9 @@ export const Select: FC<SelectProps> = ({
     allowCreate,
     onCreateOption,
     loadOptions,
+    innerRef,
     ...props
 }) => {
-    // eslint-disable-next-line max-len
     const onChangeHandler = onChange
         ? (option: SelectOption, meta: ActionMeta<SelectOptionType>) => {
               if (option) {
@@ -189,7 +190,7 @@ export const Select: FC<SelectProps> = ({
           }
         : null
 
-    let S: any // FC<ReactSelectProps | ReactSelectProps<>
+    let S: any // FC<ReactSelectProps | CreatableProps<any, any, any> | AsyncProps<any, any, any>>
     if (allowCreate) {
         S = ReactSelectCreate
     } else if (loadOptions) {
@@ -201,6 +202,7 @@ export const Select: FC<SelectProps> = ({
     return (
         <CacheProvider value={SharedCache}>
             <S
+                ref={innerRef}
                 components={CUSTOM_COMPONENTS}
                 selectProps={{}}
                 className={cx('select', className, {

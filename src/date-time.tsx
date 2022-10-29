@@ -3,7 +3,8 @@ import FlatPickr from 'flatpickr'
 import { Box } from 'boxible'
 import { rangePlugin } from './flatpickr-range-plugin'
 import { useFormContext } from './form'
-import { toDateTime } from './date'
+import type { Field } from 'react-hook-form'
+// import { toDateTime } from './date'
 
 export interface DateTimeProps {
     id?: string
@@ -40,10 +41,13 @@ export const DateTime: React.FC<DateTimeProps> = ({
     onClose: onCloseProp,
     onChange: onChangeProp,
     options = {},
+    ...domProps
 }) => {
-    const form = useFormContext()
-    const { setFieldValue, getFieldHelpers } = form
-    const readOnly = propsReadonly == null ? form.readOnly : propsReadonly
+    const { control, setFieldValue, getField, isReadOnly } = useFormContext()
+    //    control._fields
+
+    //const { setFieldValue, getFieldHelpers } = form
+    const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
     const autoId = useId()
     const id = providedId || autoId
     const [flatpickrEl, setFlatpickrEl] = useState<HTMLInputElement | null>(null)
@@ -54,21 +58,20 @@ export const DateTime: React.FC<DateTimeProps> = ({
         () => (Array.isArray(rangeNames) ? rangeNames : [name]),
         [rangeNames, name]
     )
-    const values = useMemo(
-        () => compact(fieldNames.map((fn) => form.getFieldProps(fn).value)).map(toDateTime),
-        [form, fieldNames]
-    )
+    const fields = compact(fieldNames.map((fn) => control._fields[fn]?._f)) as Array<Field['_f']>
+
+    const values = useMemo(() => fields.map((f) => f.value), [fields])
 
     const onChange = useCallback(
         (newDates: Date[], a: any, b: any, c: any) => {
-            for (let i = 0; i < fieldNames.length; i++) {
+            for (let i = 0; i < fields.length; i++) {
                 if (newDates[i] && newDates[i].getTime() !== values[i]?.getTime()) {
-                    setFieldValue(fieldNames[i], newDates[i], true)
+                    setFieldValue(fieldNames[i], newDates[i])
                 }
             }
             onChangeProp?.(newDates, a, b, c)
         },
-        [fieldNames, setFieldValue, onChangeProp, values]
+        [fieldNames, fields, setFieldValue, onChangeProp, values]
     )
 
     const onClose = useCallback(
@@ -76,15 +79,15 @@ export const DateTime: React.FC<DateTimeProps> = ({
             let wasChanged = false
             for (let i = 0; i < fieldNames.length; i++) {
                 if (newDates[i] && newDates[i].getTime() !== values[i]?.getTime()) {
-                    setFieldValue(fieldNames[i], newDates[i], true)
+                    setFieldValue(fieldNames[i], newDates[i])
                     wasChanged = true
                 }
-                getFieldHelpers(fieldNames[i])?.setTouched(true)
+                getField(fieldNames[i])?.onBlur?.({ target: { name: fieldNames[i] } })
             }
             if (wasChanged) onChangeProp?.(newDates, a, b, c)
             onCloseProp?.(newDates, a, b, c)
         },
-        [fieldNames, setFieldValue, getFieldHelpers, onCloseProp, onChangeProp, values]
+        [fieldNames, setFieldValue, getField, onCloseProp, onChangeProp, values]
     )
 
     useEffect(() => {
@@ -106,7 +109,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
                 flatpickr.clear()
             } else {
                 if (
-                    values.find((dt, i) => dt.getTime() !== flatpickr.selectedDates[i]?.getTime())
+                    values.find((dt, i) => dt?.getTime() !== flatpickr.selectedDates[i]?.getTime())
                 ) {
                     flatpickr.setDate(values, true)
                 }
@@ -125,12 +128,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
             })
             setFlatpickr(f)
             fieldNames.forEach((fldName) => {
-                form.registerField(fldName, {})
-            })
-        }
-        return () => {
-            fieldNames.forEach((fldName) => {
-                form.unregisterField(fldName)
+                control.register(fldName).ref(flatpickrEl)
             })
         }
     }, [
@@ -140,19 +138,27 @@ export const DateTime: React.FC<DateTimeProps> = ({
         readOnly,
         withTime,
         flatpickr,
-        form,
         format,
         options,
         onClose,
+        control,
         onOpenProp,
         onChange,
         endRangePickrEl,
         values,
     ])
 
+    useEffect(() => {
+        return () => {
+            fieldNames.forEach((fldName) => {
+                control.unregister(fldName)
+            })
+        }
+    }, [fieldNames, control])
     return (
         <Box align="baseline" gap flex>
             <input
+                {...domProps}
                 id={id}
                 disabled={readOnly}
                 ref={setFlatpickrEl}
