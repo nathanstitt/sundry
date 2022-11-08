@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Form } from '../src/form'
+import * as Yup from 'yup'
 import { InputField } from '../src/input-field'
 import { DateTimeField } from '../src/date-time-field'
 import { SelectField } from '../src/select-field'
@@ -41,7 +42,6 @@ test('loads and displays greeting', async () => {
     await user.clear(screen.getByLabelText('Name'))
     await user.type(screen.getByLabelText('Name'), 'a test')
 
-    //await user.click(screen.getByTestId('dte'))
     await user.click(screen.getByLabelText('Datey'))
 
     await user.click(screen.getByText('15'))
@@ -60,4 +60,24 @@ test('loads and displays greeting', async () => {
         },
         expect.anything()
     )
+})
+
+test('validation', async () => {
+    const onSubmit = jest.fn()
+    const { user, findByText } = setup(
+        <Form
+            defaultValues={{ name: '' }}
+            validationSchema={Yup.object().shape({
+                name: Yup.string().required(),
+            })}
+            validateOnMount
+            onSubmit={onSubmit}
+        >
+            <InputField data-testid="name" name="name" label="Name" />
+            <button type="submit">save</button>
+        </Form>
+    )
+    await findByText(/required field/)
+    await user.click(screen.getByText('save'))
+    expect(onSubmit).not.toHaveBeenCalled()
 })

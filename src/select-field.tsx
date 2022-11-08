@@ -63,7 +63,6 @@ export const SelectField: FC<SelectFieldProps> = ({
     const autoId = useId()
     const id = providedId || autoId
 
-    //const { isReadOnly, control } = useFormContext()
     const { field, isReadOnly, fieldState } = useField(name) // { name, control })
 
     const [isFocused, setFocusState] = useState(false)

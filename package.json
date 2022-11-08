@@ -57,6 +57,7 @@
         "@typescript-eslint/parser": "^5.42.1",
         "babel-jest": "^29.3.0",
         "babel-preset-env": "^1.7.0",
+        "bootstrap": "^5.2.2",
         "dts-bundle-generator": "^7.0.0",
         "eslint": "^8.27.0",
         "eslint-config-prettier": "^8.5.0",

@@ -1,4 +1,15 @@
-import { FCWC, React, cx, useState, PropsWithChildren, useContext, useMemo } from './common'
+import {
+    FCWOC,
+    FCWC,
+    React,
+    cx,
+    useState,
+    PropsWithChildren,
+    useEffect,
+    useContext,
+    useMemo,
+} from './common'
+import { AnyObjectSchema } from 'yup'
 import { useForm, useController } from 'react-hook-form'
 import type {
     Field,
@@ -8,6 +19,7 @@ import type {
     SubmitHandler,
     UseFormWatch,
     UseFormReset,
+    UseFormTrigger,
     UseFormGetFieldState,
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -25,6 +37,7 @@ export interface FormContext<FV extends FormValues> {
     isDirty: boolean
     control: Control<FV, any>
     isReadOnly?: boolean
+    trigger: UseFormTrigger<FV>
     isSubmitting: boolean
     formError?: ErrorTypes
     setFormError(error?: ErrorTypes): void
@@ -42,17 +55,15 @@ export function useFormContext<FV extends FormValues>(): FormContext<FV> {
 }
 
 export function useField<FV extends FormValues>(name: string) {
-    const { control, setFieldValue, isReadOnly } = useFormContext<FV>()
+    const fc = useFormContext<FV>()
+    const { control, setFieldValue, isReadOnly } = fc
     const fld = useController({ name: name as any, control })
-    return useMemo(
-        () => ({
-            isReadOnly,
-            setValue: (value: any) => setFieldValue(name, value),
 
-            ...fld,
-        }),
-        [fld, name, setFieldValue, isReadOnly]
-    )
+    return {
+        isReadOnly,
+        setValue: (value: any) => setFieldValue(name, value),
+        ...fld,
+    }
 }
 
 export type FormSubmitHandler<FV extends FormValues> = (
@@ -73,56 +84,63 @@ interface FormProps<FV extends FormValues> {
     showControls?: boolean
     action?: string
     defaultValues: FV
+    validateOnMount?: boolean
     onReset?: (values: FV, ctx: FormContext<FV>) => void
     onSubmit: FormSubmitHandler<FV>
-    validationSchema?: any | (() => any)
+    validationSchema?: AnyObjectSchema
 }
 
-//validationSchema ? yupResolver(validationSchema) : undefined,
+export const FormTriggerValidation: FCWOC = () => {
+    const { trigger } = useFormContext()
+    useEffect(() => {
+        trigger()
+    }, [trigger])
+    return null
+}
+// validationSchema ? yupResolver(validationSchema) : undefined,
 export function Form<FV extends FormValues>({
     children,
     onSubmit,
     readOnly,
     defaultValues,
+    validateOnMount,
     validationSchema,
 }: PropsWithChildren<FormProps<FV>>): JSX.Element {
-    const {
-        control,
-        register,
-        handleSubmit,
-        reset,
-        watch,
-        formState: { isSubmitting, isDirty },
-    } = useForm<FV>({
+    const [formError, setFormError] = useState<ErrorTypes>()
+
+    const fc = useForm<FV>({
         mode: 'onBlur',
         defaultValues: defaultValues as any,
-        resolver: validationSchema ? yupResolver(validationSchema) : undefined,
+        resolver: validationSchema ? yupResolver(validationSchema as any) : undefined,
+        // resolver: async (a, b, c) => {
+        //     const ret = await r(a, b, c)
+        //     console.log(ret)
+        //     fc.setError('name' as any, { type: 'readonly', message: 'required' })
+        //     return ret
+        // },
     })
-    //    console.log(errors, control)
-    const [formError, setFormError] = useState<ErrorTypes>()
+
     const context = useMemo(
         () => ({
-            isSubmitting,
-            control,
+            ...fc,
+            isSubmitting: fc.formState.isSubmitting,
             isReadOnly: readOnly,
-            register,
-            isDirty,
-            watch,
+            isDirty: fc.formState.isDirty,
             formError,
             getField: (name: string) =>
-                control._fields[name]
+                fc.control._fields[name]
                     ? {
-                          state: control.getFieldState(name as any),
-                          ...control._fields[name]!._f, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-                      }
+                        state: fc.control.getFieldState(name as any),
+                        ...fc.control._fields[name]!._f, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+                    }
                     : undefined,
             setFieldValue(name: string, value: any) {
-                control._formValues[name] = value
+                fc.control._formValues[name] = value
             },
-            resetForm: reset,
+            resetForm: fc.reset,
             setFormError,
         }),
-        [register, control, isSubmitting, setFormError, formError, isDirty, watch, reset, readOnly]
+        [fc, readOnly, formError]
     )
 
     const triggerSubmit: SubmitHandler<FV> = async (values) => {
@@ -132,9 +150,13 @@ export function Form<FV extends FormValues>({
             context.setFormError(err)
         }
     }
+
     return (
-        <form onSubmit={handleSubmit(triggerSubmit)}>
-            <FORM_CONTEXT.Provider value={context}>{children}</FORM_CONTEXT.Provider>
+        <form onSubmit={fc.handleSubmit(triggerSubmit)}>
+            <FORM_CONTEXT.Provider value={context}>
+                {validateOnMount ? <FormTriggerValidation /> : null}
+                {children}
+            </FORM_CONTEXT.Provider>
         </form>
     )
 }

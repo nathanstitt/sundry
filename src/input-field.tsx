@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { useField } from './form'
 import { useCallback } from 'react'
+import { useForkRef } from 'rooks'
 
 const inputFieldToggleStyle = {
     padding: 0,
@@ -60,7 +61,7 @@ export interface InputProps
 }
 
 export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
-    (forwardedProps, ref) => {
+    (forwardedProps, forwardedRef) => {
         const {
             label,
             name,
@@ -78,6 +79,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         const { field, fieldState, isReadOnly } = useField(name)
 
         const InputComponent: any = (INPUTS as any)[type] || 'input'
+        const ref = useForkRef(field.ref, forwardedRef)
 
         const isCheckLike = type === 'radio' || type === 'checkbox'
         const Wrapper = isCheckLike ? CheckboxFieldWrapper : FloatingField
