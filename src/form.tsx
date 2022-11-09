@@ -13,13 +13,9 @@ import { AnyObjectSchema } from 'yup'
 import { useForm, useController } from 'react-hook-form'
 import type {
     Field,
-    Control,
     ControllerFieldState as FieldState,
-    UseFormRegister,
     SubmitHandler,
-    UseFormWatch,
-    UseFormReset,
-    UseFormTrigger,
+    UseFormReturn,
     UseFormGetFieldState,
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -33,18 +29,12 @@ export type FieldWithState = Field['_f'] & {
 }
 
 export { FieldState }
-export interface FormContext<FV extends FormValues> {
+export interface FormContext<FV extends FormValues> extends UseFormReturn<FV> {
     isDirty: boolean
-    control: Control<FV, any>
     isReadOnly?: boolean
-    trigger: UseFormTrigger<FV>
     isSubmitting: boolean
     formError?: ErrorTypes
     setFormError(error?: ErrorTypes): void
-    register: UseFormRegister<FV>
-    watch: UseFormWatch<FV>
-    resetForm: UseFormReset<FV>
-    setFieldValue(name: string, value: any): void
     getField(name: string): FieldWithState | undefined
 }
 
@@ -56,12 +46,12 @@ export function useFormContext<FV extends FormValues>(): FormContext<FV> {
 
 export function useField<FV extends FormValues>(name: string) {
     const fc = useFormContext<FV>()
-    const { control, setFieldValue, isReadOnly } = fc
+    const { control, setValue, isReadOnly } = fc
     const fld = useController({ name: name as any, control })
 
     return {
         isReadOnly,
-        setValue: (value: any) => setFieldValue(name, value),
+        setValue: (value: any) => setValue(name as any, value),
         ...fld,
     }
 }
@@ -130,14 +120,10 @@ export function Form<FV extends FormValues>({
             getField: (name: string) =>
                 fc.control._fields[name]
                     ? {
-                        state: fc.control.getFieldState(name as any),
-                        ...fc.control._fields[name]!._f, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-                    }
+                          state: fc.control.getFieldState(name as any),
+                          ...fc.control._fields[name]!._f, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+                      }
                     : undefined,
-            setFieldValue(name: string, value: any) {
-                fc.control._formValues[name] = value
-            },
-            resetForm: fc.reset,
             setFormError,
         }),
         [fc, readOnly, formError]
@@ -204,13 +190,13 @@ function SaveCancelBtn<FV extends FormValues>({
     showControls,
 }: SaveCancelBtnProps<FV>): JSX.Element | null {
     const fc = useFormContext<FV>()
-    const { isSubmitting, resetForm, isDirty } = fc
+    const { isSubmitting, reset, isDirty } = fc
     if (!showControls && !isDirty) {
         return null
     }
 
     const onFormCancel = async () => {
-        resetForm()
+        reset()
         onCancel?.(fc)
     }
 

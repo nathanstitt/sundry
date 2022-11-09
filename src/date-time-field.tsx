@@ -54,8 +54,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     rangeNames,
     ...props
 }) => {
-    const { setFieldValue, getField } = useFormContext()
-    //    const { fieldState } = useField({ name, control })
+    const { setValue, getField } = useFormContext()
 
     const autoId = useId()
     const id = providedId || autoId
@@ -67,8 +66,8 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
 
     const [isFocused, setFocused] = useState(false)
     const onClear = useCallback(() => {
-        fieldNames.forEach((fn) => setFieldValue(fn, null))
-    }, [fieldNames, setFieldValue])
+        fieldNames.forEach((fn) => setValue(fn, null))
+    }, [fieldNames, setValue])
 
     const fields = useMemo(
         () => compact<FieldWithState>(fieldNames.map(getField)),

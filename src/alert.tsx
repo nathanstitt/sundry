@@ -1,5 +1,5 @@
 import { React, FC, useEffect, cx, useState } from './common'
-import { CombinedError, UseMutationState } from 'urql'
+import { CombinedError } from 'urql'
 import styled from '@emotion/styled'
 import { BSVariants, bsClassNames } from './bs'
 import { Delayed } from './ui-state'
@@ -81,8 +81,13 @@ const Pending = styled.span({
     gap: '0.5rem',
     alignItems: 'center',
 })
-export const usePendingMutationError = (resp: UseMutationState) => {
-    const [err, setError] = useState<CombinedError | undefined | string | false>(resp.error)
+
+interface PendingMutationReply {
+    error?: CombinedError
+    fetching?: any
+}
+export function usePendingMutationError(resp: PendingMutationReply) {
+    const [err, setError] = useState<CombinedError | undefined | false>(resp.error)
     useEffect(() => {
         setError(resp.error)
     }, [resp.error])

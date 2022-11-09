@@ -1,6 +1,4 @@
-// import { DefaultTheme } from '@emotion/styled';
-
-const colors = {
+export const themeColors = {
     primary: '#3865B1',
     primaryLite: '#828FBB',
     secondary: '#E6F4F1',
@@ -137,7 +135,7 @@ const colors = {
     white: '#ffffff',
 }
 
-export const screenSizes = {
+export const themeScreenSizes = {
     sm: 576,
     md: 768,
     lg: 992,
@@ -145,45 +143,41 @@ export const screenSizes = {
     xxl: 1400,
 }
 
-export const dimensions = {
-    navbarBottom: 60,
-}
+type BreakPointKey = keyof typeof themeScreenSizes
 
-type BreakPointKey = keyof typeof screenSizes
-
-export const breakpoint = {
+export const themeBreakpoint = {
     larger(size: BreakPointKey) {
-        return `@media (min-width: ${screenSizes[size]}px)`
+        return `@media (min-width: ${themeScreenSizes[size]}px)`
     },
     smaller(size: BreakPointKey) {
-        return `@media (max-width: ${screenSizes[size]}px)`
+        return `@media (max-width: ${themeScreenSizes[size]}px)`
     },
 }
 
-export const media = {
-    mobile: `@media (max-width: ${screenSizes['md']}px)`,
-    tablet: `@media (min-width: ${screenSizes['md']}px) and (max-width: ${screenSizes['xl']}px)`,
-    desktop: `@media (min-width: ${screenSizes['xl']}px)`,
+export const themeMedia = {
+    mobile: `@media (max-width: ${themeScreenSizes['md']}px)`,
+    tablet: `@media (min-width: ${themeScreenSizes['md']}px) and (max-width: ${themeScreenSizes['xl']}px)`,
+    desktop: `@media (min-width: ${themeScreenSizes['xl']}px)`,
 }
 
 const makeLine = (side: string) => ({
-    [`border${side}`]: `1px solid ${colors.line}`,
+    [`border${side}`]: `1px solid ${themeColors.line}`,
     [`margin${side}`]: '1rem',
     [`padding${side}`]: '1rem',
 })
 
-const Theme = {
-    colors,
-    media,
-    breakpoint,
-    dimensions,
-    line: `1px solid ${colors.line}`,
-    subtleBorder: `1px solid ${colors.line}`,
+export const Theme = {
+    colors: themeColors,
+    media: themeMedia,
+    breakpoint: themeBreakpoint,
+    screenSizes: themeScreenSizes,
+    line: `1px solid ${themeColors.line}`,
+    subtleBorder: `1px solid ${themeColors.line}`,
     css: {
         topLine: makeLine('Top'),
         bottomLine: makeLine('Bottom'),
         box: {
-            border: `1px solid ${colors.line}`,
+            border: `1px solid ${themeColors.line}`,
             padding: '1rem',
         },
     },
@@ -210,4 +204,3 @@ interface ThemeI {
 }
 
 export type { ThemeT, ThemeI }
-export { Theme, colors }

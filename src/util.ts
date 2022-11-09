@@ -58,42 +58,7 @@ export function retry<T>(
     })
 }
 
-interface UserIdAssoc {
-    user_id: number
-    id: number
-}
-
 export function emptyFn() {} // eslint-disable-line
-
-export function diffUserIds(
-    users: UserIdAssoc[],
-    edit: number[]
-): {
-    insertedIds: number[]
-    deletedIds: number[]
-} {
-    const original = users.map((u) => u.user_id)
-
-    const deletedIds = []
-    const insertedIds = []
-
-    for (const id of original) {
-        if (!edit.includes(id)) {
-            const user = users.find((u) => u.user_id === id)
-            if (user) {
-                deletedIds.push(user.id)
-            }
-        }
-    }
-
-    for (const id of edit) {
-        if (!original.includes(id)) {
-            insertedIds.push(id)
-        }
-    }
-
-    return { deletedIds, insertedIds }
-}
 
 export async function getFetchBody(resp: Response) {
     const text = await resp.text()

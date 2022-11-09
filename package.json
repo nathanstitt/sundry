@@ -88,6 +88,7 @@
         "@iconify/icons-bi": "^1.2.11",
         "@iconify/react": "^4.0.0",
         "@popperjs/core": "^2.11.6",
+        "@restart/ui": "^1.4.1",
         "boxible": "^1.7.0",
         "dayjs": "^1.11.6",
         "flatpickr": "^4.6.13",

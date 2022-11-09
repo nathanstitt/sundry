@@ -4,7 +4,7 @@ import { cx } from '@emotion/css'
 import { Box } from 'boxible'
 import { Icon } from './icon'
 import { CombinedError } from 'urql'
-import { colors } from './theme'
+import { themeColors as colors } from './theme'
 import { LoadingDots as LD } from './loading-dots'
 
 const DEFAULT_DISPLAY_AFTER = 250

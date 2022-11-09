@@ -41,10 +41,8 @@ export const DateTime: React.FC<DateTimeProps> = ({
     options = {},
     ...domProps
 }) => {
-    const { control, setFieldValue, getField, isReadOnly } = useFormContext()
-    //    control._fields
+    const { control, setValue: setFieldValue, getField, isReadOnly } = useFormContext()
 
-    //const { setFieldValue, getFieldHelpers } = form
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
     const autoId = useId()
     const id = providedId || autoId

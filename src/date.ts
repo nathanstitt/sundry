@@ -1,12 +1,6 @@
-import dayjs, { OpUnitType } from 'dayjs'
+import { dayjs } from './dayjs'
+import { OpUnitType } from 'dayjs'
 import { isDate, isString, isNumber, isNil } from './common'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
-
-dayjs.extend(relativeTime)
-dayjs.extend(localizedFormat)
-
-export { dayjs }
 
 export type DateTimeInputs = Date | string | number | dayjs.Dayjs
 
@@ -59,19 +53,6 @@ export const distance = (
 
 export const distanceToNow = (dateThing: DateTimeInputs, unit: OpUnitType, float?: boolean) => {
     return toDayJS(dateThing).diff(dayjs(), unit, float)
-}
-
-interface PastDueRecord {
-    target_date?: string
-    status?: string
-}
-
-export const isRecordPastDue = (r: PastDueRecord) => {
-    return (
-        (r.status === 'active' || r.status === 'pending') &&
-        r.target_date &&
-        isInPast(r.target_date)
-    )
 }
 
 export const isInPast = (dateThing: DateTimeInputs, unit: OpUnitType = 'millisecond') => {

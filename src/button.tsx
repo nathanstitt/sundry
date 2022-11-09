@@ -4,7 +4,7 @@ import { BSVariants, bsClassNames } from './bs'
 import { LoadingDots as LD } from './loading-dots'
 import { IconKey, Icon } from './icon'
 import { usePendingState } from './pending'
-import { media } from './theme'
+import { themeMedia as media } from './theme'
 
 const iconStyle = {
     display: 'flex',

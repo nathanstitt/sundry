@@ -38,7 +38,10 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
 })
 
 export interface InputProps
-    extends Omit<React.HTMLProps<HTMLInputElement>, 'name' | 'height' | 'width' | 'wrap' | 'label'>,
+    extends Omit<
+            React.HTMLProps<HTMLInputElement>,
+            'name' | 'height' | 'width' | 'wrap' | 'label' | 'onResize' | 'onResizeCapture'
+        >,
         Omit<FloatingFieldProps, 'label' | 'id'> {
     name: string
     type?:

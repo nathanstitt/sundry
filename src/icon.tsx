@@ -22,7 +22,7 @@ const spinCSS = css`
 export interface IconifyIconDefinition {
     body: string
 }
-export { IconifyIcon }
+export { IconifyIcon, ICON_DEFINITIONS as SUNDRY_PACKAGED_ICONS }
 export type IconKey = keyof typeof ICON_DEFINITIONS
 export type IconSpec = IconKey | IconifyIconDefinition | IconifyIcon
 export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' | 'width'> {
