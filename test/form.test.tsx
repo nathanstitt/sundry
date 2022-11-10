@@ -8,7 +8,7 @@ import { select } from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import dayjs from 'dayjs'
+import { dayjs } from '../src/dayjs'
 
 function setup(jsx: any) {
     return {
@@ -19,6 +19,8 @@ function setup(jsx: any) {
 
 test('loads and displays greeting', async () => {
     const onSubmit = jest.fn()
+
+    expect(dayjs('2022-10-10').format('l')).toEqual('10/10/2022')
 
     const { user } = setup(
         <Form defaultValues={{ name: 'Bob' }} onSubmit={onSubmit} action="/foo">
