@@ -27,6 +27,7 @@
         "typecheck": "tsc --noemit",
         "build": "vite build && tsc",
         "test": "jest --runInBand",
+        "ci": "jest --ci",
         "test:coverage": "jest --runInBand --coverage",
         "lint:scripts": "eslint . --ext .ts",
         "lint:styles": "stylelint ./**/*.{css,scss}",
