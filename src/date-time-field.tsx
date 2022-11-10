@@ -1,12 +1,12 @@
-import { React, useId, useMemo, useState, useCallback, compact, cx } from './common'
-// import { compact } from './util'
+import { React, useId, useMemo, useState, useCallback, cx } from './common'
 import { Box } from 'boxible'
 import styled from '@emotion/styled'
 import { DateTime, DateTimeProps } from './date-time'
-import { useFormContext, FieldWithState } from './form'
+import { useFormContext } from './form'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { FloatingLabel } from './label'
 import { Icon } from './icon'
+import { useDateTimeField } from './date-time-hook'
 
 interface DateTimeFieldFieldProps
     extends DateTimeProps,
@@ -54,26 +54,19 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     rangeNames,
     ...props
 }) => {
-    const { setValue, getField } = useFormContext()
+    const { setValue } = useFormContext()
 
     const autoId = useId()
     const id = providedId || autoId
 
-    const fieldNames = useMemo<string[]>(
-        () => (rangeNames ? rangeNames : [name]),
-        [rangeNames, name]
-    )
+    const { fieldNames, fields, values } = useDateTimeField(name, rangeNames)
 
     const [isFocused, setFocused] = useState(false)
     const onClear = useCallback(() => {
         fieldNames.forEach((fn) => setValue(fn, null))
     }, [fieldNames, setValue])
 
-    const fields = useMemo(
-        () => compact<FieldWithState>(fieldNames.map(getField)),
-        [fieldNames, getField]
-    )
-    const hasValue = useMemo(() => !!fields.find((f) => f.value), [fields])
+    const hasValue = useMemo(() => !!values.find(Boolean), [values])
     const hasError = useMemo(() => !!fields.find((f) => f.state.error), [fields])
 
     const onOpen = useCallback(() => setFocused(true), [setFocused])
