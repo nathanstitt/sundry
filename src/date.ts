@@ -1,6 +1,11 @@
-import { dayjs } from './dayjs'
-import { OpUnitType } from 'dayjs'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import type { OpUnitType } from 'dayjs'
 import { isDate, isString, isNumber, isNil } from './common'
+
+dayjs.extend(relativeTime)
+dayjs.extend(localizedFormat)
 
 export type DateTimeInputs = Date | string | number | dayjs.Dayjs
 
