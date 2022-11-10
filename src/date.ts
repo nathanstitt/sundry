@@ -7,6 +7,8 @@ import { isDate, isString, isNumber, isNil } from './common'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 
+export { dayjs }
+
 export type DateTimeInputs = Date | string | number | dayjs.Dayjs
 
 export function formatHoursDuration(hours?: number, empty: any = ''): string {

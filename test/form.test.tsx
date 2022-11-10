@@ -8,7 +8,7 @@ import { select } from 'react-select-event'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import { dayjs } from '../src/dayjs'
+import { dayjs } from '../src/date'
 
 function setup(jsx: any) {
     return {
