@@ -78,7 +78,6 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         } = forwardedProps
         const autoId = useId()
         const id = providedId || autoId
-
         const { field, fieldState, isReadOnly } = useField(name)
 
         const InputComponent: any = (INPUTS as any)[type] || 'input'
@@ -133,7 +132,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         return (
             <Wrapper
                 id={id}
-                fieldState={fieldState}
+                name={name}
                 label={labelEl}
                 className={cx(className, {
                     'form-floating': !isCheckLike,

@@ -1,10 +1,10 @@
 import { useMemo } from './common'
-import { isDate, compact } from './util'
+import { isDate } from './util'
 import { toDateTime } from './date'
-import { useFormContext, FieldWithState } from './form'
+import { useFormContext } from './form'
 
 export const useDateTimeField = (name: string, rangeNames?: [string, string]) => {
-    const { getField, getValues, watch } = useFormContext()
+    const { getFieldState, getValues, watch } = useFormContext()
 
     const fieldNames = useMemo<string[]>(
         () => (Array.isArray(rangeNames) ? rangeNames : [name]),
@@ -23,9 +23,9 @@ export const useDateTimeField = (name: string, rangeNames?: [string, string]) =>
         .filter(Boolean) as Date[]
 
     const fields = useMemo(
-        () => compact<FieldWithState>(fieldNames.map(getField)),
-        [fieldNames, getField]
-    )
+        () => fieldNames.map((fn) => getFieldState(fn)),
+        [fieldNames, getFieldState]
+    ).filter(Boolean)
 
     return { fields, fieldNames, values }
 }

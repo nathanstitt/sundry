@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { BSVariants, bsClassNames } from './bs'
 import { Delayed } from './ui-state'
 import { Icon } from './icon'
+import { ErrorTypes } from './types'
 
 export interface AlertProps extends BSVariants {
     message?: string
@@ -52,8 +53,6 @@ export const Alert: FC<AlertProps> = ({
         </div>
     )
 }
-
-export type ErrorTypes = CombinedError | Error | string | false | undefined
 
 interface ErrorAlertProps {
     error?: ErrorTypes

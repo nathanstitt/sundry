@@ -67,14 +67,13 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     }, [fieldNames, setValue])
 
     const hasValue = useMemo(() => !!values.find(Boolean), [values])
-    const hasError = useMemo(() => !!fields.find((f) => f.state.error), [fields])
-
+    const hasError = useMemo(() => !!fields.find((f) => f.error), [fields])
     const onOpen = useCallback(() => setFocused(true), [setFocused])
     const onClose = useCallback(() => setFocused(false), [setFocused])
 
     return (
         <Wrapper
-            data-field-name={name}
+            name={name}
             label={
                 <FloatingLabel htmlFor={id} isRaised={hasValue || isFocused || readOnly}>
                     {label}
@@ -85,7 +84,6 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
                 'is-invalid': hasError,
             })}
             id={id}
-            fieldState={fields[0]?.state}
         >
             <div className="controls">
                 <Box flex>

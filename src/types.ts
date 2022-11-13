@@ -1,3 +1,4 @@
+import { CombinedError } from 'urql'
 import type { WeakValidationMap, FC as RFC, ReactElement, ReactNode, ValidationMap } from 'react'
 
 type EmptyProps = Record<string, unknown>
@@ -21,3 +22,5 @@ export interface FCWOC<P = EmptyProps> extends FCProperties {
 export interface FCWC<P = EmptyProps> extends FCProperties {
     (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null
 }
+
+export type ErrorTypes = CombinedError | Error | string | false | undefined

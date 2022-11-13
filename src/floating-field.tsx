@@ -3,19 +3,18 @@ import styled from '@emotion/styled'
 import { BoxProps } from 'boxible'
 import { Col, ColProps } from './col'
 import { ExtraInfo } from './label'
-import { FieldState } from './form'
+import { useFieldState } from './form'
 
 export interface FloatingFieldProps extends BoxProps, ColProps {
     id: string
     label: React.ReactNode
-    name?: string
+    name: string
     feedback?: string
     hint?: React.ReactNode
     className?: string
     wrapperClassName?: string
     reversed?: boolean
     addOnControls?: React.ReactNode
-    fieldState?: FieldState
     loadOptions?: any
     marginBottom?: boolean | number
 }
@@ -34,7 +33,6 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
     id,
     reversed,
     hint,
-    fieldState,
     label,
     children,
     className,
@@ -42,8 +40,11 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
     wrapperClassName,
     addOnControls,
     loadOptions,
+    name,
     ...props
 }) => {
+    const fieldState = useFieldState(name)
+
     let body = (
         <Body className={className}>
             {children}
@@ -67,6 +68,7 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
             className={cx('field-wrapper', wrapperClassName, {
                 [`mb-${marginBottom || 2}`]: marginBottom !== false,
             })}
+            data-field-name={name}
             {...props}
         >
             {body}

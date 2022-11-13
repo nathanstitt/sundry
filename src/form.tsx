@@ -1,63 +1,59 @@
-import {
-    FCWOC,
-    FCWC,
-    React,
-    cx,
-    useState,
-    PropsWithChildren,
-    useEffect,
-    useContext,
-    useMemo,
-} from './common'
+import { FCWOC, FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
 import { AnyObjectSchema } from 'yup'
-import { useForm, useController } from 'react-hook-form'
-import type {
-    Field,
-    ControllerFieldState as FieldState,
+import {
+    useWatch as useFormValue,
+    FieldValues,
+    FormProvider,
     SubmitHandler,
     UseFormReturn,
+    UseFormRegisterReturn,
     UseFormGetFieldState,
+    useFormContext as _useFormContext,
+    useForm,
+    useController,
+    useFormState,
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
 import { Footer } from './footer'
-import { ErrorAlert, ErrorTypes } from './alert'
+import { ErrorAlert } from './alert'
 import { Button, ButtonProps } from './button'
+import { ErrorTypes } from './types'
+import { useCallback } from 'react'
 
-export type FieldWithState = Field['_f'] & {
-    state: ReturnType<UseFormGetFieldState<Record<string, string>>>
+type FieldState = UseFormGetFieldState<Record<string, string>>
+type RegisteredField = UseFormRegisterReturn<any>
+export type { FieldState, RegisteredField }
+
+export { useFormState, useFormValue }
+
+const FORM_ERROR_KEY = 'FORM_ERROR'
+
+export const useFormContext = _useFormContext as any as <
+    TFV extends FieldValues
+>() => UseFormReturn<TFV> & {
+    isReadOnly: boolean
+    setFormError(err: ErrorTypes): void
 }
 
-export { FieldState }
-export interface FormContext<FV extends FormValues> extends UseFormReturn<FV> {
-    isDirty: boolean
-    isReadOnly?: boolean
-    isSubmitting: boolean
-    formError?: ErrorTypes
-    setFormError(error?: ErrorTypes): void
-    getField(name: string): FieldWithState | undefined
+export type FormContext<T extends FieldValues> = UseFormReturn<T>
+// export const setFormError = (err: ErrorTypes) => {
+//     console.warn(err)
+// }
+
+export function useFieldState(name: string) {
+    return useFormContext().getFieldState(name)
 }
 
-export const FORM_CONTEXT = React.createContext<FormContext<any> | undefined>(undefined)
-
-export function useFormContext<FV extends FormValues>(): FormContext<FV> {
-    return useContext(FORM_CONTEXT) as FormContext<FV>
-}
-
-export function useField<FV extends FormValues>(name: string) {
-    const fc = useFormContext<FV>()
-    const { control, setValue, isReadOnly } = fc
-    const fld = useController({ name: name as any, control })
-    return {
-        isReadOnly,
-        setValue: (value: any) => setValue(name as any, value),
-        ...fld,
-    }
+export function useField(name: string) {
+    const { isReadOnly } = useFormContext()
+    const fc = useController({ name })
+    return { isReadOnly, ...fc }
 }
 
 export type FormSubmitHandler<FV extends FormValues> = (
     values: FV,
-    ctx: FormContext<FV>
+    ctx: FormContext<FV> & { setFormError(err: ErrorTypes): void }
 ) => void | Promise<any>
 export type FormCancelHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 export type FormDeleteHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
@@ -71,6 +67,7 @@ interface FormProps<FV extends FormValues> {
     onDelete?: FormDeleteHandler<FV>
     onCancel?: FormCancelHandler<FV>
     showControls?: boolean
+    enableReinitialize?: boolean
     action?: string
     defaultValues: FV
     validateOnMount?: boolean
@@ -86,7 +83,7 @@ export const FormTriggerValidation: FCWOC = () => {
     }, [trigger])
     return null
 }
-// validationSchema ? yupResolver(validationSchema) : undefined,
+
 export function Form<FV extends FormValues>({
     children,
     onSubmit,
@@ -94,10 +91,11 @@ export function Form<FV extends FormValues>({
     defaultValues,
     validateOnMount,
     validationSchema,
+    enableReinitialize,
 }: PropsWithChildren<FormProps<FV>>): JSX.Element {
-    const [formError, setFormError] = useState<ErrorTypes>()
+    //const [formError, setFormError] = useState<ErrorTypes>()
 
-    const fc = useForm<FV>({
+    const fc = useForm({
         mode: 'onBlur',
         defaultValues: defaultValues as any,
         resolver: validationSchema ? yupResolver(validationSchema as any) : undefined,
@@ -108,47 +106,57 @@ export function Form<FV extends FormValues>({
         //     return ret
         // },
     })
+    useEffect(() => {
+        if (enableReinitialize) {
+            fc.reset(defaultValues, { keepDirtyValues: true })
+        }
+    }, [fc, enableReinitialize, defaultValues])
 
-    const context = useMemo(
+    const fs = useMemo(
         () => ({
-            ...fc,
-            isSubmitting: fc.formState.isSubmitting,
             isReadOnly: readOnly,
-            isDirty: fc.formState.isDirty,
-            formError,
-            getField: (name: string) =>
-                fc.control._fields[name]
-                    ? {
-                          state: fc.control.getFieldState(name as any),
-                          ...fc.control._fields[name]!._f, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-                      }
-                    : undefined,
-            setFormError,
+            setFormError(error: ErrorTypes) {
+                fc.setError(FORM_ERROR_KEY, error as any)
+            },
+            ...fc,
         }),
-        [fc, readOnly, formError]
+        [fc, readOnly]
     )
 
     const triggerSubmit: SubmitHandler<FV> = async (values) => {
         try {
-            await onSubmit(values, context)
+            await onSubmit(values, fs)
+            fc.reset(values)
         } catch (err: any) {
-            context.setFormError(err)
+            fs.setFormError(err)
         }
     }
 
     return (
-        <form onSubmit={fc.handleSubmit(triggerSubmit)}>
-            <FORM_CONTEXT.Provider value={context}>
+        <FormProvider {...fs}>
+            <form onSubmit={fc.handleSubmit(triggerSubmit)}>
                 {validateOnMount ? <FormTriggerValidation /> : null}
                 {children}
-            </FORM_CONTEXT.Provider>
-        </form>
+            </form>
+        </FormProvider>
+    )
+}
+
+export const useSetFormError = () => {
+    const fc = useFormContext()
+    return useCallback(
+        (err: ErrorTypes) => {
+            fc.setError(FORM_ERROR_KEY, err as any)
+        },
+        [fc]
     )
 }
 
 export const FormCancelButton: FCWC<ButtonProps> = ({ children, ...props }) => {
     const fc = useFormContext()
-    const { isSubmitting } = fc
+    const {
+        formState: { isSubmitting },
+    } = fc
     return (
         <Button disabled={isSubmitting} {...props}>
             {children}
@@ -156,14 +164,14 @@ export const FormCancelButton: FCWC<ButtonProps> = ({ children, ...props }) => {
     )
 }
 
-export const FormSaveButton: FCWC<ButtonProps> = ({
+export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
     children,
     busyMessage = 'Saving',
     type = 'submit',
     ...props
 }) => {
-    const fc = useFormContext()
-    const { isSubmitting } = fc
+    const { isSubmitting } = useFormState()
+
     return (
         <Button
             type="submit"
@@ -177,25 +185,27 @@ export const FormSaveButton: FCWC<ButtonProps> = ({
     )
 }
 
-interface SaveCancelBtnProps<FV extends FormValues> {
+interface SaveCancelBtnProps {
     showControls?: boolean
-    onDelete?: FormDeleteHandler<FV>
-    onCancel?: FormCancelHandler<FV>
+    onDelete?: FormDeleteHandler<any>
+    onCancel?: FormCancelHandler<any>
 }
 
-function SaveCancelBtn<FV extends FormValues>({
+function SaveCancelBtn({
     onCancel,
     onDelete,
     showControls,
-}: SaveCancelBtnProps<FV>): JSX.Element | null {
-    const fc = useFormContext<FV>()
-    const { isSubmitting, reset, isDirty } = fc
+}: SaveCancelBtnProps): JSX.Element | null {
+    const fc = useFormContext()
+
+    const { isDirty, isSubmitting } = useFormState()
+
     if (!showControls && !isDirty) {
         return null
     }
 
     const onFormCancel = async () => {
-        reset()
+        fc.reset()
         onCancel?.(fc)
     }
 
@@ -223,20 +233,19 @@ function SaveCancelBtn<FV extends FormValues>({
                         Cancel
                     </Button>
                 )}
-                <FormSaveButton busy={isSubmitting} primary>
-                    Save
-                </FormSaveButton>
+                <FormSaveButton primary>Save</FormSaveButton>
             </Box>
         </Footer>
     )
 }
 
-export function FormSaveError<FV extends FormValues>() {
-    const fc = useFormContext<FV>()
+export function FormSaveError() {
+    const fc = useFormContext()
+    const err = fc.formState.errors[FORM_ERROR_KEY] as undefined | ErrorTypes
     const onDismiss = () => {
-        fc.setFormError(false)
+        fc.clearErrors(FORM_ERROR_KEY)
     }
-    return <ErrorAlert error={fc.formError} onDismiss={onDismiss} />
+    return <ErrorAlert error={err} onDismiss={onDismiss} />
 }
 
 export function EditingForm<FV extends FormValues>({

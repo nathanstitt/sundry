@@ -1,6 +1,14 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
-import { Form, DateTimeField, InputField, Yup, FormSubmitHandler } from './src'
+import {
+    Form,
+    DateTimeField,
+    SelectField,
+    InputField,
+    Yup,
+    FormSubmitHandler,
+    useFormState,
+} from './src'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
@@ -8,6 +16,16 @@ import 'flatpickr/dist/flatpickr.css'
 interface FormData {
     name: string
 }
+
+const SubmitBtn = () => {
+    const fs = useFormState()
+    return (
+        <button type="submit" style={{ background: fs.isDirty ? 'green' : 'gray' }}>
+            save
+        </button>
+    )
+}
+
 export default function Demo() {
     const onSubmit: FormSubmitHandler<FormData> = (v) => {
         console.log(v)
@@ -27,8 +45,20 @@ export default function Demo() {
                 onSubmit={onSubmit}
             >
                 <InputField data-testid="name" name="name" label="Name" />
+
+                <SelectField
+                    label="Select a value"
+                    options={[
+                        { label: 'A', value: 'a' },
+                        { label: 'B', value: 'b' },
+                        { label: 'C', value: 'c' },
+                    ]}
+                    name="ab"
+                />
+
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
-                <button type="submit">save</button>
+
+                <SubmitBtn />
             </Form>
         </div>
     )

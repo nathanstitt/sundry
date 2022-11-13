@@ -55,7 +55,6 @@ export const SelectField: FC<SelectFieldProps> = ({
     className,
     theme,
     allowCreate,
-
     value,
     onCreateOption,
     ...props
@@ -97,7 +96,6 @@ export const SelectField: FC<SelectFieldProps> = ({
         <SelectWrapper
             id={id}
             name={name}
-            fieldState={fieldState}
             label={labelEl}
             className={cx('form-control', className, {
                 valued: hasValue,
