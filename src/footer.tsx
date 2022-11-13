@@ -3,7 +3,9 @@ import { Box, BoxProps } from 'boxible'
 import styled from '@emotion/styled'
 import { Theme } from './theme'
 
-const FooterWrapper = styled(Box)(Theme.css.topLine)
+const FooterWrapper = styled(Box)({
+    ...Theme.css.topLine
+})
 
 export const Footer: FCWC<{ className?: string } & BoxProps> = ({
     className,
@@ -11,7 +13,7 @@ export const Footer: FCWC<{ className?: string } & BoxProps> = ({
     ...boxProps
 }) => {
     return (
-        <FooterWrapper className={cx('footer', className)} justify="end" gap {...boxProps}>
+        <FooterWrapper padding="vertical" className={cx('footer', className)} justify="end" gap {...boxProps}>
             {children}
         </FooterWrapper>
     )
