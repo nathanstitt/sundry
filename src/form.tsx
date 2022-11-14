@@ -32,14 +32,12 @@ export { useFormState, useFormValue }
 
 const FORM_ERROR_KEY = 'FORM_ERROR'
 
-export const useFormContext = _useFormContext as any as <
-    TFV extends FieldValues
->() => UseFormReturn<TFV> & {
+export type FormContext<T extends FieldValues> = UseFormReturn<T> & {
     isReadOnly: boolean
     setFormError(err: ErrorTypes): void
 }
 
-export type FormContext<T extends FieldValues> = UseFormReturn<T>
+export const useFormContext = _useFormContext as any as <TFV extends FieldValues>() => FormContext<TFV>
 
 export function useFieldState(name: string) {
     return useFormContext().getFieldState(name)
@@ -53,7 +51,7 @@ export function useField(name: string) {
 
 export type FormSubmitHandler<FV extends FormValues> = (
     values: FV,
-    ctx: FormContext<FV> & { setFormError(err: ErrorTypes): void }
+    ctx: FormContext<FV>
 ) => void | Promise<any>
 export type FormCancelHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 export type FormDeleteHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
@@ -117,9 +115,9 @@ export function Form<FV extends FormValues>({
         }
     }, [fc, prevDefaultValues, enableReinitialize, defaultValues])
 
-    const fs = useMemo(
+    const fs: FormContext<FV> = useMemo(
         () => ({
-            isReadOnly: readOnly,
+            isReadOnly: !!readOnly,
             setFormError(error: ErrorTypes) {
                 fc.setError(FORM_ERROR_KEY, error as any)
             },
