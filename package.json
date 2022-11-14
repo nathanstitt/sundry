@@ -85,20 +85,20 @@
         "vite-plugin-external": "^1.2.6"
     },
     "dependencies": {
-        "@hookform/resolvers": "^2.9.10",
-        "@iconify/icons-bi": "^1.2.11",
-        "@iconify/react": "^4.0.0",
-        "@popperjs/core": "^2.11.6",
-        "@restart/ui": "^1.4.1",
-        "boxible": "^1.7.0",
-        "dayjs": "^1.11.6",
-        "flatpickr": "^4.6.13",
-        "graphql": "^16.6.0",
-        "react-hook-form": "^7.39.1",
-        "react-popper": "^2.3.0",
-        "react-select": "^5.6.0",
-        "rooks": "^7.4.2",
-        "urql": "^3.0.3",
-        "yup": "^0.32.11"
+        "@hookform/resolvers": "^2.9",
+        "@iconify/icons-bi": "^1.2",
+        "@iconify/react": "^4.0",
+        "@popperjs/core": "^2.11",
+        "@restart/ui": "^1.4",
+        "boxible": "^1.7",
+        "dayjs": "^1.11",
+        "flatpickr": "^4.6",
+        "graphql": "^16.6",
+        "react-hook-form": "^7.39",
+        "react-popper": "^2.3",
+        "react-select": "^5.6",
+        "rooks": "^7.4",
+        "urql": "^3.0",
+        "yup": "^0.32"
     }
 }
