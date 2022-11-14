@@ -91,14 +91,14 @@
         "@popperjs/core": "^2.11",
         "@restart/ui": "^1.4",
         "boxible": "^1.7",
-        "dayjs": "^1.11",
+        "dayjs": "*",
         "flatpickr": "^4.6",
-        "graphql": "^16.6",
+        "graphql": "*",
         "react-hook-form": "^7.39",
         "react-popper": "^2.3",
         "react-select": "^5.6",
         "rooks": "^7.4",
-        "urql": "^3.0",
+        "urql": "*",
         "yup": "^0.32"
     }
 }
