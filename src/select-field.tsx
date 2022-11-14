@@ -46,6 +46,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     innerRef,
     label,
     isMulti,
+    cacheOptions,
     readOnly: propsReadonly,
     isClearable,
     menuPlacement,
@@ -94,6 +95,7 @@ export const SelectField: FC<SelectFieldProps> = ({
 
     return (
         <SelectWrapper
+            {...props}
             id={id}
             name={name}
             label={labelEl}
@@ -101,10 +103,10 @@ export const SelectField: FC<SelectFieldProps> = ({
                 valued: hasValue,
                 'is-invalid': hasError,
             })}
-            data-field-name={field.name}
         >
             <Select
                 {...props}
+                cacheOptions={cacheOptions}
                 innerRef={field.ref}
                 value={v}
                 inputId={id}

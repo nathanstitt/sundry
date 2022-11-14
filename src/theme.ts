@@ -28,6 +28,19 @@ export const themeColors = {
     lightText: '#5f676f',
     textHover: '#4e4e4e',
 
+    bs: {
+        primary: {
+            color: 'white',
+            backgroundColor: '#3865b1',
+            borderColor: '#3865b1',
+        },
+        secondary: {
+            color: 'white',
+            backgroundColor: '#6c757d',
+            borderColor: '#6c757d',
+        },
+    },
+
     black: '#10161a',
 
     blue1: '#0e5a8a',

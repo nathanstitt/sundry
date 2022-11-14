@@ -150,6 +150,7 @@ export interface SelectProps extends Omit<ReactSelectProps, 'isMulti' | 'onChang
     value?: SelectValue
     isMulti?: boolean
     isClearable?: boolean
+    cacheOptions?: boolean
     options: SelectOptions
     onChange?(
         value: null | SelectValue,

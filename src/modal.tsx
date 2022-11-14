@@ -21,7 +21,7 @@ export interface ModalProps extends Omit<BaseModalProps, 'children'> {
     closeBtn?: boolean
 }
 
-const Content = styled.div({ height: '100%' })
+const Content = styled.div()
 
 interface ModalI extends FCWC<ModalProps> {
     Header: FCWC<ModalPartProps>

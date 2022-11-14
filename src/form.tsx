@@ -1,5 +1,6 @@
 import { FCWOC, FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
 import { AnyObjectSchema } from 'yup'
+import { usePreviousDifferent } from 'rooks'
 import {
     useWatch as useFormValue,
     FieldValues,
@@ -13,12 +14,14 @@ import {
     useController,
     useFormState,
 } from 'react-hook-form'
+
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
 import { Footer } from './footer'
 import { ErrorAlert } from './alert'
 import { Button, ButtonProps } from './button'
 import { ErrorTypes } from './types'
+import { isEmpty } from './util'
 import { useCallback } from 'react'
 
 type FieldState = UseFormGetFieldState<Record<string, string>>
@@ -37,9 +40,6 @@ export const useFormContext = _useFormContext as any as <
 }
 
 export type FormContext<T extends FieldValues> = UseFormReturn<T>
-// export const setFormError = (err: ErrorTypes) => {
-//     console.warn(err)
-// }
 
 export function useFieldState(name: string) {
     return useFormContext().getFieldState(name)
@@ -85,13 +85,15 @@ export const FormTriggerValidation: FCWOC = () => {
 }
 
 export function Form<FV extends FormValues>({
+    action,
     children,
     onSubmit,
     readOnly,
+    className,
     defaultValues,
     validateOnMount,
     validationSchema,
-    enableReinitialize,
+    enableReinitialize = true,
 }: PropsWithChildren<FormProps<FV>>): JSX.Element {
     //const [formError, setFormError] = useState<ErrorTypes>()
 
@@ -106,11 +108,14 @@ export function Form<FV extends FormValues>({
         //     return ret
         // },
     })
+    const prevDefaultValues = usePreviousDifferent(defaultValues)
     useEffect(() => {
         if (enableReinitialize) {
-            fc.reset(defaultValues, { keepDirtyValues: true })
+            if (isEmpty(prevDefaultValues) && !isEmpty(defaultValues)) {
+                fc.reset(defaultValues, { keepDirtyValues: true })
+            }
         }
-    }, [fc, enableReinitialize, defaultValues])
+    }, [fc, prevDefaultValues, enableReinitialize, defaultValues])
 
     const fs = useMemo(
         () => ({
@@ -123,18 +128,26 @@ export function Form<FV extends FormValues>({
         [fc, readOnly]
     )
 
-    const triggerSubmit: SubmitHandler<FV> = async (values) => {
-        try {
-            await onSubmit(values, fs)
-            fc.reset(values)
-        } catch (err: any) {
-            fs.setFormError(err)
-        }
-    }
+    const triggerSubmit = useCallback<SubmitHandler<FV>>(
+        async (values) => {
+            try {
+                await onSubmit(values, fs)
+                fc.reset(values)
+            } catch (err: any) {
+                fs.setFormError(err)
+            }
+        },
+        [onSubmit, fs, fc]
+    )
 
     return (
         <FormProvider {...fs}>
-            <form onSubmit={fc.handleSubmit(triggerSubmit)}>
+            <form
+                method="POST"
+                action={action}
+                className={className}
+                onSubmit={fc.handleSubmit(triggerSubmit)}
+            >
                 {validateOnMount ? <FormTriggerValidation /> : null}
                 {children}
             </form>
@@ -168,6 +181,8 @@ export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
     children,
     busyMessage = 'Saving',
     type = 'submit',
+    secondary,
+    primary = secondary !== true,
     ...props
 }) => {
     const { isSubmitting } = useFormState()
@@ -175,6 +190,8 @@ export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
     return (
         <Button
             type="submit"
+            secondary={secondary}
+            primary={primary}
             busyMessage={busyMessage}
             busy={isSubmitting}
             data-test-id="form-save-btn"

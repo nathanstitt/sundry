@@ -73,6 +73,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
 
     return (
         <Wrapper
+            {...props}
             name={name}
             label={
                 <FloatingLabel htmlFor={id} isRaised={hasValue || isFocused || readOnly}>

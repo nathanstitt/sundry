@@ -134,6 +134,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 id={id}
                 name={name}
                 label={labelEl}
+                {...props}
                 className={cx(className, {
                     'form-floating': !isCheckLike,
                 })}

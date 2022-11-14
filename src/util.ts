@@ -7,7 +7,9 @@ export function isString(s: any): s is string {
 export function isNumber(n: any): n is number {
     return typeof n === 'number'
 }
-export const isNil = (val: any) => val == null
+export function isNil(val: any): val is { val: null } | { val: undefined } {
+    return val == null
+}
 
 export function compact<T>(a: Array<any>): Array<T> {
     return a.filter(Boolean)
@@ -15,6 +17,17 @@ export function compact<T>(a: Array<any>): Array<T> {
 
 export function coalesce<T>(target?: any, defaultVal?: T): T {
     return isNil(target) ? defaultVal : target
+}
+
+export function isEmpty(obj: null | undefined | string | Record<string, any>) {
+    if (isString(obj)) {
+        return obj === ''
+    } else if (obj == null) {
+        return true
+    } else if (typeof obj == 'object') {
+        return Object.keys(obj).length === 0
+    }
+    return false
 }
 
 interface RetryOptions {
