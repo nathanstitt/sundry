@@ -31,10 +31,10 @@ const FORM_ERROR_KEY = 'FORM_ERROR'
 
 export const useFormContext = _useFormContext as any as <
     TFV extends FieldValues
->() => UseFormReturn<TFV> & {
-    isReadOnly: boolean
-    setFormError(err: ErrorTypes): void
-}
+    >() => UseFormReturn<TFV> & {
+        isReadOnly: boolean
+        setFormError(err: ErrorTypes): void
+    }
 
 export type FormContext<T extends FieldValues> = UseFormReturn<T>
 // export const setFormError = (err: ErrorTypes) => {

@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import {
-    Form,
+    EditingForm,
     DateTimeField,
     SelectField,
     InputField,
@@ -17,22 +17,13 @@ interface FormData {
     name: string
 }
 
-const SubmitBtn = () => {
-    const fs = useFormState()
-    return (
-        <button type="submit" style={{ background: fs.isDirty ? 'green' : 'gray' }}>
-            save
-        </button>
-    )
-}
-
 export default function Demo() {
     const onSubmit: FormSubmitHandler<FormData> = (v) => {
         console.log(v)
     }
     return (
         <div className="container mt-5">
-            <Form
+            <EditingForm
                 defaultValues={{
                     name: '',
                     from: new Date('2022-10-21'),
@@ -57,9 +48,7 @@ export default function Demo() {
                 />
 
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
-
-                <SubmitBtn />
-            </Form>
+            </EditingForm>
         </div>
     )
 }
