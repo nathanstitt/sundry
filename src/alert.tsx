@@ -53,13 +53,15 @@ export const Alert: FC<AlertProps> = ({
         </div>
     )
 }
-
+type ErrorAlertError = ErrorTypes | {
+    error: string
+}
 interface ErrorAlertProps {
-    error?: ErrorTypes
+    error?: ErrorAlertError
     onDismiss?(): void
 }
 export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissProp }) => {
-    const [err, setError] = useState<ErrorTypes>(error)
+    const [err, setError] = useState<ErrorAlertError>(error)
     useEffect(() => {
         setError(error)
     }, [error])
@@ -70,8 +72,15 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissPro
         setError(false)
         onDismissProp?.()
     }
+    let msg = ''
+    if (typeof err == 'object') {
+        msg = (err as any).error || (err as any).message || ''
+    } else {
+        msg = String(err)
+    }
+
     return (
-        <Alert danger message={typeof err == 'object' ? err?.message : err} onDismiss={onDismiss} />
+        <Alert danger message={msg} onDismiss={onDismiss} />
     )
 }
 
