@@ -37,7 +37,9 @@ export type FormContext<T extends FieldValues> = UseFormReturn<T> & {
     setFormError(err: ErrorTypes): void
 }
 
-export const useFormContext = _useFormContext as any as <TFV extends FieldValues>() => FormContext<TFV>
+export const useFormContext = _useFormContext as any as <
+    TFV extends FieldValues
+>() => FormContext<TFV>
 
 export function useFieldState(name: string) {
     return useFormContext().getFieldState(name)

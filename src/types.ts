@@ -23,4 +23,8 @@ export interface FCWC<P = EmptyProps> extends FCProperties {
     (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null
 }
 
-export type ErrorTypes = CombinedError | Error | string | false | undefined
+export type GenericErrorObject = {
+    message: string
+    error: true
+}
+export type ErrorTypes = CombinedError | GenericErrorObject | Error | string | false | undefined

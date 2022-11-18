@@ -53,15 +53,13 @@ export const Alert: FC<AlertProps> = ({
         </div>
     )
 }
-type ErrorAlertError = ErrorTypes | {
-    error: string
-}
+
 interface ErrorAlertProps {
-    error?: ErrorAlertError
+    error?: ErrorTypes
     onDismiss?(): void
 }
 export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissProp }) => {
-    const [err, setError] = useState<ErrorAlertError>(error)
+    const [err, setError] = useState<ErrorTypes>(error)
     useEffect(() => {
         setError(error)
     }, [error])
@@ -74,14 +72,12 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissPro
     }
     let msg = ''
     if (typeof err == 'object') {
-        msg = (err as any).error || (err as any).message || ''
+        msg = err.message || ''
     } else {
         msg = String(err)
     }
 
-    return (
-        <Alert danger message={msg} onDismiss={onDismiss} />
-    )
+    return <Alert danger message={msg} onDismiss={onDismiss} />
 }
 
 const Pending = styled.span({
