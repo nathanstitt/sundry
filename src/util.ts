@@ -36,14 +36,25 @@ interface RetryOptions {
     exponentialBackoff?: boolean
 }
 
-export const omit = (obj: Record<string, any>, ...ignore: string[] | [Array<string>]) => {
-    const props =
-        ignore.length && Array.isArray(ignore[0])
-            ? (ignore[0] as Array<string>)
-            : (ignore as string[])
-    obj = { ...obj }
-    props.forEach((prop) => delete obj[prop])
-    return obj
+export function pick<T extends object, K extends keyof T>(
+    obj: T,
+    ...select: K[] | [Array<K>]
+): Pick<T, K> {
+    const paths: K[] = select.length === 1 && Array.isArray(select[0]) ? select[0] : (select as K[])
+    return { ...paths.reduce((mem, key) => ({ ...mem, [key]: obj[key] }), {}) } as Pick<T, K>
+}
+
+export function omit<T extends object, K extends keyof T>(
+    obj: T,
+    ...reject: K[] | [Array<K>]
+): Omit<T, K> {
+    const paths: K[] = reject.length === 1 && Array.isArray(reject[0]) ? reject[0] : (reject as K[])
+    return {
+        ...paths.reduce(
+            (mem, key) => ((k: K, { [k]: ignored, ...rest }) => rest)(key, mem),
+            obj as object
+        ),
+    } as Omit<T, K>
 }
 
 // https://github.com/gregberge/loadable-components/issues/667
