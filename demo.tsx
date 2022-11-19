@@ -7,7 +7,7 @@ import {
     InputField,
     Yup,
     FormSubmitHandler,
-    useFormState,
+    DropdownMenu,
 } from './src'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -24,6 +24,7 @@ export default function Demo() {
     return (
         <div className="container mt-5">
             <EditingForm
+                className="row"
                 defaultValues={{
                     name: '',
                     from: new Date('2022-10-21'),
@@ -49,6 +50,14 @@ export default function Demo() {
 
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
             </EditingForm>
+            <div className="row">
+                <DropdownMenu alignEnd label="Pick Option" activeIndex={1}>
+                    <div className="dropdown-item">one</div>
+                    <div className="dropdown-item">two</div>
+                    <hr className="dropdown-divider" />
+                    <div className="dropdown-item">three</div>
+                </DropdownMenu>
+            </div>
         </div>
     )
 }

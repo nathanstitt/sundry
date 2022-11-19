@@ -4,6 +4,18 @@ import { cx, css } from '@emotion/css'
 export * from './types'
 export * from './util'
 
-const { useState, useEffect, useMemo, useContext, useId, useCallback } = React
+const { useState, useEffect, useMemo, useContext, useId, useCallback, useLayoutEffect } = React
 
-export { cx, css, Yup, React, useId, useMemo, useState, useEffect, useContext, useCallback }
+export {
+    cx,
+    css,
+    Yup,
+    React,
+    useId,
+    useMemo,
+    useState,
+    useEffect,
+    useContext,
+    useCallback,
+    useLayoutEffect,
+}
