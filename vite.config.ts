@@ -31,6 +31,7 @@ const config = defineConfig({
         // for externalized deps
         globals: {
           react: 'React',
+          'react-dom': 'ReactDOM',
           'lodash-es': 'lodashEs',
           '@emotion/css': 'EmotionCSS',
           '@emotion/styled': 'EmotionStyled',

@@ -1,76 +1,88 @@
-import { React, FC, FCWOC, useLayoutEffect, cx, useId } from './common'
-import styled from '@emotion/styled'
+import {
+    React,
+    FCWC,
+    cx,
+    useId,
+    //useState, useLayoutEffect
+} from './common'
+//import styled from '@emotion/styled'
 import Dropdown, { DropdownProps as RUDdProps } from '@restart/ui/Dropdown'
-import ReactDOM from 'react-dom'
-import { useDropdownMenu, UseDropdownMenuOptions } from '@restart/ui/DropdownMenu'
-import { useDropdownToggle } from '@restart/ui/DropdownToggle'
+//import ReactDOM from 'react-dom'
+import {
+    UseDropdownMenuOptions,
+    //useDropdownMenu
+} from '@restart/ui/DropdownMenu'
+//import { useDropdownToggle } from '@restart/ui/DropdownToggle'
 import { Button, ButtonProps } from './button'
 
-const ToggleWrapper = styled(Button)({
-    height: '100%',
-})
+// const ToggleWrapper = styled(Button)({
+//     height: '100%',
+// })
 
-type ToggleProps = Omit<ButtonProps, 'onSelect'>
+// type ToggleProps = Omit<ButtonProps, 'onSelect'>
 
-const Toggle: FCWOC<ToggleProps> = ({ className, children, ...props }) => {
-    const [toggleProps] = useDropdownToggle()
+// const Toggle: FCWOC<ToggleProps> = ({ className, children, ...props }) => {
+//     const [toggleProps] = useDropdownToggle()
 
-    return (
-        <ToggleWrapper {...props} className={cx(className, 'dropdown-toggle')} {...toggleProps}>
-            {children}
-        </ToggleWrapper>
-    )
-}
+//     return (
+//         <ToggleWrapper {...props} className={cx(className, 'dropdown-toggle')} {...toggleProps}>
+//             {children}
+//         </ToggleWrapper>
+//     )
+// }
 
-interface MenuProps {
-    options?: UseDropdownMenuOptions
-    className?: string
-}
-const MenuWrapper = styled.div({
-    zIndex: 1100,
-})
+// interface MenuProps {
+//     options?: UseDropdownMenuOptions
+//     className?: string
+// }
+// const MenuWrapper = styled.div({
+//     zIndex: 1100,
+// })
 
 export const dropDownMenuDefaultOptions: UseDropdownMenuOptions = {
     flip: true,
     offset: [0, 2],
-    //placement: 'bottom-end',
+    placement: 'bottom-end',
 }
 
-const Menu: FCWOC<MenuProps> = ({ children, className, options = dropDownMenuDefaultOptions }) => {
-    const [menuProps, meta] = useDropdownMenu(options)
+// const Menu: FCWC<MenuProps> = ({ children, className, options = dropDownMenuDefaultOptions }) => {
+//     const [menuProps, meta] = useDropdownMenu(options)
+//     const [canShow, setCanShow] = useState(false)
+//     useLayoutEffect(() => {
+//         if (meta.show) {
+//             console.log('updat', meta.popper)
+//             meta.popper?.update()
+//             // setTimeout(() => setMeasured(true), 500)
+//         }
+//         setTimeout(() => setCanShow(meta.show), 1)
+//         // identity of meta.popper changes on every render, using it in deps
+//         // leads to infinite loop
+//     }, [meta.show]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    useLayoutEffect(() => {
-        if (meta.show) {
-            console.log('updat')
-            meta.popper?.update()
-        }
-        // identity of meta.popper changes on every render, using it in deps
-        // leads to infinite loop
-    }, [meta.show]) // eslint-disable-line react-hooks/exhaustive-deps
+//     console.log(meta.show, canShow, menuProps.style?.transform)
+//     //if (!meta.hasShown) return null
 
-    if (!meta.hasShown) return null
+//     return ReactDOM.createPortal(
+//         <MenuWrapper
+//             {...menuProps}
+//             style={{
+//                 display: 'block',
+//                 transition: 'visibility 500ms, opacity 500ms',
+//                 visibility: canShow ? 'visible' : 'hidden',
+//                 opacity: canShow ? '1' : '0',
+//                 ...menuProps.style,
+//             }}
+//             className={cx('dropdown-menu', className, {
+//                 show: meta.show,
+//             })}
+//         >
+//             {children}
+//         </MenuWrapper>,
+//         document.body
+//     )
+// }
 
-    return ReactDOM.createPortal(
-        <MenuWrapper
-            {...menuProps}
-            style={{
-                display: 'block',
-                transition: 'visibility 500ms, opacity 500ms',
-                visibility: meta.show ? 'visible' : 'hidden',
-                opacity: meta.show ? '1' : '0',
-                ...menuProps.style,
-            }}
-            className={cx('dropdown-menu', className, {
-                show: meta.show,
-            })}
-        >
-            {children}
-        </MenuWrapper>,
-        document.body
-    )
-}
-
-export interface DropdownMenuProps extends RUDdProps {
+export interface DropdownMenuProps extends ButtonProps, Omit<RUDdProps, 'onSelect'> {
     alignEnd?: boolean
     className?: string
     id?: string
@@ -83,13 +95,13 @@ export interface DropdownMenuProps extends RUDdProps {
     options?: UseDropdownMenuOptions
 }
 
-export const DropdownMenu: FC<DropdownMenuProps> = ({
+export const DropdownMenu: FCWC<DropdownMenuProps> = ({
     children,
     label,
     className,
     toggleClassName,
-    alignEnd,
     menuClassName,
+    alignEnd,
     inGroup,
     options = dropDownMenuDefaultOptions,
     id: providedId,
@@ -97,21 +109,48 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
 }) => {
     const autoId = useId()
     const btnId = providedId || autoId
-    const placement = alignEnd ? 'bottom-end' : 'bottom-start'
+    const placement = options.placement || alignEnd ? 'bottom-end' : 'bottom-start'
 
     return (
-        <Dropdown placement={placement}>
-            <div className={cx('yn', className, { 'btn-group': inGroup })}>
-                <Toggle {...buttonProps} className={toggleClassName}>
-                    {label}
-                </Toggle>
-                <Menu options={options} className={menuClassName} aria-labelledby={btnId}>
-                    {children}
-                </Menu>
+        <Dropdown placement="bottom-end">
+            <div className={cx('dropdown', className)}>
+                <Dropdown.Toggle>
+                    {(props) => (
+                        <Button
+                            className={cx('dropdown-toggle', toggleClassName, {
+                                'btn-group': inGroup,
+                            })}
+                            {...buttonProps}
+                            {...props}
+                            id={btnId}
+                        >
+                            {label}
+                        </Button>
+                    )}
+                </Dropdown.Toggle>
+                <Dropdown.Menu {...options} placement={placement}>
+                    {(menuProps, meta) => (
+                        <div
+                            {...menuProps}
+                            aria-labelledby={btnId}
+                            className={cx('dropdown-menu', menuClassName)}
+                            style={{
+                                transition: 'visibility 500ms, opacity 500ms',
+                                visibility: meta.show ? 'visible' : 'hidden',
+                                opacity: meta.show ? '1' : '0',
+                                display: 'block',
+                                ...menuProps.style,
+                            }}
+                        >
+                            {children}
+                        </div>
+                    )}
+                </Dropdown.Menu>
             </div>
         </Dropdown>
     )
 }
+
 // export const DropdowsnButton = () => {
 //     return (
 //         <Dropdown drop="down">
