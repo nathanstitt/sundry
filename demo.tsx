@@ -14,12 +14,12 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
 
 interface FormData {
-    name: string
+    [key: string]: string | boolean | Date
 }
 
 export default function Demo() {
-    const onSubmit: FormSubmitHandler<FormData> = (v) => {
-        console.log(v)
+    const onSubmit: FormSubmitHandler<FormData> = (v, fc) => {
+        fc.setFormError(new Error('an error occured'))
     }
     return (
         <div className="container mt-5">
@@ -27,6 +27,8 @@ export default function Demo() {
                 className="row"
                 defaultValues={{
                     name: '',
+                    cbv: true,
+                    rbv: 'c',
                     from: new Date('2022-10-21'),
                     to: new Date('2022-11-02'),
                 }}
@@ -36,8 +38,13 @@ export default function Demo() {
                 validateOnMount
                 onSubmit={onSubmit}
             >
-                <InputField data-testid="name" name="name" label="Name" />
+                <InputField sm={10} data-testid="name" name="name" label="Name" />
+                <InputField sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CB" />
 
+                <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
+                <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
+                <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
+                <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
                     label="Select a value"
                     options={[

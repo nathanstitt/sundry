@@ -1,17 +1,27 @@
 import { React, FC, useEffect, cx, useState } from './common'
+import { ColProps } from './col'
 import { CombinedError } from 'urql'
 import styled from '@emotion/styled'
+import { errorToString } from './util'
 import { BSVariants, bsClassNames } from './bs'
 import { Delayed } from './ui-state'
 import { Icon } from './icon'
 import { ErrorTypes } from './types'
 
-export interface AlertProps extends BSVariants {
+export interface AlertProps extends BSVariants, ColProps {
     message?: string
     onDismiss?(): void
     className?: string
     canDismiss?: boolean
 }
+
+const Wrapper = styled.div({
+    '.row > &': {
+        marginLeft: 'calc(var(--bs-gutter-x) * 0.5)',
+        marginRight: 'calc(var(--bs-gutter-x) * 0.5)',
+        flex: 1,
+    },
+})
 
 export const Alert: FC<AlertProps> = ({
     message,
@@ -33,7 +43,7 @@ export const Alert: FC<AlertProps> = ({
     }
 
     return (
-        <div
+        <Wrapper
             role="alert"
             data-test-id="alert"
             className={cx('alert', bsClassNames('alert', types)[0], className, {
@@ -50,7 +60,7 @@ export const Alert: FC<AlertProps> = ({
                     onClick={onDismissClick}
                 />
             )}
-        </div>
+        </Wrapper>
     )
 }
 
@@ -70,14 +80,8 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissPro
         setError(false)
         onDismissProp?.()
     }
-    let msg = ''
-    if (typeof err == 'object') {
-        msg = err.message || ''
-    } else {
-        msg = String(err)
-    }
 
-    return <Alert danger message={msg} onDismiss={onDismiss} />
+    return <Alert danger message={errorToString(error)} onDismiss={onDismiss} />
 }
 
 const Pending = styled.span({

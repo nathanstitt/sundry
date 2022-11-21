@@ -1,4 +1,4 @@
-import { React, useMemo, isNil, cx, useId } from './common'
+import { React, useMemo, cx, useId } from './common'
 import styled from '@emotion/styled'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { useField } from './form'
@@ -35,6 +35,11 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
     label: {
         flex: 1,
     },
+})
+
+const Label = styled.label({
+    paddingTop: 0,
+    paddingBottom: 0,
 })
 
 export interface InputProps
@@ -85,11 +90,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
 
         const isCheckLike = type === 'radio' || type === 'checkbox'
         const Wrapper = isCheckLike ? CheckboxFieldWrapper : FloatingField
-        const labelEl = (
-            <label htmlFor={id} className="col-form-label">
-                {label}
-            </label>
-        )
+        const labelEl = <Label htmlFor={id}>{label}</Label>
         const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
         const onBlur = useMemo(
             () => (e: React.FocusEvent<HTMLInputElement>) => {
@@ -106,18 +107,24 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             [onChangeProp, field]
         )
 
+        let checked: boolean | undefined = undefined
+        if (type === 'radio') {
+            checked = field.value === props.value
+        } else if (type === 'checkbox') {
+            checked = !!field.value
+        }
         const input = (
             <InputComponent
                 {...field}
                 {...props}
                 id={id}
                 ref={ref}
+                checked={checked}
                 onChange={onChange}
                 disabled={readOnly}
                 onBlur={onBlur}
                 readOnly={readOnly}
                 placeholder={label == null ? 'placeholder' : label}
-                value={isNil(field.value) ? '' : field.value}
                 type={type}
                 className={cx({
                     'form-control': !isCheckLike,

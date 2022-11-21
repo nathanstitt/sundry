@@ -1,3 +1,5 @@
+import { ErrorTypes } from './types'
+
 export function isDate(d: any): d is Date {
     return d instanceof Date && !isNaN(d as any)
 }
@@ -99,4 +101,16 @@ export function useSupportsTouch() {
         navigator.maxTouchPoints > 0 ||
         (navigator as any).msMaxTouchPoints > 0
     )
+}
+
+export function errorToString(error: ErrorTypes) {
+    if (!error) return ''
+
+    let msg = ''
+    if (typeof error == 'object') {
+        msg = error.message || ''
+    } else {
+        msg = String(error)
+    }
+    return msg
 }
