@@ -8,6 +8,7 @@ import {
     Yup,
     FormSubmitHandler,
     DropdownMenu,
+    Section,
 } from './src'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -23,6 +24,7 @@ export default function Demo() {
     }
     return (
         <div className="container mt-5">
+            <h6 className="mt-4">Form test</h6>
             <EditingForm
                 className="row"
                 defaultValues={{
@@ -57,6 +59,8 @@ export default function Demo() {
 
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
             </EditingForm>
+
+            <h6 className="mt-4">Dropdown test</h6>
             <div className="row">
                 <DropdownMenu alignEnd label="Pick Option" activeIndex={1}>
                     <div className="dropdown-item">one</div>
@@ -65,6 +69,12 @@ export default function Demo() {
                     <div className="dropdown-item">three</div>
                 </DropdownMenu>
             </div>
+
+            <h6 className="mt-4">Section test</h6>
+
+            <Section id="section-test" className="mb-4" heading="This is a section">
+                <h5>Hello world</h5>
+            </Section>
         </div>
     )
 }
