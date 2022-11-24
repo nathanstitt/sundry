@@ -91,6 +91,7 @@
         "@iconify/react": "^4.0",
         "@popperjs/core": "^2.11",
         "@react-aria/ssr": "^3.4.0",
+        "@restart/hooks": "^0.4.7",
         "@restart/ui": "^1.4",
         "boxible": "^1.7",
         "dayjs": "*",
