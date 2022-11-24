@@ -117,6 +117,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             <InputComponent
                 {...field}
                 {...props}
+                value={props.value || field.value || ''}
                 id={id}
                 ref={ref}
                 checked={checked}
