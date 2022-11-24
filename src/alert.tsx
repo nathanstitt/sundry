@@ -94,7 +94,13 @@ interface PendingMutationReply {
     error?: CombinedError
     fetching?: any
 }
-export function usePendingMutationError(resp: PendingMutationReply) {
+export type PendingMutationOptions = {
+    message: string
+}
+export function usePendingMutationError(
+    resp: PendingMutationReply,
+    options:PendingMutationOptions = { message: 'Saving…'}
+) {
     const [err, setError] = useState<CombinedError | undefined | false>(resp.error)
     useEffect(() => {
         setError(resp.error)
@@ -103,7 +109,7 @@ export function usePendingMutationError(resp: PendingMutationReply) {
         return (
             <Delayed>
                 <Pending>
-                    <Icon icon="clock" /> Saving…
+                    <Icon icon="clock" /> {options.message}
                 </Pending>
             </Delayed>
         )
