@@ -87,6 +87,7 @@
     },
     "dependencies": {
         "@hookform/resolvers": "^2.9",
+        "@iconify-icons/bi": "^1.2.13",
         "@iconify/icons-bi": "^1.2",
         "@iconify/react": "^4.0",
         "@popperjs/core": "^2.11",

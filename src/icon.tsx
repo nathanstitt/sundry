@@ -73,6 +73,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
                 {...iconProps}
             />
         )
+
         if (tooltip) {
             iconEl = <Tooltip tooltip={tooltip}>{iconEl}</Tooltip>
         }

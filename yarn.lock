@@ -1260,6 +1260,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@iconify-icons/bi@^1.2.13":
+  version "1.2.13"
+  resolved "https://registry.yarnpkg.com/@iconify-icons/bi/-/bi-1.2.13.tgz#94a77a2697e41216433635b83534214543ca28a2"
+  integrity sha512-VOnFPcjU2r7bjVQZag9aSupi2ol59J5JQP3KwVlfBYia4FC65YUWF+EgRzh8WQj4Op1mUp3k3kaXWLyUQy9Zew==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify/icons-bi@^1.2":
   version "1.2.12"
   resolved "https://registry.yarnpkg.com/@iconify/icons-bi/-/icons-bi-1.2.12.tgz#8a93b20288b0b4af333f9b7576108bce06eea5e5"
