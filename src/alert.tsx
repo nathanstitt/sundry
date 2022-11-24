@@ -99,7 +99,7 @@ export type PendingMutationOptions = {
 }
 export function usePendingMutationError(
     resp: PendingMutationReply,
-    options:PendingMutationOptions = { message: 'Saving…'}
+    options: PendingMutationOptions = { message: 'Saving…' }
 ) {
     const [err, setError] = useState<CombinedError | undefined | false>(resp.error)
     useEffect(() => {
