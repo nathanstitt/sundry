@@ -1,9 +1,4 @@
-import plur from 'plur'
 import { isString } from './util'
-
-export function pluralize(word: string, count: number): string {
-    return `${count} ${plur(word, count)}`
-}
 
 export function toSentence(arry: string | string[], join = '&') {
     if (isString(arry)) {

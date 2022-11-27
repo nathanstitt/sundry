@@ -99,7 +99,6 @@
         "dayjs": "*",
         "flatpickr": "^4.6",
         "graphql": "*",
-        "plur": "^5.1.0",
         "react-hook-form": "^7.39",
         "react-popper": "^2.3",
         "react-select": "^5.6",
