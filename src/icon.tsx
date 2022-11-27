@@ -4,7 +4,7 @@ import { keyframes, CSSObject } from '@emotion/react'
 import { Popover, Tooltip } from './popover'
 import { Icon as IconifyIconComponent } from '@iconify/react'
 import type { IconifyIcon } from '@iconify/react'
-import { ICON_DEFINITIONS } from './packaged-icons'
+import { ICON_DEFINITIONS, setSundryIcons } from './packaged-icons'
 
 const spinKeyframes = keyframes`
   from {
@@ -22,7 +22,7 @@ const spinCSS = css`
 export interface IconifyIconDefinition {
     body: string
 }
-export { IconifyIcon, ICON_DEFINITIONS as SUNDRY_PACKAGED_ICONS }
+export { IconifyIcon, ICON_DEFINITIONS as SUNDRY_PACKAGED_ICONS, setSundryIcons }
 export type IconKey = keyof typeof ICON_DEFINITIONS
 export type IconSpec = IconKey | IconifyIconDefinition | IconifyIcon
 export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' | 'width'> {

@@ -13,12 +13,12 @@ const Heading = styled(Box)({
     fontWeight: 700,
     fontSize: '0.9rem',
     padding: 5,
-    borderBottom: '1px solid #ddd',
     margin: 0,
     color: '#666',
     backgroundColor: '#eee',
     textShadow: '1px 1px #fff',
     background: 'linear-gradient(to bottom,#eeeeee,#f6f6f6)',
+    borderBottom: '1px solid #ddd',
 })
 
 const Body = styled.div(({ noPad, noBorder }: { noBorder?: boolean; noPad?: boolean }) => ({
@@ -30,6 +30,9 @@ const Body = styled.div(({ noPad, noBorder }: { noBorder?: boolean; noPad?: bool
 }))
 
 const SectionWrapper = styled.section({
+    marginBottom: '1rem',
+    border: 'var(--bs-card-border-width) solid var(--bs-card-border-color)',
+    borderRadius: 'var(--bs-card-border-radius)',
     '& + &': {
         marginTop: '2rem',
     },
@@ -37,6 +40,8 @@ const SectionWrapper = styled.section({
 
 interface SectionProps {
     id: string
+    bodyClassName?: string
+    headingClassName?: string
     className?: string
     heading: React.ReactNode
     controls?: React.ReactNode
@@ -46,8 +51,10 @@ interface SectionProps {
 }
 
 export const Section: FCWC<SectionProps> = ({
-    className,
     id,
+    className,
+    bodyClassName,
+    headingClassName,
     heading,
     children,
     controls,
@@ -62,9 +69,9 @@ export const Section: FCWC<SectionProps> = ({
         <SectionWrapper
             id={`${id}-section`}
             data-test-id={`${id}-section`}
-            className={cx('section', 'card', 'p-0', className, { 'container-lg': !fullWidth })}
+            className={cx('section', 'card', className)}
         >
-            <Heading as="h3" className="sechead card-header d-flex">
+            <Heading as="h3" className={cx('sechead', headingClassName)}>
                 <Box flex align="center" onClick={onClick}>
                     <Icon
                         className="me-1"
@@ -76,7 +83,13 @@ export const Section: FCWC<SectionProps> = ({
                 {controls && <Box>{controls}</Box>}
             </Heading>
             <div {...getCollapseProps()}>
-                <Body className="secbody" noPad={noPad} noBorder={noBorder}>
+                <Body
+                    noPad={noPad}
+                    noBorder={noBorder}
+                    className={cx('secbody', bodyClassName, {
+                        'container-lg': !fullWidth,
+                    })}
+                >
                     {children}
                 </Body>
             </div>

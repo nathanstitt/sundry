@@ -9,6 +9,7 @@ import {
     FormSubmitHandler,
     DropdownMenu,
     Section,
+    Box,
 } from './src'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -71,10 +72,12 @@ export default function Demo() {
             </div>
 
             <h6 className="mt-4">Section test</h6>
-
-            <Section id="section-test" className="mb-4" heading="This is a section">
-                <h5>Hello world</h5>
-            </Section>
+            <Box direction="column">
+                <h4>hi</h4>
+                <Section id="section-test" className="mb-4" heading="This is a section">
+                    <h5>Hello world</h5>
+                </Section>
+            </Box>
         </div>
     )
 }
