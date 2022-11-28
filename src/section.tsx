@@ -38,7 +38,7 @@ const SectionWrapper = styled.section({
     },
 })
 
-interface SectionProps {
+export interface SectionProps {
     id: string
     bodyClassName?: string
     headingClassName?: string
