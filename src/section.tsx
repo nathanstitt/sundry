@@ -12,7 +12,7 @@ const Heading = styled(Box)({
     flex: 1,
     fontWeight: 700,
     fontSize: '0.9rem',
-    padding: 5,
+    //padding: 5,
     margin: 0,
     color: '#666',
     backgroundColor: '#eee',
@@ -72,7 +72,7 @@ export const Section: FCWC<SectionProps> = ({
             className={cx('section', 'card', className)}
         >
             <Heading as="h3" className={cx('sechead', headingClassName)}>
-                <Box flex align="center" onClick={onClick}>
+                <Box flex align="center" padding="default" onClick={onClick}>
                     <Icon
                         className="me-1"
                         color={themeColors.gray2}

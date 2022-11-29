@@ -55,6 +55,9 @@ function _useCollapse(isExpanded: boolean, setExpanded: (e: boolean) => void) {
                             if (e.propertyName === 'height') {
                                 maskElem.style.overflow = isExpanded ? 'visible' : 'hidden'
                                 lastExpanded.current = isExpanded
+                                if (isExpanded) {
+                                    maskElem.style.height = 'auto'
+                                }
                             }
                         }
                         maskElem.style.height = endHeight + 'px'

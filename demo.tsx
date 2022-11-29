@@ -75,7 +75,16 @@ export default function Demo() {
             <Box direction="column">
                 <h4>hi</h4>
                 <Section id="section-test" className="mb-4" heading="This is a section">
-                    <h5>Hello world</h5>
+                    <div style={{ border: '1px solid blue', margin: 20 }}>
+                        <h5>Hello world</h5>
+                        <button
+                            onClick={(ev) => {
+                                ev.currentTarget.parentElement!.style!.height = '200px'
+                            }}
+                        >
+                            make bigger
+                        </button>
+                    </div>
                 </Section>
             </Box>
         </div>
