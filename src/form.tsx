@@ -1,5 +1,6 @@
 import { FCWOC, FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
 import { AnyObjectSchema } from 'yup'
+import { isShallowEqual, errorToString } from './util'
 import { usePreviousDifferent } from 'rooks'
 import {
     useWatch as useFormValue,
@@ -21,7 +22,6 @@ import { Footer } from './footer'
 import { ErrorAlert } from './alert'
 import { Button, ButtonProps } from './button'
 import { ErrorTypes } from './types'
-import { isEmpty, errorToString } from './util'
 import { useCallback } from 'react'
 
 type FieldState = UseFormGetFieldState<Record<string, string>>
@@ -109,7 +109,7 @@ export function Form<FV extends FormValues>({
     const prevDefaultValues = usePreviousDifferent(defaultValues)
     useEffect(() => {
         if (enableReinitialize) {
-            if (isEmpty(prevDefaultValues) && !isEmpty(defaultValues)) {
+            if (prevDefaultValues && !isShallowEqual(prevDefaultValues, defaultValues)) {
                 fc.reset(defaultValues, { keepDirtyValues: true })
             }
         }
