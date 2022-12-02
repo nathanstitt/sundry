@@ -79,7 +79,7 @@ export const humanizedDuration = (
 }
 
 export const durationToDecimal = (t: string) => {
-    const arr = t.split(':').map((n) => parseInt(n, 10))
+    const arr = t.split(':').map((n) => (n ? parseInt(n, 10) : 0))
     const dec = Math.round((arr[1] / 6) * 10)
     return parseFloat(arr[0] + '.' + (dec < 10 ? '0' : '') + dec)
 }
