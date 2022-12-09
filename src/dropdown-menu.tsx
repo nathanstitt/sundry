@@ -39,10 +39,12 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
     const placement = options.placement || alignEnd ? 'bottom-end' : 'bottom-start'
 
     return (
-        <Dropdown placement="bottom-end" >
-            <div className={cx('dropdown', className, {
-                'btn-group': inGroup,
-            })}>
+        <Dropdown placement="bottom-end">
+            <div
+                className={cx('dropdown', className, {
+                    'btn-group': inGroup,
+                })}
+            >
                 <Dropdown.Toggle>
                     {(props) => (
                         <Button
@@ -74,6 +76,6 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                     )}
                 </Dropdown.Menu>
             </div>
-        </Dropdown >
+        </Dropdown>
     )
 }
