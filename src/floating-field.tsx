@@ -16,6 +16,7 @@ export interface FloatingFieldProps extends BoxProps, ColProps {
     reversed?: boolean
     addOnControls?: React.ReactNode
     loadOptions?: any
+    error?: { message: string }
     marginBottom?: boolean | number
 }
 
@@ -27,6 +28,7 @@ const Body = styled.div({
     '.form-control[readonly]': {
         backgroundColor: 'white',
     },
+
 })
 
 export const FloatingField: FCWC<FloatingFieldProps> = ({
@@ -40,18 +42,19 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
     wrapperClassName,
     addOnControls,
     loadOptions,
+    error: propsError,
     name,
     ...props
 }) => {
     const fieldState = useFieldState(name)
-
+    const error = propsError || fieldState?.error
     let body = (
-        <Body className={className}>
+        <Body className={cx(className, { 'is-invalid': !!error })}>
             {children}
             {label}
             <ExtraInfo>
                 {hint && <span className="hint">{hint}</span>}
-                {fieldState?.error && <span className="invalid">{fieldState?.error.message}</span>}
+                {error && <span className="invalid">{error.message}</span>}
             </ExtraInfo>
         </Body>
     )

@@ -29,6 +29,7 @@ export const SelectWrapper = styled(FloatingField)`
     }
     &.is-invalid {
         background-position: right 0.5rem top 0.5rem;
+        padding-right: inherit;
     }
     .xtra {
         flex-direction: row;

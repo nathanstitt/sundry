@@ -14,6 +14,7 @@ import {
     useForm,
     useController,
     useFormState,
+    FieldError,
 } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -26,7 +27,7 @@ import { useCallback } from 'react'
 
 type FieldState = UseFormGetFieldState<Record<string, string>>
 type RegisteredField = UseFormRegisterReturn<any>
-export type { FieldState, RegisteredField }
+export type { FieldError, FieldState, RegisteredField }
 
 export { useFormState, useFormValue }
 
