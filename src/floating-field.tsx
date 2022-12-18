@@ -16,7 +16,7 @@ export interface FloatingFieldProps extends BoxProps, ColProps {
     reversed?: boolean
     addOnControls?: React.ReactNode
     loadOptions?: any
-    error?: { message: string }
+    error?: { message?: string }
     marginBottom?: boolean | number
 }
 
@@ -28,7 +28,6 @@ const Body = styled.div({
     '.form-control[readonly]': {
         backgroundColor: 'white',
     },
-
 })
 
 export const FloatingField: FCWC<FloatingFieldProps> = ({
