@@ -20,8 +20,10 @@ interface FormData {
 }
 
 export default function Demo() {
-    const onSubmit: FormSubmitHandler<FormData> = (v, fc) => {
-        fc.setFormError(new Error('an error occured'))
+    const onSubmit: FormSubmitHandler<FormData> = (values, fc) => {
+        console.log(values)
+        throw('uh oh')
+        //fc.setFormError(new Error('a save error occured'))
     }
     return (
         <div className="container mt-5">
