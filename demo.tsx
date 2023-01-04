@@ -22,7 +22,7 @@ interface FormData {
 export default function Demo() {
     const onSubmit: FormSubmitHandler<FormData> = (values, fc) => {
         console.log(values)
-        throw('uh oh')
+        throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
     return (

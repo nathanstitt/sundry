@@ -61,7 +61,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
             children,
             busy,
             className,
-            buttonType = "button",
+            buttonType = 'button',
             buttonStyles = {},
             ...iconProps
         } = props
