@@ -29,7 +29,7 @@ type FieldState = UseFormGetFieldState<Record<string, string>>
 type RegisteredField = UseFormRegisterReturn<any>
 export type { FieldError, FieldState, RegisteredField }
 
-export { useFormState, useFormValue }
+export { useFormState, useFormValue, useController }
 
 const FORM_ERROR_KEY = 'FORM_ERROR'
 
@@ -278,6 +278,7 @@ function SaveCancelBtn({
 export function FormError() {
     const fc = useFormContext()
     const fs = useFormState({ name: FORM_ERROR_KEY })
+
     const err = fs.errors[FORM_ERROR_KEY] as undefined | ErrorTypes
     const onDismiss = () => {
         fc.clearErrors(FORM_ERROR_KEY)
