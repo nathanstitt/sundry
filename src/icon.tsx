@@ -35,6 +35,7 @@ export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' 
     popover?: React.ReactNode
     buttonStyles?: CSSObject
     width?: number | string
+    buttonType?: 'button' | 'submit' | 'reset'
     height?: number | string
     onClick?: (ev: React.MouseEvent<HTMLButtonElement>) => void
 }
@@ -60,6 +61,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
             children,
             busy,
             className,
+            buttonType = "button",
             buttonStyles = {},
             ...iconProps
         } = props
@@ -83,7 +85,12 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
 
         if (onClick) {
             return (
-                <IconBtn onClick={onClick} disabled={busy} className={css(buttonStyles)}>
+                <IconBtn
+                    type={buttonType}
+                    disabled={busy}
+                    onClick={onClick}
+                    className={css(buttonStyles)}
+                >
                     {iconEl}
                     {children}
                 </IconBtn>
