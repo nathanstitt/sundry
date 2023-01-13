@@ -15,6 +15,8 @@ import {
     useController,
     useFormState,
     FieldError,
+    FieldPath,
+    UseControllerReturn,
 } from 'react-hook-form'
 
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -46,7 +48,9 @@ export function useFieldState(name: string) {
     return useFormContext().getFieldState(name)
 }
 
-export function useField(name: string) {
+export type UseFieldReturn<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> = UseControllerReturn<TFieldValues, TName> & { isReadOnly: boolean }
+
+export function useField(name: string): UseFieldReturn {
     const { isReadOnly } = useFormContext()
     const fc = useController({ name })
     return { isReadOnly, ...fc }
