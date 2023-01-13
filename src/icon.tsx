@@ -38,6 +38,7 @@ export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' 
     buttonType?: 'button' | 'submit' | 'reset'
     height?: number | string
     onClick?: (ev: React.MouseEvent<HTMLButtonElement>) => void
+    ['data-test-id']?: string,
 }
 
 const IconBtn = styled.button({
@@ -61,6 +62,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
             children,
             busy,
             className,
+            'data-test-id': dti,
             buttonType = 'button',
             buttonStyles = {},
             ...iconProps
@@ -70,6 +72,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         let iconEl = (
             <IconifyIconComponent
                 ref={ref || undefined}
+                data-test-id={onClick ? undefined : dti}
                 icon={typeof icon === 'object' ? icon : ICON_DEFINITIONS[icon]}
                 className={cx(className, icon === 'spin' ? spinCSS : '')}
                 {...iconProps}
@@ -86,6 +89,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         if (onClick) {
             return (
                 <IconBtn
+                    data-test-id={dti}
                     type={buttonType}
                     disabled={busy}
                     onClick={onClick}
