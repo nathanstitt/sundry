@@ -1,7 +1,9 @@
 import { React, FCWC, cx } from './common'
+import { Box, BoxProps } from 'boxible'
 
-export interface ColProps {
+export interface ColProps extends BoxProps {
     className?: string
+    auto?: boolean
     sm?: number
     md?: number
     lg?: number
@@ -19,6 +21,7 @@ export interface ColProps {
 
 export const Col: FCWC<ColProps> = ({
     children,
+    auto,
     sm,
     md,
     lg,
@@ -30,24 +33,24 @@ export const Col: FCWC<ColProps> = ({
     ...props
 }) => {
     return (
-        <div
-            className={cx(className, {
-                [`col-sm-${sm}`]: !!sm,
-                [`col-md-${md}`]: !!md,
-                [`col-lg-${lg}`]: !!lg,
-                [`col-xl-${xl}`]: !!xl,
-                [`col-xxl-${xxl}`]: !!xxl,
-                'col-fluid': !!fluid,
-                [`offset-sm-${offset.sm}`]: !!offset.sm,
-                [`offset-md-${offset.md}`]: !!offset.md,
-                [`offset-lg-${offset.lg}`]: !!offset.lg,
-                [`offset-xl-${offset.xl}`]: !!offset.xl,
-                [`offset-xxl-${offset.xxl}`]: !!offset.xxl,
-            })}
-            {...props}
+        <Box className={cx(className, {
+            'col': auto,
+            [`col-sm-${sm}`]: !!sm,
+            [`col-md-${md}`]: !!md,
+            [`col-lg-${lg}`]: !!lg,
+            [`col-xl-${xl}`]: !!xl,
+            [`col-xxl-${xxl}`]: !!xxl,
+            'col-fluid': !!fluid,
+            [`offset-sm-${offset.sm}`]: !!offset.sm,
+            [`offset-md-${offset.md}`]: !!offset.md,
+            [`offset-lg-${offset.lg}`]: !!offset.lg,
+            [`offset-xl-${offset.xl}`]: !!offset.xl,
+            [`offset-xxl-${offset.xxl}`]: !!offset.xxl,
+          })}
+          {...props}
         >
             {children}
-        </div>
+        </Box>
     )
 }
 
