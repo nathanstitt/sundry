@@ -7,6 +7,7 @@ interface ControlledPopoverProps {
     target?: HTMLElement
     title?: React.ReactNode
     type?: 'tooltip' | 'popover'
+    className?: string,
     onBodyClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
@@ -14,7 +15,7 @@ export const ControlledPopover = React.forwardRef<
     HTMLDivElement,
     React.PropsWithChildren<ControlledPopoverProps>
 >((forwardedProps, outsideRef) => {
-    const { show, title, target, children, onBodyClick, type = 'popover' } = forwardedProps
+    const { show, title, target, children, onBodyClick, className, type = 'popover' } = forwardedProps
 
     const [popover, setPopover] = useState<HTMLDivElement | null>(null)
     const [arrow, setArrow] = useState<HTMLDivElement | null>(null)
@@ -28,7 +29,7 @@ export const ControlledPopover = React.forwardRef<
     const pos = (attributes.popper || {})['data-popper-placement']
     return (
         <div
-            className={cx(type, 'fade', `bs-${type}-${pos}`, { show })}
+            className={cx(type, className, 'fade', `bs-${type}-${pos}`, { show })}
             role="tooltip"
             ref={setPopover}
             style={styles.popper}
@@ -62,6 +63,7 @@ export const Popover: FCWC<PopoverProps> = ({
     popover,
     children,
     showOnHover,
+    className,
     onShow: onShowProp,
     onHide: onHideProp,
     ...popoverProps
@@ -81,7 +83,7 @@ export const Popover: FCWC<PopoverProps> = ({
     return (
         <div
             ref={(s) => setWrapperRef(s || undefined)}
-            className="popover-wrapper"
+            className={cx('popover-wrapper', className)}
             onClick={onShow}
             onMouseEnter={() => {
                 showOnHover && onShow()
@@ -102,14 +104,14 @@ interface TooltipProps extends Omit<ControlledPopoverProps, 'show'> {
     tooltip: React.ReactNode
 }
 
-export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, ...tooltipProps }) => {
+export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...tooltipProps }) => {
     const [isHovered, setIsHovered] = useState(false)
     const [setWrapperRef, wrapperRef] = useRefElement<HTMLElement>()
 
     return (
         <div
             ref={setWrapperRef}
-            className="tooltip-wrapper"
+            className={cx('tooltip-wrapper', className)}
             onMouseEnter={() => {
                 setIsHovered(true)
             }}
