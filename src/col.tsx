@@ -33,21 +33,22 @@ export const Col: FCWC<ColProps> = ({
     ...props
 }) => {
     return (
-        <Box className={cx(className, {
-            'col': auto,
-            [`col-sm-${sm}`]: !!sm,
-            [`col-md-${md}`]: !!md,
-            [`col-lg-${lg}`]: !!lg,
-            [`col-xl-${xl}`]: !!xl,
-            [`col-xxl-${xxl}`]: !!xxl,
-            'col-fluid': !!fluid,
-            [`offset-sm-${offset.sm}`]: !!offset.sm,
-            [`offset-md-${offset.md}`]: !!offset.md,
-            [`offset-lg-${offset.lg}`]: !!offset.lg,
-            [`offset-xl-${offset.xl}`]: !!offset.xl,
-            [`offset-xxl-${offset.xxl}`]: !!offset.xxl,
-          })}
-          {...props}
+        <Box
+            className={cx(className, {
+                col: auto,
+                [`col-sm-${sm}`]: !!sm,
+                [`col-md-${md}`]: !!md,
+                [`col-lg-${lg}`]: !!lg,
+                [`col-xl-${xl}`]: !!xl,
+                [`col-xxl-${xxl}`]: !!xxl,
+                'col-fluid': !!fluid,
+                [`offset-sm-${offset.sm}`]: !!offset.sm,
+                [`offset-md-${offset.md}`]: !!offset.md,
+                [`offset-lg-${offset.lg}`]: !!offset.lg,
+                [`offset-xl-${offset.xl}`]: !!offset.xl,
+                [`offset-xxl-${offset.xxl}`]: !!offset.xxl,
+            })}
+            {...props}
         >
             {children}
         </Box>

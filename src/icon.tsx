@@ -38,7 +38,7 @@ export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' 
     buttonType?: 'button' | 'submit' | 'reset'
     height?: number | string
     onClick?: (ev: React.MouseEvent<HTMLButtonElement>) => void
-    ['data-test-id']?: string,
+    ['data-test-id']?: string
 }
 
 const IconBtn = styled.button({

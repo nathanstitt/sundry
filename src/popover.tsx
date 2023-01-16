@@ -7,7 +7,7 @@ interface ControlledPopoverProps {
     target?: HTMLElement
     title?: React.ReactNode
     type?: 'tooltip' | 'popover'
-    className?: string,
+    className?: string
     onBodyClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
@@ -15,7 +15,15 @@ export const ControlledPopover = React.forwardRef<
     HTMLDivElement,
     React.PropsWithChildren<ControlledPopoverProps>
 >((forwardedProps, outsideRef) => {
-    const { show, title, target, children, onBodyClick, className, type = 'popover' } = forwardedProps
+    const {
+        show,
+        title,
+        target,
+        children,
+        onBodyClick,
+        className,
+        type = 'popover',
+    } = forwardedProps
 
     const [popover, setPopover] = useState<HTMLDivElement | null>(null)
     const [arrow, setArrow] = useState<HTMLDivElement | null>(null)

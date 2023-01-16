@@ -48,7 +48,10 @@ export function useFieldState(name: string) {
     return useFormContext().getFieldState(name)
 }
 
-export type UseFieldReturn<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> = UseControllerReturn<TFieldValues, TName> & { isReadOnly: boolean }
+export type UseFieldReturn<
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = UseControllerReturn<TFieldValues, TName> & { isReadOnly: boolean }
 
 export function useField(name: string): UseFieldReturn {
     const { isReadOnly } = useFormContext()
