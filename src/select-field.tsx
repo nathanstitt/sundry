@@ -15,31 +15,31 @@ export interface SelectFieldProps
     innerRef?: any
 }
 
-export const SelectWrapper = styled(FloatingField)`
-    display: flex;
-    height: 58px;
-    padding-top: 0;
-    padding-bottom: 0;
-    flex-direction: column-reverse;
-    .select-field > * {
-        border: 0;
-        > * {
-            padding-left: 0;
-        }
-    }
-    &.is-invalid {
-        background-position: right 0.5rem top 0.5rem;
-        padding-right: inherit;
-    }
-    .xtra {
-        flex-direction: row;
-        padding-top: 5px;
-        height: initial;
-        .invalid {
-            margin: 0 20px 0 5px;
-        }
-    }
-`
+export const SelectWrapper = styled(FloatingField)({
+    display: 'flex',
+    height: 60,
+    paddingTop: 0,
+    paddingBottom: 0,
+    flexDirection: 'column-reverse',
+    '.select-field > *': {
+        border: 0,
+        '> *': {
+            paddingLeft: 0,
+        },
+    },
+    '&.is-invalid': {
+        backgroundPosition: 'right 0.5rem top 0.5rem',
+        paddingRight: 'inherit',
+    },
+    '.xtra': {
+        flexDirection: 'row',
+        paddingTop: 5,
+        height: 'initial',
+        '.invalid': {
+            margin: '0 20px 0 5px',
+        },
+    },
+})
 
 export const SelectField: FC<SelectFieldProps> = ({
     name,
@@ -64,7 +64,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     const autoId = useId()
     const id = providedId || autoId
 
-    const { field, isReadOnly, fieldState } = useField(name) // { name, control })
+    const { field, isReadOnly, fieldState } = useField(name)
 
     const [isFocused, setFocusState] = useState(false)
 
