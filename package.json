@@ -2,7 +2,7 @@
     "name": "@nathanstitt/sundry",
     "private": false,
     "sideEffects": false,
-    "version": "0.0.36",
+    "version": "0.0.37",
     "main": "./dist/sundry.cjs",
     "module": "./dist/sundry.mjs",
     "exports": {
