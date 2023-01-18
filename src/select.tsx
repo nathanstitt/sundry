@@ -1,4 +1,4 @@
-import { React, FC, cx, isNil } from './common'
+import { React, cx, isNil } from './common'
 import { themeColors as colors } from './theme'
 import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
 import ReactSelectCreate from 'react-select/creatable'
@@ -11,7 +11,7 @@ const SharedCache = createCache({ nonce: 'MCSPOT_REACT_SELECT_NONCE', key: 'ab-r
 
 const RSOption = components.Option as any
 
-const DataIdOption = ({ data:_, ...props }: any) => {
+const DataIdOption = ({ data: _, ...props }: any) => {
     return (
         <RSOption
             {...props}
@@ -131,7 +131,7 @@ const tinyStyles = {
 
 export type SelectValue = Array<string | number> | string | number
 export type SelectOption = { label: string; value: string | number } | null
-export type SelectOptions = { label?: string; value: string | number }[]
+export type SelectOptions = Array<SelectOption>
 
 const optionForValue = (value: SelectValue | undefined, options: SelectOptions) => {
     if (isNil(value)) return null
@@ -144,14 +144,15 @@ const optionForValue = (value: SelectValue | undefined, options: SelectOptions) 
 
 export type SelectLoadOptionsFn = (inputValue: string) => Promise<SelectOptions>
 
-export interface SelectProps extends Omit<ReactSelectProps, 'isMulti' | 'onChange' | 'name'> {
+export interface SelectProps<O extends SelectOption> extends Omit<ReactSelectProps, 'isMulti' | 'onChange' | 'name'> {
+
     defaultValue?: SelectValue
     onCreateOption?: (value: string) => void
     value?: SelectValue
     isMulti?: boolean
     isClearable?: boolean
     cacheOptions?: boolean
-    options: SelectOptions
+    options: Array<O>
     onChange?(
         value: null | SelectValue,
         option: SelectOption,
@@ -165,8 +166,7 @@ export interface SelectProps extends Omit<ReactSelectProps, 'isMulti' | 'onChang
     loadOptions?: SelectLoadOptionsFn
     innerRef?: React.RefCallback<HTMLInputElement>
 }
-
-export const Select: FC<SelectProps> = ({
+export function Select<O extends SelectOption>({
     small,
     tiny,
     defaultValue,
@@ -179,7 +179,7 @@ export const Select: FC<SelectProps> = ({
     loadOptions,
     innerRef,
     ...props
-}) => {
+}: SelectProps<O>) {
     const onChangeHandler = onChange
         ? (option: SelectOption, meta: ActionMeta<SelectOptionType>) => {
               if (option) {

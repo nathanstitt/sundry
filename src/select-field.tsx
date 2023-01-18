@@ -1,13 +1,11 @@
-import { React, useId, useState, cx, FC } from './common'
+import { React, useId, useState, cx } from './common'
 import styled from '@emotion/styled'
 import { useField } from './form'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
 import { Select, SelectOption, SelectProps, SelectValue } from './select'
 
-export interface SelectFieldProps
-    extends SelectProps,
-        Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
+export interface SelectFieldProps<O extends SelectOption> extends SelectProps<O>, Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
     id?: string
     name: string
     readOnly?: boolean
@@ -40,7 +38,7 @@ export const SelectWrapper = styled(FloatingField)({
     },
 })
 
-export const SelectField: FC<SelectFieldProps> = ({
+export function SelectField<O extends SelectOption>({
     name,
     id: providedId,
     label,
@@ -58,7 +56,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     value,
     onCreateOption,
     ...props
-}) => {
+}: SelectFieldProps<O>) {
     const autoId = useId()
     const id = providedId || autoId
 
