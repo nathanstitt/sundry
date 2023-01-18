@@ -84,10 +84,18 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         )
 
         if (tooltip) {
-            iconEl = <Tooltip tooltip={tooltip} {...tooltipProps}>{iconEl}</Tooltip>
+            iconEl = (
+                <Tooltip tooltip={tooltip} {...tooltipProps}>
+                    {iconEl}
+                </Tooltip>
+            )
         }
         if (popover) {
-            iconEl = <Popover popover={popover} {...popoverProps}>{iconEl}</Popover>
+            iconEl = (
+                <Popover popover={popover} {...popoverProps}>
+                    {iconEl}
+                </Popover>
+            )
         }
 
         if (onClick) {
