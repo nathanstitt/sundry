@@ -62,7 +62,7 @@ export function useField(name: string): UseFieldReturn {
 export type FormSubmitHandler<FV extends FormValues> = (
     values: FV,
     ctx: FormContext<FV>
-) => void | Promise<any>
+) => void | Promise<void>
 export type FormCancelHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 export type FormDeleteHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
 
