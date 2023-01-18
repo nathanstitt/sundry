@@ -1,7 +1,7 @@
 import { css, cx, React, PropsWithOptionalChildren } from './common'
 import styled from '@emotion/styled'
 import { keyframes, CSSObject } from '@emotion/react'
-import { Popover, Tooltip } from './popover'
+import { Popover, PopoverProps, Tooltip, TooltipProps } from './popover'
 import { Icon as IconifyIconComponent } from '@iconify/react'
 import type { IconifyIcon } from '@iconify/react'
 import { ICON_DEFINITIONS, setSundryIcons } from './packaged-icons'
@@ -32,7 +32,9 @@ export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' 
     className?: string
     busy?: boolean
     tooltip?: React.ReactNode
+    tooltipProps?: Omit<TooltipProps, 'children' | 'target' | 'popover'>
     popover?: React.ReactNode
+    popoverProps?: Omit<PopoverProps, 'children' | 'target' | 'popover'>
     buttonStyles?: CSSObject
     width?: number | string
     buttonType?: 'button' | 'submit' | 'reset'
@@ -62,6 +64,8 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
             children,
             busy,
             className,
+            tooltipProps = {},
+            popoverProps = {},
             'data-test-id': dti,
             buttonType = 'button',
             buttonStyles = {},
@@ -80,10 +84,10 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         )
 
         if (tooltip) {
-            iconEl = <Tooltip tooltip={tooltip}>{iconEl}</Tooltip>
+            iconEl = <Tooltip tooltip={tooltip} {...tooltipProps}>{iconEl}</Tooltip>
         }
         if (popover) {
-            iconEl = <Popover popover={popover}>{iconEl}</Popover>
+            iconEl = <Popover popover={popover} {...popoverProps}>{iconEl}</Popover>
         }
 
         if (onClick) {

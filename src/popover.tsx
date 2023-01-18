@@ -60,7 +60,7 @@ export const ControlledPopover = React.forwardRef<
 })
 ControlledPopover.displayName = 'ControlledPopover'
 
-interface PopoverProps extends Omit<ControlledPopoverProps, 'show'> {
+export interface PopoverProps extends Omit<ControlledPopoverProps, 'show'> {
     popover: React.ReactNode
     onShow?(): void
     onHide?(): void
@@ -108,7 +108,7 @@ export const Popover: FCWC<PopoverProps> = ({
     )
 }
 
-interface TooltipProps extends Omit<ControlledPopoverProps, 'show'> {
+export interface TooltipProps extends Omit<ControlledPopoverProps, 'show'> {
     tooltip: React.ReactNode
 }
 
