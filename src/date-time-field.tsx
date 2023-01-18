@@ -46,7 +46,6 @@ const Wrapper = styled(FloatingField)({
 
 export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     id: providedId,
-    innerRef,
     label,
     withTime,
     name,
@@ -97,6 +96,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
                         withTime={withTime}
                         rangeNames={rangeNames}
                         data-enable-time={withTime}
+
                         {...props}
                     />
                 </Box>

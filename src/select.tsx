@@ -11,7 +11,7 @@ const SharedCache = createCache({ nonce: 'MCSPOT_REACT_SELECT_NONCE', key: 'ab-r
 
 const RSOption = components.Option as any
 
-const DataIdOption = ({ data, ...props }: any) => {
+const DataIdOption = ({ data:_, ...props }: any) => {
     return (
         <RSOption
             {...props}

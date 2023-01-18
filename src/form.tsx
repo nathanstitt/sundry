@@ -220,7 +220,7 @@ export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
 
     return (
         <Button
-            type="submit"
+            type={type}
             secondary={secondary}
             primary={primary}
             busyMessage={busyMessage}

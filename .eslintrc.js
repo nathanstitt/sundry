@@ -9,7 +9,6 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:@typescript-eslint/recommended',
-        'react-app',
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
@@ -33,6 +32,14 @@ module.exports = {
         'react/prop-types': 0,
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': ['off'],
+        "@typescript-eslint/no-unused-vars": [
+            "warn", // or "error"
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            },
+        ],
     },
     overrides: [
         {
@@ -44,5 +51,8 @@ module.exports = {
     ],
     settings: {
         'import/internal-regex': '^@/',
+        react: {
+           version: "detect",
+        },
     },
 }

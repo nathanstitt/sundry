@@ -19,7 +19,6 @@ export interface DateTimeProps {
     withTime?: boolean
     name: string
     className?: string
-    innerRef?: React.Ref<HTMLInputElement>
     align?: 'center' | 'end' | 'start' | 'baseline' | 'stretch'
 }
 

@@ -53,7 +53,7 @@ export function omit<T extends object, K extends keyof T>(
     const paths: K[] = reject.length === 1 && Array.isArray(reject[0]) ? reject[0] : (reject as K[])
     return {
         ...paths.reduce(
-            (mem, key) => ((k: K, { [k]: ignored, ...rest }) => rest)(key, mem),
+            (mem, key) => ((k: K, { [k]: _, ...rest }) => rest)(key, mem),
             obj as object
         ),
     } as Omit<T, K>

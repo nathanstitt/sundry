@@ -12,7 +12,6 @@ export interface SelectFieldProps
     name: string
     readOnly?: boolean
     display?: string
-    innerRef?: any
 }
 
 export const SelectWrapper = styled(FloatingField)({
@@ -44,7 +43,6 @@ export const SelectWrapper = styled(FloatingField)({
 export const SelectField: FC<SelectFieldProps> = ({
     name,
     id: providedId,
-    innerRef,
     label,
     isMulti,
     cacheOptions,
@@ -55,7 +53,7 @@ export const SelectField: FC<SelectFieldProps> = ({
     onChange: propsOnChange,
     options = [],
     className,
-    theme,
+    theme: _,
     allowCreate,
     value,
     onCreateOption,

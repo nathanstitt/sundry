@@ -31,8 +31,9 @@ const Body = styled.div({
 })
 
 export const FloatingField: FCWC<FloatingFieldProps> = ({
-    id,
-    reversed,
+    id: _,
+    reversed: __,
+    loadOptions: ___,
     hint,
     label,
     children,
@@ -40,7 +41,6 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
     marginBottom,
     wrapperClassName,
     addOnControls,
-    loadOptions,
     error: propsError,
     name,
     ...props
