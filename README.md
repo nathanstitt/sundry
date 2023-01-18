@@ -8,7 +8,14 @@ whenever I start a new project I always seem to need something that I've created
 
 ## Features
 
--   Bootstrap/Yup/formik styled form inputs
+- Bootstrap/Yup/react-hook-form form inputs
+- popover/tooltips using popper
+- modal from restart/ui
+- react-select styled to match Bootstrap and react-hook-form
+- string / number utils
+- icon component using @iconify icons
+- pending component that displays after a timeout
+
 
 ## Disclaimer
 
