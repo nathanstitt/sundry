@@ -26,6 +26,7 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
     display: 'flex',
     alignItems: 'center',
     height: '100%',
+    minHeight: '3.5rem',
     padding: '0.375rem 0.75rem', // styles mimic form-control
     color: '#212529',
     overflow: 'hidden',
