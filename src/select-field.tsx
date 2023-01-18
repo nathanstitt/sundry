@@ -5,7 +5,9 @@ import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
 import { Select, SelectOption, SelectProps, SelectValue } from './select'
 
-export interface SelectFieldProps<O extends SelectOption> extends SelectProps<O>, Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
+export interface SelectFieldProps<O extends SelectOption>
+    extends SelectProps<O>,
+        Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
     id?: string
     name: string
     readOnly?: boolean

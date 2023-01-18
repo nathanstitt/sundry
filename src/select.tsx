@@ -144,8 +144,8 @@ const optionForValue = (value: SelectValue | undefined, options: SelectOptions) 
 
 export type SelectLoadOptionsFn = (inputValue: string) => Promise<SelectOptions>
 
-export interface SelectProps<O extends SelectOption> extends Omit<ReactSelectProps, 'isMulti' | 'onChange' | 'name'> {
-
+export interface SelectProps<O extends SelectOption>
+    extends Omit<ReactSelectProps, 'isMulti' | 'onChange' | 'name'> {
     defaultValue?: SelectValue
     onCreateOption?: (value: string) => void
     value?: SelectValue
