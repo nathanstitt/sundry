@@ -32,12 +32,12 @@ module.exports = {
         'react/prop-types': 0,
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': ['off'],
-        "@typescript-eslint/no-unused-vars": [
-            "warn", // or "error"
+        '@typescript-eslint/no-unused-vars': [
+            'warn', // or "error"
             {
-                "argsIgnorePattern": "^_",
-                "varsIgnorePattern": "^_",
-                "caughtErrorsIgnorePattern": "^_"
+                argsIgnorePattern: '^_',
+                varsIgnorePattern: '^_',
+                caughtErrorsIgnorePattern: '^_',
             },
         ],
     },
@@ -52,7 +52,7 @@ module.exports = {
     settings: {
         'import/internal-regex': '^@/',
         react: {
-           version: "detect",
+            version: 'detect',
         },
     },
 }
