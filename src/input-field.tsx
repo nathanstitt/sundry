@@ -9,7 +9,7 @@ const inputFieldToggleStyle = {
     padding: 0,
     width: '25px',
     height: '25px',
-    margin: '0 5px 0 0',
+    margin: '0 10px 0 0',
 }
 export const InputFieldCheckbox = styled.input(inputFieldToggleStyle)
 export const InputFieldRadio = styled.input(inputFieldToggleStyle)
@@ -30,8 +30,6 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
     padding: '0.375rem 0.75rem', // styles mimic form-control
     color: '#212529',
     overflow: 'hidden',
-    border: '1px solid #ced4da',
-    borderRadius: '0.25rem',
     label: {
         flex: 1,
     },
