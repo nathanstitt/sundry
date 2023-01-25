@@ -9,7 +9,7 @@ const inputFieldToggleStyle = {
     padding: 0,
     width: '25px',
     height: '25px',
-    margin: '0 5px 0 0',
+    margin: '0 10px 0 0',
 }
 export const InputFieldCheckbox = styled.input(inputFieldToggleStyle)
 export const InputFieldRadio = styled.input(inputFieldToggleStyle)
