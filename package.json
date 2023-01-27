@@ -40,6 +40,7 @@
         "@emotion/css": "^11.8",
         "@emotion/react": "^11.8",
         "@emotion/styled": "^11.8",
+        "dayjs": "^1.11",
         "react": "^18.2",
         "react-dom": "^18.2"
     },
@@ -74,6 +75,7 @@
         "lint-staged": "^13.1.0",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.8.1",
+        "dayjs": "^1.11",
         "react": "^18.1.0",
         "react-dom": "^18.2.0",
         "react-select-event": "^5.5.1",
@@ -97,7 +99,6 @@
         "@restart/hooks": "^0.4.7",
         "@restart/ui": "^1.4",
         "boxible": "^1.7",
-        "dayjs": "^1.11",
         "flatpickr": "^4.6",
         "graphql": "^16.6",
         "react-hook-form": "^7.41",
