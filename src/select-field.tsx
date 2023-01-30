@@ -5,7 +5,7 @@ import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
 import { Select, SelectOption, SelectProps, SelectValue } from './select'
 
-export interface SelectFieldProps<O extends SelectOption>
+export interface SelectFieldProps<O extends SelectOption = SelectOption>
     extends SelectProps<O>,
         Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
     id?: string
@@ -40,7 +40,7 @@ export const SelectWrapper = styled(FloatingField)({
     },
 })
 
-export function SelectField<O extends SelectOption>({
+export function SelectField<O extends SelectOption = SelectOption>({
     name,
     id: providedId,
     label,
