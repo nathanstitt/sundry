@@ -16,7 +16,7 @@ export interface SelectFieldProps<O extends SelectOption = SelectOption>
 
 export const SelectWrapper = styled(FloatingField)({
     display: 'flex',
-    height: 60,
+    minHeight: 60,
     paddingTop: 0,
     paddingBottom: 0,
     flexDirection: 'column-reverse',
