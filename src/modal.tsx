@@ -19,6 +19,7 @@ export interface ModalProps extends Omit<BaseModalProps, 'children'> {
     large?: boolean
     small?: boolean
     closeBtn?: boolean
+	center?: boolean
 }
 
 const Content = styled.div()
@@ -42,6 +43,7 @@ const Modal: ModalI = ({
     fullscreen,
     scrollable = true,
     closeBtn = true,
+	center = false,
     ...props
 }) => {
     return (
@@ -63,6 +65,7 @@ const Modal: ModalI = ({
                     'modal-lg': large,
                     'modal-fullscreen': fullscreen,
                     'modal-small': small,
+					'modal-dialog-centered': center
                 })}
             >
                 <Content className="modal-content">
