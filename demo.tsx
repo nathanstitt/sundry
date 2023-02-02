@@ -21,8 +21,7 @@ interface FormData {
 
 export default function Demo() {
     const onSubmit: FormSubmitHandler<FormData> = (values, fc) => {
-		// eslint-disable-next-line no-console
-        console.log(values)
+        console.log(values) // eslint-disable-line no-console
         throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
@@ -31,6 +30,7 @@ export default function Demo() {
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 className="row"
+				readOnly
                 defaultValues={{
                     name: '',
                     cbv: true,

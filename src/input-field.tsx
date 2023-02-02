@@ -124,7 +124,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 ref={ref}
                 checked={checked}
                 onChange={onChange}
-                disabled={propsDisabled}
+                disabled={Boolean(readOnly || propsDisabled)}
                 onBlur={onBlur}
                 readOnly={readOnly}
                 placeholder={label == null ? 'placeholder' : label}
