@@ -43,7 +43,7 @@ const Modal: ModalI = ({
     fullscreen,
     scrollable = true,
     closeBtn = true,
-	center = false,
+	 center = false,
     ...props
 }) => {
     return (
