@@ -61,6 +61,7 @@ export interface InputProps
         | 'url'
     autoComplete?: string
     readOnly?: boolean
+	disabled?: boolean
     onBlur?: any
     autoFocus?: boolean
     rows?: number
@@ -77,6 +78,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             id: providedId,
             onBlur: propsOnBlur,
             readOnly: propsReadonly,
+			disabled: propsDisabled,
             type = 'text',
             onChange: onChangeProp,
             ...props
@@ -122,7 +124,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 ref={ref}
                 checked={checked}
                 onChange={onChange}
-                disabled={readOnly}
+                disabled={propsDisabled}
                 onBlur={onBlur}
                 readOnly={readOnly}
                 placeholder={label == null ? 'placeholder' : label}

@@ -21,6 +21,7 @@ interface FormData {
 
 export default function Demo() {
     const onSubmit: FormSubmitHandler<FormData> = (values, fc) => {
+		// eslint-disable-next-line no-console
         console.log(values)
         throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
@@ -43,7 +44,7 @@ export default function Demo() {
                 validateOnMount
                 onSubmit={onSubmit}
             >
-                <InputField sm={10} data-testid="name" name="name" label="Name" />
+                <InputField sm={10} data-testid="name" name="name" disabled label="Name" />
                 <InputField sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CB" />
 
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
