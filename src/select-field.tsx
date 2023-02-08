@@ -44,7 +44,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
     name,
     id: providedId,
     label,
-    placeholder,
+    placeholder = '',
     isMulti,
     cacheOptions,
     readOnly: propsReadonly,
@@ -118,7 +118,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
                 noOptionsMessage={noOptionsMessage}
                 isClearable={isClearable}
                 menuPlacement={menuPlacement}
-                placeholder={placeholder}
+                placeholder={placeholder || ''}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 className={cx('select-field', { 'is-invalid': hasError })}

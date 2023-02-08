@@ -30,7 +30,6 @@ export default function Demo() {
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 className="row"
-				readOnly
                 defaultValues={{
                     name: '',
                     cbv: true,

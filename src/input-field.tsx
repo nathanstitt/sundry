@@ -43,7 +43,7 @@ const Label = styled.label({
 export interface InputProps
     extends Omit<
             React.HTMLProps<HTMLInputElement>,
-            'name' | 'height' | 'width' | 'wrap' | 'label' | 'placeholder' | 'onResize' | 'onResizeCapture'
+            'name' | 'height' | 'width' | 'wrap' | 'label' | 'onResize' | 'onResizeCapture'
         >,
         Omit<FloatingFieldProps, 'label' | 'id'> {
     name: string
@@ -128,7 +128,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 disabled={Boolean(readOnly || propsDisabled)}
                 onBlur={onBlur}
                 readOnly={readOnly}
-                placeholder={placeholder}
+                placeholder={placeholder || ''}
                 type={type}
                 className={cx({
                     'form-control': !isCheckLike,
