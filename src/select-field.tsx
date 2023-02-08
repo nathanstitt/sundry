@@ -44,7 +44,7 @@ export function SelectField<O extends SelectOption>({
     name,
     id: providedId,
     label,
-	placeholder,
+    placeholder,
     isMulti,
     cacheOptions,
     readOnly: propsReadonly,

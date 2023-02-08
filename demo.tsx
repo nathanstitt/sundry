@@ -52,7 +52,7 @@ export default function Demo() {
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
                     label="Letters"
-					placeholder="Test Placeholder"
+                    placeholder="Test Placeholder"
                     options={[
                         { label: 'A', value: 'a' },
                         { label: 'B', value: 'b' },

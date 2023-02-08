@@ -80,7 +80,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             readOnly: propsReadonly,
             type = 'text',
             onChange: onChangeProp,
-			placeholder,
+            placeholder,
             ...props
         } = forwardedProps
         const autoId = useId()
@@ -115,7 +115,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         } else if (type === 'checkbox') {
             checked = !!field.value
         }
-		const value = props.value || field.value || '';
+        const value = props.value || field.value || '';
         const input = (
             <InputComponent
                 {...field}
