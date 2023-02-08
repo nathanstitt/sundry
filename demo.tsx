@@ -20,8 +20,8 @@ interface FormData {
 }
 
 export default function Demo() {
-    const onSubmit: FormSubmitHandler<FormData> = (values, fc) => {
-        console.log(values)
+    const onSubmit: FormSubmitHandler<FormData> = (values, _) => {
+        console.log(values) // eslint-disable-line no-console
         throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
@@ -51,7 +51,8 @@ export default function Demo() {
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
-                    label="Select a value"
+                    label="Letters"
+					placeholder="Test Placeholder"
                     options={[
                         { label: 'A', value: 'a' },
                         { label: 'B', value: 'b' },

@@ -66,6 +66,7 @@ export interface InputProps
     rows?: number
     label?: React.ReactNode
     id?: string
+	placeholder? : string
 }
 
 export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
@@ -79,6 +80,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             readOnly: propsReadonly,
             type = 'text',
             onChange: onChangeProp,
+			placeholder,
             ...props
         } = forwardedProps
         const autoId = useId()
@@ -113,11 +115,12 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         } else if (type === 'checkbox') {
             checked = !!field.value
         }
+		const value = props.value || field.value || '';
         const input = (
             <InputComponent
                 {...field}
                 {...props}
-                value={props.value || field.value || ''}
+                value={value}
                 id={id}
                 ref={ref}
                 checked={checked}
@@ -125,7 +128,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 disabled={readOnly}
                 onBlur={onBlur}
                 readOnly={readOnly}
-                placeholder={label == null ? 'placeholder' : label}
+                placeholder={label == null ? placeholder : label}
                 type={type}
                 className={cx({
                     'form-control': !isCheckLike,

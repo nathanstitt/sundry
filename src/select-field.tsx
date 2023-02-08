@@ -44,6 +44,7 @@ export function SelectField<O extends SelectOption>({
     name,
     id: providedId,
     label,
+	placeholder,
     isMulti,
     cacheOptions,
     readOnly: propsReadonly,
@@ -82,7 +83,7 @@ export function SelectField<O extends SelectOption>({
         <FloatingLabel
             htmlFor={id}
             displayHigh={!!isMulti}
-            isRaised={hasValue || isFocused || readOnly}
+            isRaised={!!placeholder || hasValue || isFocused || readOnly}
         >
             {label}
         </FloatingLabel>
@@ -117,7 +118,7 @@ export function SelectField<O extends SelectOption>({
                 noOptionsMessage={noOptionsMessage}
                 isClearable={isClearable}
                 menuPlacement={menuPlacement}
-                placeholder={<span />}
+                placeholder={placeholder}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 className={cx('select-field', { 'is-invalid': hasError })}
