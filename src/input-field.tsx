@@ -9,7 +9,7 @@ const inputFieldToggleStyle = {
     padding: 0,
     width: '25px',
     height: '25px',
-    margin: '0 5px 0 0',
+    margin: '0 10px 0 0',
 }
 export const InputFieldCheckbox = styled.input(inputFieldToggleStyle)
 export const InputFieldRadio = styled.input(inputFieldToggleStyle)
@@ -30,8 +30,6 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
     padding: '0.375rem 0.75rem', // styles mimic form-control
     color: '#212529',
     overflow: 'hidden',
-    border: '1px solid #ced4da',
-    borderRadius: '0.25rem',
     label: {
         flex: 1,
     },
@@ -61,6 +59,7 @@ export interface InputProps
         | 'url'
     autoComplete?: string
     readOnly?: boolean
+    disabled?: boolean
     onBlur?: any
     autoFocus?: boolean
     rows?: number
@@ -78,6 +77,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             id: providedId,
             onBlur: propsOnBlur,
             readOnly: propsReadonly,
+            disabled: propsDisabled,
             type = 'text',
             onChange: onChangeProp,
             placeholder,
@@ -125,7 +125,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 ref={ref}
                 checked={checked}
                 onChange={onChange}
-                disabled={readOnly}
+                disabled={Boolean(readOnly || propsDisabled)}
                 onBlur={onBlur}
                 readOnly={readOnly}
                 placeholder={placeholder}

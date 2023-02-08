@@ -48,6 +48,7 @@ export const Col: FCWC<ColProps> = ({
                 [`offset-xl-${offset.xl}`]: !!offset.xl,
                 [`offset-xxl-${offset.xxl}`]: !!offset.xxl,
             })}
+            direction="column"
             {...props}
         >
             {children}

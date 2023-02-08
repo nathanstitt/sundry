@@ -144,7 +144,7 @@ const optionForValue = (value: SelectValue | undefined, options: SelectOptions) 
 
 export type SelectLoadOptionsFn = (inputValue: string) => Promise<SelectOptions>
 
-export interface SelectProps<O extends SelectOption>
+export interface SelectProps<O extends SelectOption = SelectOption>
     extends Omit<ReactSelectProps, 'isMulti' | 'onChange' | 'name'> {
     defaultValue?: SelectValue
     onCreateOption?: (value: string) => void
@@ -166,7 +166,7 @@ export interface SelectProps<O extends SelectOption>
     loadOptions?: SelectLoadOptionsFn
     innerRef?: React.RefCallback<HTMLInputElement>
 }
-export function Select<O extends SelectOption>({
+export function Select<O extends SelectOption = SelectOption>({
     small,
     tiny,
     defaultValue,
