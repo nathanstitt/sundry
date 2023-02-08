@@ -43,16 +43,14 @@ export default function Demo() {
                 validateOnMount
                 onSubmit={onSubmit}
             >
-                <InputField sm={10} data-testid="name" name="name" label="Name" placeholder='Test Test'/>
+                <InputField sm={10} data-testid="name" name="name" label="Name" />
                 <InputField sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CB" />
-
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
                 <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
                     label="Letters"
-                    placeholder="Test Placeholder"
                     options={[
                         { label: 'A', value: 'a' },
                         { label: 'B', value: 'b' },

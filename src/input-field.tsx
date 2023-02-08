@@ -65,7 +65,6 @@ export interface InputProps
     rows?: number
     label?: React.ReactNode
     id?: string
-	placeholder? : string
 }
 
 export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
