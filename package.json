@@ -2,7 +2,7 @@
     "name": "@nathanstitt/sundry",
     "private": false,
     "sideEffects": false,
-    "version": "0.0.42",
+    "version": "0.0.48",
     "main": "./dist/sundry.cjs",
     "module": "./dist/sundry.mjs",
     "exports": {
@@ -40,6 +40,7 @@
         "@emotion/css": "^11.8",
         "@emotion/react": "^11.8",
         "@emotion/styled": "^11.8",
+        "dayjs": "^1.11",
         "react": "^18.2",
         "react-dom": "^18.2"
     },
@@ -70,6 +71,7 @@
         "babel-jest": "^29.3.1",
         "babel-preset-env": "^1.7.0",
         "bootstrap": "^5.2.3",
+        "dayjs": "^1.11",
         "dts-bundle-generator": "^7.1.0",
         "eslint": "^8.31.0",
         "eslint-config-prettier": "^8.6.0",
@@ -105,7 +107,6 @@
         "@restart/hooks": "^0.4.7",
         "@restart/ui": "^1.4",
         "boxible": "^1.7",
-        "dayjs": "^1.11",
         "flatpickr": "^4.6",
         "graphql": "^16.6",
         "react-hook-form": "^7.41",
