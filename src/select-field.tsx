@@ -7,11 +7,12 @@ import { Select, SelectOption, SelectProps, SelectValue } from './select'
 
 export interface SelectFieldProps<O extends SelectOption = SelectOption>
     extends SelectProps<O>,
-        Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions'> {
+        Omit<FloatingFieldProps, 'name' | 'id' | 'loadOptions' | 'label'> {
     id?: string
     name: string
     readOnly?: boolean
     display?: string
+    label?: string
 }
 
 export const SelectWrapper = styled(FloatingField)({
@@ -79,6 +80,39 @@ export function SelectField<O extends SelectOption = SelectOption>({
         setFocusState(false)
         field.onBlur()
     }
+    const onChange = (value: SelectValue, option: SelectOption, meta: any) => {
+        field.onChange({ target: { ...field, value } })
+        propsOnChange?.(value, option, meta)
+    }
+
+    const select = (
+        <Select
+            {...props}
+            cacheOptions={cacheOptions}
+            innerRef={field.ref}
+            value={v}
+            inputId={id}
+            name={name}
+            onCreateOption={onCreateOption}
+            allowCreate={allowCreate}
+            isDisabled={readOnly}
+            isMulti={isMulti}
+            noOptionsMessage={noOptionsMessage}
+            isClearable={isClearable}
+            menuPlacement={menuPlacement}
+            placeholder={placeholder}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            className={cx('select-field', { 'is-invalid': hasError })}
+            onChange={onChange}
+            options={options}
+        />
+    )
+
+    if (!label) {
+        return select
+    }
+
     const labelEl = (
         <FloatingLabel
             htmlFor={id}
@@ -88,10 +122,6 @@ export function SelectField<O extends SelectOption = SelectOption>({
             {label}
         </FloatingLabel>
     )
-    const onChange = (value: SelectValue, option: SelectOption, meta: any) => {
-        field.onChange({ target: { ...field, value } })
-        propsOnChange?.(value, option, meta)
-    }
 
     return (
         <SelectWrapper
@@ -104,27 +134,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
                 'is-invalid': hasError,
             })}
         >
-            <Select
-                {...props}
-                cacheOptions={cacheOptions}
-                innerRef={field.ref}
-                value={v}
-                inputId={id}
-                name={name}
-                onCreateOption={onCreateOption}
-                allowCreate={allowCreate}
-                isDisabled={readOnly}
-                isMulti={isMulti}
-                noOptionsMessage={noOptionsMessage}
-                isClearable={isClearable}
-                menuPlacement={menuPlacement}
-                placeholder={placeholder}
-                onFocus={onFocus}
-                onBlur={onBlur}
-                className={cx('select-field', { 'is-invalid': hasError })}
-                onChange={onChange}
-                options={options}
-            />
+            {select}
         </SelectWrapper>
     )
 }
