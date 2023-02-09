@@ -182,13 +182,13 @@ export function Select<O extends SelectOption = SelectOption>({
 }: SelectProps<O>) {
     const onChangeHandler = onChange
         ? (option: SelectOption, meta: ActionMeta<SelectOptionType>) => {
-              if (option) {
-                  const value = Array.isArray(option) ? option.map((o) => o?.value) : option.value
-                  onChange(value, option, meta)
-              } else {
-                  onChange(props.isMulti ? [] : null, option, meta)
-              }
-          }
+            if (option) {
+                const value = Array.isArray(option) ? option.map((o) => o?.value) : option.value
+                onChange(value, option, meta)
+            } else {
+                onChange(props.isMulti ? [] : null, option, meta)
+            }
+        }
         : null
 
     let S: any // FC<ReactSelectProps | CreatableProps<any, any, any> | AsyncProps<any, any, any>>
