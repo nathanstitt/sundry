@@ -24,7 +24,7 @@ module.exports = {
     plugins: ['react', '@typescript-eslint', 'react-hooks'],
     ignorePatterns: ['dist/*'],
     rules: {
-        indent: ["error", 4],
+        indent: ['error', 4],
         'react/react-in-jsx-scope': 0,
         'react/no-unknown-property': ['error', { ignore: ['css'] }],
         'no-console': ['error', { allow: ['warn', 'error'] }],
