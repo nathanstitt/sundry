@@ -12,7 +12,6 @@ export interface SelectFieldProps<O extends SelectOption = SelectOption>
     name: string
     readOnly?: boolean
     display?: string
-	label?: string
 }
 
 export const SelectWrapper = styled(FloatingField)({
