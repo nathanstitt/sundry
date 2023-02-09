@@ -12,6 +12,7 @@ export interface SelectFieldProps<O extends SelectOption = SelectOption>
     name: string
     readOnly?: boolean
     display?: string
+	label?: string
 }
 
 export const SelectWrapper = styled(FloatingField)({
@@ -79,19 +80,44 @@ export function SelectField<O extends SelectOption = SelectOption>({
         setFocusState(false)
         field.onBlur()
     }
-    const labelEl = (
-        <FloatingLabel
-            htmlFor={id}
-            displayHigh={!!isMulti}
-            isRaised={!!placeholder || hasValue || isFocused || readOnly}
-        >
-            {label}
-        </FloatingLabel>
-    )
     const onChange = (value: SelectValue, option: SelectOption, meta: any) => {
         field.onChange({ target: { ...field, value } })
         propsOnChange?.(value, option, meta)
     }
+
+	if (!label) {
+		return <Select
+			{...props}
+			cacheOptions={cacheOptions}
+			innerRef={field.ref}
+			value={v}
+			inputId={id}
+			name={name}
+			onCreateOption={onCreateOption}
+			allowCreate={allowCreate}
+			isDisabled={readOnly}
+			isMulti={isMulti}
+			noOptionsMessage={noOptionsMessage}
+			isClearable={isClearable}
+			menuPlacement={menuPlacement}
+			placeholder={placeholder}
+			onFocus={onFocus}
+			onBlur={onBlur}
+			className={cx('select-field', { 'is-invalid': hasError })}
+			onChange={onChange}
+			options={options}
+		/>
+	}
+
+	const labelEl = (
+		<FloatingLabel
+			htmlFor={id}
+			displayHigh={!!isMulti}
+			isRaised={!!placeholder || hasValue || isFocused || readOnly}
+		>
+			{label}
+		</FloatingLabel>
+	)
 
     return (
         <SelectWrapper

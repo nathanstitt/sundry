@@ -50,7 +50,8 @@ export default function Demo() {
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
-                    label="Letters"
+					placeholder='Select an option...'
+					label="Options"
                     options={[
                         { label: 'A', value: 'a' },
                         { label: 'B', value: 'b' },
@@ -58,6 +59,15 @@ export default function Demo() {
                     ]}
                     name="ab"
                 />
+				<SelectField
+					placeholder='Select without a label'
+					options={[
+						{ label: 'A', value: 'a' },
+						{ label: 'B', value: 'b' },
+						{ label: 'C', value: 'c' },
+					]}
+					name="bc"
+				/>
 
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
             </EditingForm>
