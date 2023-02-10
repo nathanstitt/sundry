@@ -98,7 +98,7 @@ export const Section: FCWC<SectionProps> = ({
                 >
                     {children}
                 </Body>
-                {footer && <SectionFooter noPad={noPad}>{footer}</SectionFooter>}
+                {footer && <SectionFooter className="footer" noPad={noPad}>{footer}</SectionFooter>}
             </div>
         </SectionWrapper>
     )
