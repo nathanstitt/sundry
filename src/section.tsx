@@ -38,12 +38,17 @@ const SectionWrapper = styled.section({
     },
 })
 
+const SectionFooter = styled.div(({ noPad }: { noPad: boolean | undefined }) => ({
+    padding: noPad ? 0 : '0 1rem 1rem 1rem',
+}))
+
 export interface SectionProps {
     id: string
     bodyClassName?: string
     headingClassName?: string
     className?: string
     heading: React.ReactNode
+    footer: React.ReactNode
     controls?: React.ReactNode
     fullWidth?: boolean
     noPad?: boolean
@@ -56,6 +61,7 @@ export const Section: FCWC<SectionProps> = ({
     bodyClassName,
     headingClassName,
     heading,
+    footer,
     children,
     controls,
     fullWidth,
@@ -92,6 +98,7 @@ export const Section: FCWC<SectionProps> = ({
                 >
                     {children}
                 </Body>
+                {footer && <SectionFooter noPad={noPad}>{footer}</SectionFooter>}
             </div>
         </SectionWrapper>
     )
