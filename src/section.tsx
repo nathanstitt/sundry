@@ -48,7 +48,7 @@ export interface SectionProps {
     headingClassName?: string
     className?: string
     heading: React.ReactNode
-    footer: React.ReactNode
+    footer?: React.ReactNode
     controls?: React.ReactNode
     fullWidth?: boolean
     noPad?: boolean
