@@ -45,6 +45,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
     name,
     id: providedId,
     label,
+    isDisabled,
     placeholder = '',
     isMulti,
     cacheOptions,
@@ -95,7 +96,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
             name={name}
             onCreateOption={onCreateOption}
             allowCreate={allowCreate}
-            isDisabled={readOnly}
+            isDisabled={isDisabled || readOnly}
             isMulti={isMulti}
             noOptionsMessage={noOptionsMessage}
             isClearable={isClearable}
