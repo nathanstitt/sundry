@@ -132,6 +132,11 @@ const tinyStyles = {
 export type SelectValue = Array<string | number> | string | number
 export type SelectOption = { label: string; value: string | number } | null
 export type SelectOptions = Array<SelectOption>
+export type SelectOnChangeHandler = (
+        value: null | SelectValue,
+        option: SelectOption,
+        meta: ActionMeta<SelectOptionType>
+    ) => void
 
 const optionForValue = (value: SelectValue | undefined, options: SelectOptions) => {
     if (isNil(value)) return null
@@ -141,6 +146,7 @@ const optionForValue = (value: SelectValue | undefined, options: SelectOptions) 
 
     return isNil(v) ? null : v
 }
+type RSChangeH = (option: SelectOption, meta: ActionMeta<SelectOptionType>) => void
 
 export type SelectLoadOptionsFn = (inputValue: string) => Promise<SelectOptions>
 
@@ -153,11 +159,7 @@ export interface SelectProps<O extends SelectOption = SelectOption>
     isClearable?: boolean
     cacheOptions?: boolean
     options: Array<O>
-    onChange?(
-        value: null | SelectValue,
-        option: SelectOption,
-        meta: ActionMeta<SelectOptionType>
-    ): void
+    onChange?: SelectOnChangeHandler
     small?: boolean
     tiny?: boolean
     allowCreate?: boolean
@@ -180,8 +182,11 @@ export function Select<O extends SelectOption = SelectOption>({
     innerRef,
     ...props
 }: SelectProps<O>) {
-    const onChangeHandler = onChange
-        ? (option: SelectOption, meta: ActionMeta<SelectOptionType>) => {
+    
+    const onChangeHandler = React.useMemo<RSChangeH | null>(() => {
+        if (!onChange) return null 
+
+        return (option: SelectOption, meta: ActionMeta<SelectOptionType>) => {
             if (option) {
                 const value = Array.isArray(option) ? option.map((o) => o?.value) : option.value
                 onChange(value, option, meta)
@@ -189,7 +194,8 @@ export function Select<O extends SelectOption = SelectOption>({
                 onChange(props.isMulti ? [] : null, option, meta)
             }
         }
-        : null
+    }, [onChange, props.isMulti])
+
 
     let S: any // FC<ReactSelectProps | CreatableProps<any, any, any> | AsyncProps<any, any, any>>
     if (allowCreate) {

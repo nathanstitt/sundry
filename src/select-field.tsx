@@ -3,7 +3,8 @@ import styled from '@emotion/styled'
 import { useField } from './form'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
-import { Select, SelectOption, SelectProps, SelectValue } from './select'
+import { Select, SelectOption, SelectProps } from './select'
+import type  { SelectOnChangeHandler } from './select'
 
 export interface SelectFieldProps<O extends SelectOption = SelectOption>
     extends SelectProps<O>,
@@ -74,17 +75,17 @@ export function SelectField<O extends SelectOption = SelectOption>({
     const v = field.value || value
     const hasValue = Array.isArray(v) ? v.length > 0 : !!v
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
-    const onFocus = () => {
+    const onFocus = React.useCallback(() => {
         setFocusState(true)
-    }
-    const onBlur = () => {
+    },[setFocusState])
+    const onBlur = React.useCallback(() => {
         setFocusState(false)
         field.onBlur()
-    }
-    const onChange = (value: SelectValue, option: SelectOption, meta: any) => {
+    },[field, setFocusState])
+    const onChange: SelectOnChangeHandler = React.useCallback((value, option, meta) => {
         field.onChange({ target: { ...field, value } })
         propsOnChange?.(value, option, meta)
-    }
+    }, [field, propsOnChange])
 
     const select = (
         <Select

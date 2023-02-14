@@ -10,6 +10,7 @@ import {
     DropdownMenu,
     Section,
     Box,
+    SelectOnChangeHandler,
 } from './src'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -24,6 +25,9 @@ export default function Demo() {
         console.log(values) // eslint-disable-line no-console
         throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
+    }
+    const logSelectChange: SelectOnChangeHandler = (v) => {
+        console.log(v)
     }
     return (
         <div className="container mt-5">
@@ -50,6 +54,7 @@ export default function Demo() {
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
+                    onChange={logSelectChange}
                     placeholder="Select an option..."
                     label="Options"
                     options={[
