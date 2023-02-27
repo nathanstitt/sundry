@@ -142,14 +142,10 @@ export function useForkRef<T>(
 
 type useRefElementReturn<T> = [(refElement: RefElementOrNull<T>) => void, RefElementOrNull<T>]
 
+type useRefCB<T> = (refElement: RefElementOrNull<T>) => void
 export function useRefElement<T>(): useRefElementReturn<T> {
     const [refElement, setRefElement] = useState<RefElementOrNull<T>>(null)
-    const ref = useCallback<(refElement: RefElementOrNull<T>) => void>(
-        (element: RefElementOrNull<T>) => {
-            setRefElement(element)
-        },
-        []
-    )
+    const ref = useCallback<useRefCB<T>>((element) => setRefElement(element), [])
     return [ref, refElement]
 }
 
