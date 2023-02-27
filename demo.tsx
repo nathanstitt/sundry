@@ -36,6 +36,11 @@ export default function Demo() {
                 className="row"
                 defaultValues={{
                     name: '',
+                    nested: [
+                        {
+                            name: 'b',
+                        },
+                    ],
                     cbv: true,
                     rbv: 'c',
                     from: new Date('2022-10-21'),
@@ -62,7 +67,7 @@ export default function Demo() {
                         { label: 'B', value: 'b' },
                         { label: 'C', value: 'c' },
                     ]}
-                    name="ab"
+                    name="nested[0].name"
                 />
                 <SelectField
                     placeholder="Select without a label"

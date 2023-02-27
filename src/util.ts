@@ -130,3 +130,5 @@ export function isShallowEqual(object1: Record<any, any>, object2: Record<any, a
     }
     return true
 }
+
+export const isSSR = typeof document == 'undefined'

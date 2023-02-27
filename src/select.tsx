@@ -1,10 +1,15 @@
 import { React, cx, isNil } from './common'
 import { themeColors as colors } from './theme'
 import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
-import ReactSelectCreate from 'react-select/creatable'
-import ReactSelectAsync from 'react-select/async'
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
+
+let ReactSelectCreate: ReactSelect | null = null
+import('react-select/creatable').then((rsc) => (ReactSelectCreate = rsc.default))
+
+let ReactSelectAsync: ReactSelect | null = null
+import('react-select/async').then((rsc) => (ReactSelectAsync = rsc.default))
+
 export type SelectOptionType = { [key: string]: any }
 
 const SharedCache = createCache({ nonce: 'MCSPOT_REACT_SELECT_NONCE', key: 'ab-react-select' })
@@ -133,10 +138,10 @@ export type SelectValue = Array<string | number> | string | number
 export type SelectOption = { label: string; value: string | number } | null
 export type SelectOptions = Array<SelectOption>
 export type SelectOnChangeHandler = (
-        value: null | SelectValue,
-        option: SelectOption,
-        meta: ActionMeta<SelectOptionType>
-    ) => void
+    value: null | SelectValue,
+    option: SelectOption,
+    meta: ActionMeta<SelectOptionType>
+) => void
 
 const optionForValue = (value: SelectValue | undefined, options: SelectOptions) => {
     if (isNil(value)) return null
@@ -182,9 +187,8 @@ export function Select<O extends SelectOption = SelectOption>({
     innerRef,
     ...props
 }: SelectProps<O>) {
-    
     const onChangeHandler = React.useMemo<RSChangeH | null>(() => {
-        if (!onChange) return null 
+        if (!onChange) return null
 
         return (option: SelectOption, meta: ActionMeta<SelectOptionType>) => {
             if (option) {
@@ -195,7 +199,6 @@ export function Select<O extends SelectOption = SelectOption>({
             }
         }
     }, [onChange, props.isMulti])
-
 
     let S: any // FC<ReactSelectProps | CreatableProps<any, any, any> | AsyncProps<any, any, any>>
     if (allowCreate) {

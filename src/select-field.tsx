@@ -1,10 +1,10 @@
 import { React, useId, useState, cx } from './common'
 import styled from '@emotion/styled'
-import { useField } from './form'
+import { useField } from './form-hooks'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'
 import { Select, SelectOption, SelectProps } from './select'
-import type  { SelectOnChangeHandler } from './select'
+import type { SelectOnChangeHandler } from './select'
 
 export interface SelectFieldProps<O extends SelectOption = SelectOption>
     extends SelectProps<O>,
@@ -77,15 +77,18 @@ export function SelectField<O extends SelectOption = SelectOption>({
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
     const onFocus = React.useCallback(() => {
         setFocusState(true)
-    },[setFocusState])
+    }, [setFocusState])
     const onBlur = React.useCallback(() => {
         setFocusState(false)
         field.onBlur()
-    },[field, setFocusState])
-    const onChange: SelectOnChangeHandler = React.useCallback((value, option, meta) => {
-        field.onChange({ target: { ...field, value } })
-        propsOnChange?.(value, option, meta)
-    }, [field, propsOnChange])
+    }, [field, setFocusState])
+    const onChange: SelectOnChangeHandler = React.useCallback(
+        (value, option, meta) => {
+            field.onChange({ target: { ...field, value } })
+            propsOnChange?.(value, option, meta)
+        },
+        [field, propsOnChange]
+    )
 
     const select = (
         <Select

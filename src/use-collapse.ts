@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { useLocalstorageState } from 'rooks'
+import { useLocalstorageState } from './use-local-storage'
 
 let useIsExpanded = (id: string, defaultExpanded: boolean) => {
     return useLocalstorageState(id, defaultExpanded)

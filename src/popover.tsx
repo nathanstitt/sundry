@@ -1,6 +1,6 @@
 import { React, FCWC, useState, cx, useCallback } from './common'
 import { usePopper } from 'react-popper'
-import { useOutsideClickRef, useRefElement } from 'rooks'
+import { useOutsideClickRef, useRefElement } from './hooks'
 
 interface ControlledPopoverProps {
     show: boolean

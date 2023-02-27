@@ -1,24 +1,14 @@
-import { FCWOC, FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
+import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
 import { AnyObjectSchema } from 'yup'
 import { isShallowEqual, errorToString } from './util'
-import { usePreviousDifferent } from 'rooks'
+import { usePreviousValue } from './hooks'
 import {
+    useForm,
     useWatch as useFormValue,
-    FieldValues,
     FormProvider,
     SubmitHandler,
-    UseFormReturn,
-    UseFormRegisterReturn,
-    UseFormGetFieldState,
-    useFormContext as _useFormContext,
-    useForm,
-    useController,
-    useFormState,
     FieldError,
-    FieldPath,
-    UseControllerReturn,
 } from 'react-hook-form'
-
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
 import { Footer } from './footer'
@@ -27,37 +17,27 @@ import { Button, ButtonProps } from './button'
 import { ErrorTypes } from './types'
 import { useCallback } from 'react'
 
-type FieldState = UseFormGetFieldState<Record<string, string>>
-type RegisteredField = UseFormRegisterReturn<any>
-export type { FieldError, FieldState, RegisteredField }
+import {
+    FormTriggerValidation,
+    FORM_ERROR_KEY,
+    useController,
+    useFormState,
+    useFormContext,
+} from './form-hooks'
+import type { FieldState, RegisteredField, FormContext } from './form-hooks'
 
+export * from './date-time-field'
+export * from './date-time'
+export * from './floating-field'
+export * from './input-field'
+export * from './label'
+export * from './select-field'
+export * from './select'
+
+export type { FormContext, FieldError, FieldState, RegisteredField }
 export { useFormState, useFormValue, useController }
 
-const FORM_ERROR_KEY = 'FORM_ERROR'
-
-export type FormContext<T extends FieldValues> = UseFormReturn<T> & {
-    isReadOnly: boolean
-    setFormError(err: ErrorTypes): void
-}
-
-export const useFormContext = _useFormContext as any as <
-    TFV extends FieldValues
->() => FormContext<TFV>
-
-export function useFieldState(name: string) {
-    return useFormContext().getFieldState(name)
-}
-
-export type UseFieldReturn<
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = UseControllerReturn<TFieldValues, TName> & { isReadOnly: boolean }
-
-export function useField(name: string): UseFieldReturn {
-    const { isReadOnly } = useFormContext()
-    const fc = useController({ name })
-    return { isReadOnly, ...fc }
-}
+//const FORM_ERROR_KEY = 'FORM_ERROR'
 
 export type FormSubmitHandler<FV extends FormValues> = (
     values: FV,
@@ -84,14 +64,6 @@ interface FormProps<FV extends FormValues> {
     validationSchema?: AnyObjectSchema
 }
 
-export const FormTriggerValidation: FCWOC = () => {
-    const { trigger } = useFormContext()
-    useEffect(() => {
-        trigger()
-    }, [trigger])
-    return null
-}
-
 export function Form<FV extends FormValues>({
     action,
     children,
@@ -114,7 +86,7 @@ export function Form<FV extends FormValues>({
         //     return ret
         // },
     })
-    const prevDefaultValues = usePreviousDifferent(defaultValues)
+    const prevDefaultValues = usePreviousValue(defaultValues)
     useEffect(() => {
         if (enableReinitialize) {
             if (prevDefaultValues && !isShallowEqual(prevDefaultValues, defaultValues)) {
@@ -159,16 +131,6 @@ export function Form<FV extends FormValues>({
                 {children}
             </form>
         </FormProvider>
-    )
-}
-
-export const useSetFormError = () => {
-    const fc = useFormContext()
-    return useCallback(
-        (err: ErrorTypes) => {
-            fc.setError(FORM_ERROR_KEY, err as any)
-        },
-        [fc]
     )
 }
 

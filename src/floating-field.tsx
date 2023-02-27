@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { BoxProps } from 'boxible'
 import { Col, ColProps } from './col'
 import { ExtraInfo } from './label'
-import { useFieldState } from './form'
+import { useFieldState } from './form-hooks'
 
 export interface FloatingFieldProps extends BoxProps, ColProps {
     id: string
