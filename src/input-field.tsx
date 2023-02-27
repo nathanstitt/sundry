@@ -1,5 +1,4 @@
-import { React, useMemo, cx, useId } from './common'
-import styled from '@emotion/styled'
+import { React, styled, useMemo, cx, useId } from './common'
 import { FloatingField, FloatingFieldProps } from './floating-field'
 import { useField } from './form-hooks'
 import { useCallback } from 'react'

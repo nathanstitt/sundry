@@ -1,5 +1,4 @@
-import { React, FCWC, cx } from './common'
-import styled from '@emotion/styled'
+import { React, FCWC, styled, cx } from './common'
 import { BoxProps } from 'boxible'
 import { Col, ColProps } from './col'
 import { ExtraInfo } from './label'

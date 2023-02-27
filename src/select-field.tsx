@@ -1,5 +1,4 @@
-import { React, useId, useState, cx } from './common'
-import styled from '@emotion/styled'
+import { React, useId, styled, useState, cx } from './common'
 import { useField } from './form-hooks'
 import { FloatingFieldProps, FloatingField } from './floating-field'
 import { FloatingLabel } from './label'

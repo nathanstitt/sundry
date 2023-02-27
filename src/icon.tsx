@@ -1,5 +1,4 @@
-import { css, cx, React, PropsWithOptionalChildren } from './common'
-import styled from '@emotion/styled'
+import { css, cx, styled, React, PropsWithOptionalChildren } from './common'
 import { keyframes, CSSObject } from '@emotion/react'
 import { Popover, PopoverProps, Tooltip, TooltipProps } from './popover'
 import { Icon as IconifyIconComponent } from '@iconify/react'

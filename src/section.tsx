@@ -1,7 +1,6 @@
 import { Icon } from './icon'
-import { React, FCWC, useCallback, cx } from './common'
+import { React, FCWC, styled, useCallback, cx } from './common'
 import { Box } from 'boxible'
-import styled from '@emotion/styled'
 import { themeColors, themeMedia } from './theme'
 import { useRetainedCollapse } from './use-collapse'
 

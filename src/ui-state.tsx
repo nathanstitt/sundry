@@ -1,5 +1,4 @@
-import { FC, React } from './common'
-import styled from '@emotion/styled'
+import { FC, React, styled } from './common'
 import { cx } from '@emotion/css'
 import { Box } from 'boxible'
 import { Icon } from './icon'

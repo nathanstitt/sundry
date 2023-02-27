@@ -1,7 +1,6 @@
-import { React, FC, useEffect, cx, useState } from './common'
+import { React, FC, useEffect, cx, styled, useState } from './common'
 import { ColProps } from './col'
 import { CombinedError } from 'urql'
-import styled from '@emotion/styled'
 import { errorToString } from './util'
 import { BSVariants, bsClassNames } from './bs'
 import { Delayed } from './ui-state'

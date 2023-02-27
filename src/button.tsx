@@ -1,5 +1,4 @@
-import { React, PropsWithOptionalChildren, cx } from './common'
-import styled, { CSSObject } from '@emotion/styled'
+import { React, PropsWithOptionalChildren, CSSObject, styled, cx } from './common'
 import { BSVariants, bsClassNames } from './bs'
 import { LoadingDots as LD } from './loading-dots'
 import { IconKey, Icon } from './icon'

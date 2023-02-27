@@ -1,6 +1,5 @@
-import { React, useId, useMemo, useState, useCallback, cx } from './common'
+import { React, styled, useId, useMemo, useState, useCallback, cx } from './common'
 import { Box } from 'boxible'
-import styled from '@emotion/styled'
 import { DateTime, DateTimeProps } from './date-time'
 import { useFormContext } from './form-hooks'
 import { FloatingField, FloatingFieldProps } from './floating-field'

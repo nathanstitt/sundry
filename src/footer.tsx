@@ -1,6 +1,5 @@
-import { React, FCWC, cx } from './common'
+import { React, FCWC, styled, cx } from './common'
 import { Box, BoxProps } from 'boxible'
-import styled from '@emotion/styled'
 import { Theme } from './theme'
 
 const FooterWrapper = styled(Box)({

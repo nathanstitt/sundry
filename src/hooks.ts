@@ -119,7 +119,8 @@ function setRef<T>(ref: PossibleRef<T> | null, value: T) {
     if (typeof ref === 'function') {
         ref(value)
     } else if (ref !== null && ref !== undefined) {
-        ;(ref as MutableRefObject<T>).current = value
+        const r = ref as MutableRefObject<T>
+        r.current = value
     }
 }
 
@@ -139,10 +140,9 @@ export function useForkRef<T>(
     }, [refA, refB])
 }
 
-export function useRefElement<T>(): [
-    (refElement: RefElementOrNull<T>) => void,
-    RefElementOrNull<T>
-] {
+type useRefElementReturn<T> = [(refElement: RefElementOrNull<T>) => void, RefElementOrNull<T>]
+
+export function useRefElement<T>(): useRefElementReturn<T> {
     const [refElement, setRefElement] = useState<RefElementOrNull<T>>(null)
     const ref = useCallback<(refElement: RefElementOrNull<T>) => void>(
         (element: RefElementOrNull<T>) => {
