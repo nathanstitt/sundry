@@ -3,7 +3,7 @@
     "type": "module",
     "private": false,
     "sideEffects": false,
-    "version": "0.0.55-5",
+    "version": "0.0.55-6",
     "exports": {
         "./form": {
             "types": "./dist/form.d.ts",
