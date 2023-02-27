@@ -7,13 +7,13 @@
     "exports": {
         "./form": {
             "types": "./dist/form.d.ts",
-            "require": "./dist/form.js",
+            "require": "./dist/form.cjs",
             "import": "./dist/form.js"
         },
         ".": {
             "types": "./dist/sundry.d.ts",
             "require": "./dist/sundry.cjs",
-            "import": "./dist/sundry.mjs"
+            "import": "./dist/sundry.js"
         }
     },
     "files": [
