@@ -22,9 +22,6 @@ const config = defineConfig({
                 'sundry': './src/index.ts',
                 'form': './src/form.tsx',
             },
-//            name: 'sundry',
-//            formats: ["es", "cjs"],
-//            fileName: (format) => fileName[format],
         },
         rollupOptions: {
             external: ['react', '@emotion', '@emotion/css', '@emotion/styled', '@emotion/react'],
@@ -36,6 +33,7 @@ const config = defineConfig({
                     react: 'React',
                     'react-dom': 'ReactDOM',
                     'lodash-es': 'lodashEs',
+                    '@restart/ui': '@restart/ui',
                     '@emotion/css': 'EmotionCSS',
                     '@emotion/styled': 'EmotionStyled',
                     '@emotion/react': 'EmotionReact',
