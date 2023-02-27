@@ -19,8 +19,10 @@ const config = defineConfig({
         emptyOutDir: true,
         lib: {
             entry: {
-                'sundry': './src/index.ts',
+                'base': './src/index.ts',
                 'form': './src/form.tsx',
+                'modal': './src/modal.tsx',
+                'menu': './src/dropdown-menu.tsx',
             },
         },
         rollupOptions: {

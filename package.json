@@ -10,10 +10,20 @@
             "require": "./dist/form.cjs",
             "import": "./dist/form.js"
         },
+        "./modal": {
+            "types": "./dist/modal.d.ts",
+            "require": "./dist/modal.cjs",
+            "import": "./dist/modal.js"
+        },
+        "./menu": {
+            "types": "./dist/menu.d.ts",
+            "require": "./dist/menu.cjs",
+            "import": "./dist/menu.js"
+        },
         ".": {
-            "types": "./dist/sundry.d.ts",
-            "require": "./dist/sundry.cjs",
-            "import": "./dist/sundry.js"
+            "types": "./dist/base.d.ts",
+            "require": "./dist/base.cjs",
+            "import": "./dist/base.js"
         }
     },
     "files": [
