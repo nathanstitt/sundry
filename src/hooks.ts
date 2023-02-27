@@ -150,7 +150,6 @@ export function useRefElement<T>(): useRefElementReturn<T> {
         },
         []
     )
-
     return [ref, refElement]
 }
 

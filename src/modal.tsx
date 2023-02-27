@@ -1,6 +1,10 @@
 import { React, styled, cx, FCWC } from './common'
-import OverlayModal, { BaseModalProps } from '@restart/ui/Modal'
+import { FC } from './types'
+import type { BaseModalProps } from '@restart/ui/Modal'
 import { Icon } from './icon'
+
+let OverlayModal: FC<BaseModalProps> | null = null
+import('@restart/ui/Modal').then((om) => (OverlayModal = om.default))
 
 const renderBackdrop = (props: any) => {
     return <div className="modal-backdrop fade show" {...props} />
@@ -45,6 +49,8 @@ const Modal: ModalI = ({
     center = false,
     ...props
 }) => {
+    if (!OverlayModal) return null
+
     return (
         <OverlayModal
             {...props}
