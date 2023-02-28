@@ -43,6 +43,9 @@ const config = defineConfig({
             }
         }
     },
+    test: {
+        environment: 'jsdom',
+    },
 });
 
 export default config

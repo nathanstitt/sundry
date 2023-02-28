@@ -4,8 +4,8 @@
 import React from 'react'
 import { render, cleanup, getByTestId, fireEvent, act } from '@testing-library/react'
 import { renderHook } from '@testing-library/react-hooks'
-
-import { useLocalstorageState } from '../src/use-local-storage'
+import { describe, beforeEach, afterEach, it, expect } from 'vitest'
+import { useLocalstorageState } from '../src/use-local-storage.js'
 
 describe('useLocalstorageState defined', () => {
     it('should be defined', () => {

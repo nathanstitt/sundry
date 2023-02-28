@@ -1,4 +1,5 @@
-import { pick, omit } from '../src/util'
+import { test, expect } from 'vitest'
+import { pick, omit } from '../src/util.js'
 
 test('pick & omit', async () => {
     const o = { a: 1, b: 2, c: 3, d: 4 }

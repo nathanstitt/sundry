@@ -3,7 +3,8 @@
  */
 import { render, cleanup, fireEvent, act, getByTestId } from '@testing-library/react'
 import React, { useState } from 'react'
-import { useOutsideClickRef } from '../src/hooks'
+import { useOutsideClickRef } from '../src/hooks.js'
+import { describe, beforeEach, afterEach, it, expect } from 'vitest'
 
 const VolumeOn = () => (
     <svg
