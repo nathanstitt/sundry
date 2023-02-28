@@ -1,8 +1,6 @@
 import { React, cx, isNil } from './common.js'
 import { themeColors as colors } from './theme.js'
 import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
-import { CacheProvider } from '@emotion/react'
-import createCache from '@emotion/cache'
 
 let ReactSelectCreate: ReactSelect | null = null
 import('react-select/creatable').then((rsc) => (ReactSelectCreate = rsc.default))
@@ -11,8 +9,6 @@ let ReactSelectAsync: ReactSelect | null = null
 import('react-select/async').then((rsc) => (ReactSelectAsync = rsc.default))
 
 export type SelectOptionType = { [key: string]: any }
-
-const SharedCache = createCache({ nonce: 'MCSPOT_REACT_SELECT_NONCE', key: 'ab-react-select' })
 
 const RSOption = components.Option as any
 
@@ -210,24 +206,22 @@ export function Select<O extends SelectOption = SelectOption>({
     }
 
     return (
-        <CacheProvider value={SharedCache}>
-            <S
-                ref={innerRef}
-                components={CUSTOM_COMPONENTS}
-                selectProps={{}}
-                className={cx('select', className, {
-                    'has-options': !!loadOptions || options.length > 0,
-                })}
-                options={options}
-                loadOptions={loadOptions}
-                styles={tiny ? tinyStyles : small ? smallStyles : stdStyles}
-                {...props}
-                defaultOptions={loadOptions ? options : undefined}
-                onCreateOption={onCreateOption}
-                value={optionForValue(value, options)}
-                defaultValue={optionForValue(defaultValue, options)}
-                onChange={onChangeHandler}
-            />
-        </CacheProvider>
+        <S
+            ref={innerRef}
+            components={CUSTOM_COMPONENTS}
+            selectProps={{}}
+            className={cx('select', className, {
+                'has-options': !!loadOptions || options.length > 0,
+            })}
+            options={options}
+            loadOptions={loadOptions}
+            styles={tiny ? tinyStyles : small ? smallStyles : stdStyles}
+            {...props}
+            defaultOptions={loadOptions ? options : undefined}
+            onCreateOption={onCreateOption}
+            value={optionForValue(value, options)}
+            defaultValue={optionForValue(defaultValue, options)}
+            onChange={onChangeHandler}
+        />
     )
 }
