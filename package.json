@@ -5,21 +5,25 @@
     "sideEffects": false,
     "version": "0.0.55-8",
     "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/base.cjs",
+            "import": "./dist/base.js"
+        },
         "./form": {
+            "types": "./dist/form.d.ts",
             "require": "./dist/form.cjs",
             "import": "./dist/form.js"
         },
         "./modal": {
+            "types": "./dist/modal.d.ts",
             "require": "./dist/modal.cjs",
             "import": "./dist/modal.js"
         },
         "./menu": {
+            "types": "./dist/menu.d.ts",
             "require": "./dist/menu.cjs",
             "import": "./dist/menu.js"
-        },
-        ".": {
-            "require": "./dist/base.cjs",
-            "import": "./dist/base.js"
         }
     },
     "typesVersions": {
