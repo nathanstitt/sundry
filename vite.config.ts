@@ -22,7 +22,7 @@ const config = defineConfig({
                 'base': './src/index.ts',
                 'form': './src/form.tsx',
                 'modal': './src/modal.tsx',
-                'menu': './src/dropdown-menu.tsx',
+                'menu': './src/menu.tsx',
             },
         },
         rollupOptions: {

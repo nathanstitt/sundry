@@ -26,22 +26,6 @@
             "import": "./dist/menu.js"
         }
     },
-    "typesVersions": {
-        "*": {
-            "*": [
-                "./dist/base.d.ts"
-            ],
-            "form": [
-                "./dist/form.d.ts"
-            ],
-            "modal": [
-                "./dist/modal.d.ts"
-            ],
-            "menu": [
-                "./dist/menu.d.ts"
-            ]
-        }
-    },
     "files": [
         "src",
         "dist"
