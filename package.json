@@ -3,7 +3,7 @@
     "type": "module",
     "private": false,
     "sideEffects": false,
-    "version": "0.0.55-8",
+    "version": "0.0.55-9",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
