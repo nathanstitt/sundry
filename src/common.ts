@@ -1,10 +1,10 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 import { cx, css } from '@emotion/css'
-export * from './types'
-export * from './util'
-export { useIsSSR, useSSRSafeId, SSRProvider } from '@react-aria/ssr'
+export * from './types.js'
+export * from './util.js'
 const { useState, useEffect, useMemo, useContext, useId, useCallback, useLayoutEffect } = React
+// export { useIsSSR, useSSRSafeId, SSRProvider } from '@react-ari./ssr.js'
 import _styled, { CSSObject, CreateStyled } from '@emotion/styled'
 
 // emotion/styled has bad cjs export: https://github.com/emotion-js/emotion/issues/2730

@@ -1,4 +1,4 @@
-import { isString } from './util'
+import { isString } from './util.js'
 
 export function toSentence(arry: string | string[], join = '&') {
     if (isString(arry)) {

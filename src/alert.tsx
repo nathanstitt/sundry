@@ -1,11 +1,11 @@
-import { React, FC, useEffect, cx, styled, useState } from './common'
-import { ColProps } from './col'
+import { React, FC, useEffect, cx, styled, useState } from './common.js'
+import { ColProps } from './col.js'
 import { CombinedError } from 'urql'
-import { errorToString } from './util'
-import { BSVariants, bsClassNames } from './bs'
-import { Delayed } from './ui-state'
-import { Icon } from './icon'
-import { ErrorTypes } from './types'
+import { errorToString } from './util.js'
+import { BSVariants, bsClassNames } from './bs.js'
+import { Delayed } from './ui-state.js'
+import { Icon } from './icon.js'
+import { ErrorTypes } from './types.js'
 
 export interface AlertProps extends BSVariants, ColProps {
     message?: string

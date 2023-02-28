@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, useCallback, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
-import { isSSR } from './util'
-import { useEventListener } from './hooks'
+import { isSSR } from './util.js'
+import { useEventListener } from './hooks.js'
 
 // https://github.com/imbhargav5/rooks/blob/main/packages/rooks/src/hooks/useLocalstorageState.ts
 

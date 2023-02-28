@@ -1,8 +1,8 @@
-import { React, styled, useMemo, cx, useId } from './common'
-import { FloatingField, FloatingFieldProps } from './floating-field'
-import { useField } from './form-hooks'
+import { React, styled, useMemo, cx, useId } from './common.js'
+import { FloatingField, FloatingFieldProps } from './floating-field.js'
+import { useField } from './form-hooks.js'
 import { useCallback } from 'react'
-import { useForkRef } from './hooks'
+import { useForkRef } from './hooks.js'
 
 const inputFieldToggleStyle = {
     padding: 0,

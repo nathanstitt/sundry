@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { useLocalstorageState } from './use-local-storage'
+import { useLocalstorageState } from './use-local-storage.js'
 
 let useIsExpanded = (id: string, defaultExpanded: boolean) => {
     return useLocalstorageState(id, defaultExpanded)

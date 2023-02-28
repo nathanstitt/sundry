@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import type { Ref, RefObject, RefCallback, MutableRefObject } from 'react'
-import { isSSR } from './util'
-import { RefElementOrNull, CallbackRef, HTMLElementOrNull } from './types'
+import { isSSR } from './util.js'
+import { RefElementOrNull, CallbackRef, HTMLElementOrNull } from './types.js'
 
 /**
  * Hooks here are an algamation of code from

@@ -1,4 +1,4 @@
-import { React, FCWC, FC, cx, useId } from './common'
+import { React, FCWC, FC, cx, useId } from './common.js'
 import type {
     UseDropdownMenuOptions,
     DropdownMenuProps as RUDdMProps,
@@ -6,7 +6,7 @@ import type {
     DropdownProps as RUDdProps,
 } from '@restart/ui/Dropdown'
 
-import { Button, ButtonProps } from './button'
+import { Button, ButtonProps } from './button.js'
 
 interface DD extends FC<RUDdProps> {
     Toggle: FC<DropdownToggleProps>

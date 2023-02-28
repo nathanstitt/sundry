@@ -1,7 +1,7 @@
-import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
+import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
 import { AnyObjectSchema } from 'yup'
-import { isShallowEqual, errorToString } from './util'
-import { usePreviousValue } from './hooks'
+import { isShallowEqual, errorToString } from './util.js'
+import { usePreviousValue } from './hooks.js'
 import {
     useForm,
     useWatch as useFormValue,
@@ -11,10 +11,10 @@ import {
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
-import { Footer } from './footer'
-import { ErrorAlert } from './alert'
-import { Button, ButtonProps } from './button'
-import { ErrorTypes } from './types'
+import { Footer } from './footer.js'
+import { ErrorAlert } from './alert.js'
+import { Button, ButtonProps } from './button.js'
+import { ErrorTypes } from './types.js'
 import { useCallback } from 'react'
 
 import {
@@ -23,16 +23,16 @@ import {
     useController,
     useFormState,
     useFormContext,
-} from './form-hooks'
-import type { FieldState, RegisteredField, FormContext } from './form-hooks'
+} from './form-hooks.js'
+import type { FieldState, RegisteredField, FormContext } from './form-hooks.js'
 
-export * from './date-time-field'
-export * from './date-time'
-export * from './floating-field'
-export * from './input-field'
-export * from './label'
-export * from './select-field'
-export * from './select'
+export * from './date-time-field.js'
+export * from './date-time.js'
+export * from './floating-field.js'
+export * from './input-field.js'
+export * from './label.js'
+export * from './select-field.js'
+export * from './select.js'
 
 export type { FormContext, FieldError, FieldState, RegisteredField }
 export { useFormState, useFormValue, useController }

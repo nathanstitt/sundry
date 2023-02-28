@@ -1,4 +1,4 @@
-import { omit } from './util'
+import { omit } from './util.js'
 
 export interface BSVariants {
     primary?: boolean

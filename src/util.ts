@@ -1,4 +1,4 @@
-import { ErrorTypes } from './types'
+import { ErrorTypes } from './types.js'
 
 export function isDate(d: any): d is Date {
     return d instanceof Date && !isNaN(d as any)

@@ -1,8 +1,8 @@
-import { Icon } from './icon'
-import { React, FCWC, styled, useCallback, cx } from './common'
+import { Icon } from './icon.js'
+import { React, FCWC, styled, useCallback, cx } from './common.js'
 import { Box } from 'boxible'
-import { themeColors, themeMedia } from './theme'
-import { useRetainedCollapse } from './use-collapse'
+import { themeColors, themeMedia } from './theme.js'
+import { useRetainedCollapse } from './use-collapse.js'
 
 const Heading = styled(Box)({
     cursor: 'pointer',

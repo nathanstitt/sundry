@@ -31,7 +31,7 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         'import/no-unresolved': 'off', // watched by typescript instead
         'react/prop-types': 0,
-        'import/extensions': ["error", "ignorePackages"],
+        'import/extensions': ['error', 'ignorePackages'],
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': ['off'],
         '@typescript-eslint/no-unused-vars': [

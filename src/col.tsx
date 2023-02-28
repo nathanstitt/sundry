@@ -1,4 +1,4 @@
-import { React, FCWC, cx } from './common'
+import { React, FCWC, cx } from './common.js'
 import { Box, BoxProps } from 'boxible'
 
 export interface ColProps extends BoxProps {

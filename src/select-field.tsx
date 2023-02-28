@@ -1,9 +1,9 @@
-import { React, useId, styled, useState, cx } from './common'
-import { useField } from './form-hooks'
-import { FloatingFieldProps, FloatingField } from './floating-field'
-import { FloatingLabel } from './label'
-import { Select, SelectOption, SelectProps } from './select'
-import type { SelectOnChangeHandler } from './select'
+import { React, useId, styled, useState, cx } from './common.js'
+import { useField } from './form-hooks.js'
+import { FloatingFieldProps, FloatingField } from './floating-field.js'
+import { FloatingLabel } from './label.js'
+import { Select, SelectOption, SelectProps } from './select.js'
+import type { SelectOnChangeHandler } from './select.js'
 
 export interface SelectFieldProps<O extends SelectOption = SelectOption>
     extends SelectProps<O>,

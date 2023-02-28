@@ -1,7 +1,7 @@
-import { React, styled, cx, FCWC } from './common'
-import { FC } from './types'
+import { React, styled, cx, FCWC } from './common.js'
+import { FC } from './types.js'
 import type { BaseModalProps } from '@restart/ui/Modal'
-import { Icon } from './icon'
+import { Icon } from './icon.js'
 
 let OverlayModal: FC<BaseModalProps> | null = null
 import('@restart/ui/Modal').then((om) => (OverlayModal = om.default))

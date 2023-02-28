@@ -1,10 +1,9 @@
-import { FC, React, styled } from './common'
-import { cx } from '@emotion/css'
 import { Box } from 'boxible'
-import { Icon } from './icon'
+import { FC, React, styled, cx } from './common.js'
+import { Icon } from './icon.js'
 import { CombinedError } from 'urql'
-import { themeColors as colors } from './theme'
-import { LoadingDots as LD } from './loading-dots'
+import { themeColors as colors } from './theme.js'
+import { LoadingDots as LD } from './loading-dots.js'
 
 const DEFAULT_DISPLAY_AFTER = 250
 
