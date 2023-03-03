@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import type { Ref, RefObject, RefCallback, MutableRefObject } from 'react'
-import { isSSR } from './util.js'
+import { emptyFn, isSSR } from './util.js'
 import { RefElementOrNull, CallbackRef, HTMLElementOrNull } from './types.js'
 
 /**
@@ -179,4 +179,41 @@ export function useOutsideClickRef(
     useEventListener('ontouchstart' as any, memoizedCallback, { useCapture: true, pause })
 
     return [ref]
+}
+
+type UseIntervalOptions = {
+    pause?: boolean
+    immediate?: boolean
+}
+
+export function useInterval(
+    callback: () => void,
+    intervalDurationMs = 0,
+    options: UseIntervalOptions = {}
+): void {
+    const savedRefCallback = useRef<() => void>()
+
+    useEffect(() => {
+        savedRefCallback.current = callback
+    })
+
+    function internalCallback() {
+        savedRefCallback.current?.()
+    }
+
+    useEffect(() => {
+        if (!options.pause) {
+            if (options.immediate) {
+                internalCallback()
+            }
+
+            const interval = window.setInterval(internalCallback, intervalDurationMs)
+
+            return () => {
+                window.clearInterval(interval)
+            }
+        }
+
+        return emptyFn
+    }, [intervalDurationMs, options])
 }
