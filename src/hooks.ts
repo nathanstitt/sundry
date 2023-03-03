@@ -192,6 +192,8 @@ export function useInterval(
     options: UseIntervalOptions = {}
 ): void {
     const savedRefCallback = useRef<() => void>()
+    const wasCalled = useRef(false)
+    const { immediate, pause } = options
 
     useEffect(() => {
         savedRefCallback.current = callback
@@ -199,21 +201,17 @@ export function useInterval(
 
     function internalCallback() {
         savedRefCallback.current?.()
+        wasCalled.current = true
     }
 
     useEffect(() => {
-        if (!options.pause) {
-            if (options.immediate) {
-                internalCallback()
-            }
-
-            const interval = window.setInterval(internalCallback, intervalDurationMs)
-
-            return () => {
-                window.clearInterval(interval)
-            }
+        if (pause) {
+            return emptyFn
         }
-
-        return emptyFn
-    }, [intervalDurationMs, options])
+        if (immediate && !wasCalled.current) {
+            internalCallback()
+        }
+        const interval = window.setInterval(internalCallback, intervalDurationMs)
+        return () => window.clearInterval(interval)
+    }, [intervalDurationMs, pause, immediate])
 }
