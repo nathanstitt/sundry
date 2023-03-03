@@ -12,11 +12,11 @@ type UseDocumentVisibilityStateReturn = Document['visibilityState'] | null
 
 export function useDocumentVisibilityState(): UseDocumentVisibilityStateReturn {
     const [visibilityState, setVisibilityState] = useState<UseDocumentVisibilityStateReturn>(
-        isSSR ? null : global.document?.visibilityState
+        isSSR ? null : document?.visibilityState
     )
 
     const handleVisibilityChange = useCallback(() => {
-        setVisibilityState(isSSR ? null : global.document?.visibilityState)
+        setVisibilityState(isSSR ? null : document?.visibilityState)
     }, [])
 
     useEventListener('visibilitychange', handleVisibilityChange)
