@@ -97,7 +97,7 @@ export function useEventListener<
 ): void {
     const { pause, target, useCapture, ...remainingOptions } = options
     const listenerOptions = useCapture ? true : remainingOptions
-    const element = target || isSSR ? null : document
+    const element = target || (isSSR ? null : document)
 
     useEffect(() => {
         if (isSSR || pause || !element) {
