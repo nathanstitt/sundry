@@ -20,9 +20,9 @@ const config = defineConfig({
         lib: {
             entry: {
                 'base': './src/index.ts',
-                'form/index': './src/form.tsx',
-                'modal/index': './src/modal.tsx',
-                'menu/index': './src/menu.tsx',
+                'form': './src/form.tsx',
+                'modal': './src/modal.tsx',
+                'menu': './src/menu.tsx',
             },
         },
         rollupOptions: {
