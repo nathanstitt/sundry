@@ -11,19 +11,19 @@
             "import": "./dist/base.js"
         },
         "./form": {
-            "types": "./dist/form.d.ts",
-            "require": "./dist/form.cjs",
-            "import": "./dist/form.js"
+            "types": "./dist/form/index.d.ts",
+            "require": "./dist/form/index.cjs",
+            "import": "./dist/form/index.js"
         },
         "./modal": {
-            "types": "./dist/modal.d.ts",
-            "require": "./dist/modal.cjs",
-            "import": "./dist/modal.js"
+            "types": "./dist/modal/index.d.ts",
+            "require": "./dist/modal/index.cjs",
+            "import": "./dist/modal/index.js"
         },
         "./menu": {
-            "types": "./dist/menu.d.ts",
-            "require": "./dist/menu.cjs",
-            "import": "./dist/menu.js"
+            "types": "./dist/menu/index.d.ts",
+            "require": "./dist/menu/index.cjs",
+            "import": "./dist/menu/index.js"
         }
     },
     "files": [
