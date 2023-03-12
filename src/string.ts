@@ -11,6 +11,8 @@ export function toSentence(arry: string | string[], join = '&') {
     }
 }
 
+export const captialize = (str: string) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
+
 export const titleize = (input: string) => {
     return input
         .toLowerCase()
@@ -47,3 +49,6 @@ export const extractSurroundingWords = (word: string, text: string) => {
     const match = text.match(wordSurround)
     return match ? match[0] : null
 }
+
+export const urlWithScheme = (str: string, scheme = 'https') =>
+    str.startsWith('http') ? '' : `${scheme}://${str}`
