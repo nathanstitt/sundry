@@ -6,7 +6,6 @@ import typescript from '@rollup/plugin-typescript'
 
 const packageName = packageJson.name.replace(RegExp('.*/'), '')
 
-
 const fileName = {
     es: `${packageName}.mjs`,
     cjs: `${packageName}.cjs`,
@@ -17,9 +16,11 @@ const config = defineConfig({
     base: "./",
     build: {
         emptyOutDir: true,
+        minify: false,
         lib: {
             entry: {
-                'base': './src/index.ts',
+                'base': './src/base.ts',
+                'ui': './src/ui.ts',
                 'form': './src/form.tsx',
                 'modal': './src/modal.tsx',
                 'menu': './src/menu.tsx',
@@ -29,9 +30,6 @@ const config = defineConfig({
             external: ['react', '@emotion', '@emotion/css', '@emotion/styled', '@emotion/react'],
             plugins: [excludeDependenciesFromBundle(), typescript()],
             output: {
-                // entryFileNames: `[name].js`,
-                // assetFileNames: `[name].[ext]`,
-
                 // Provide global variables to use in the UMD build
                 // for externalized deps
                 globals: {
