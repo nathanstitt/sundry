@@ -1,9 +1,10 @@
 {
     "include": ["./src", "./types"],
-
+    "exclude": ["dist", "**/*.test.ts", "node_modules", "test/**", ".history/**"],
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "dist",
+        "declaration": true,
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "node",
@@ -15,7 +16,6 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "declaration": true,
         "noEmit": false,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
@@ -23,6 +23,5 @@
         "forceConsistentCasingInFileNames": true,
         "types": ["vite/client", "node"],
         "typeRoots": ["node_modules/@types", "./types"]
-    },
-    "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
+    }
 }
