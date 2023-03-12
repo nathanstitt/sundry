@@ -1,5 +1,5 @@
-import { React, cx, isNil } from './common.js'
-import { themeColors as colors } from './theme.js'
+import { React, cx, isNil } from '../common.js'
+import { themeColors as colors } from '../theme.js'
 import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
 
 let ReactSelectCreate: ReactSelect | null = null

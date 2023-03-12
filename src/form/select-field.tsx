@@ -1,4 +1,4 @@
-import { React, useId, styled, useState, cx } from './common.js'
+import { React, useId, styled, useState, cx } from '../common.js'
 import { useField } from './form-hooks.js'
 import { FloatingFieldProps, FloatingField } from './floating-field.js'
 import { FloatingLabel } from './label.js'

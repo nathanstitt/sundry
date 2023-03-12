@@ -1,4 +1,4 @@
-import { styled } from './common.js'
+import { styled } from '../common.js'
 
 export const FloatingLabel = styled.label<{
     isRaised?: boolean

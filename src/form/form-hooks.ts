@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { FCWOC, ErrorTypes } from './types.js'
+import { FCWOC, ErrorTypes } from '../types.js'
 
 import {
     FieldValues,

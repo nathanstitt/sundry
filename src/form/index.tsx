@@ -1,7 +1,7 @@
-import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
+import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from '../common.js'
 import { AnyObjectSchema } from 'yup'
-import { isShallowEqual, errorToString } from './util.js'
-import { usePreviousValue } from './hooks.js'
+import { isShallowEqual, errorToString } from '../util.js'
+import { usePreviousValue } from '../hooks.js'
 import {
     useForm,
     useWatch as useFormValue,
@@ -11,10 +11,10 @@ import {
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
-import { Footer } from './footer.js'
-import { ErrorAlert } from './alert.js'
-import { Button, ButtonProps } from './button.js'
-import { ErrorTypes } from './types.js'
+import { Footer } from '../footer.js'
+import { ErrorAlert } from '../alert.js'
+import { Button, ButtonProps } from '../button.js'
+import { ErrorTypes } from '../types.js'
 import { useCallback } from 'react'
 
 import {

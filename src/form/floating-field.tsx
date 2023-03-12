@@ -1,6 +1,6 @@
-import { React, FCWC, styled, cx } from './common.js'
+import { React, FCWC, styled, cx } from '../common.js'
 import { BoxProps } from 'boxible'
-import { Col, ColProps } from './col.js'
+import { Col, ColProps } from '../col.js'
 import { ExtraInfo } from './label.js'
 import { useFieldState } from './form-hooks.js'
 
