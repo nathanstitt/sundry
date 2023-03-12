@@ -52,3 +52,5 @@ export const extractSurroundingWords = (word: string, text: string) => {
 
 export const urlWithScheme = (str: string, scheme = 'https') =>
     str.startsWith('http') ? '' : `${scheme}://${str}`
+
+export const urlWithoutScheme = (str: string) => str.replace(/(^\w+:|^)\/\//, '')
