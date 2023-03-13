@@ -50,6 +50,7 @@ export interface SectionProps {
     footer?: React.ReactNode
     controls?: React.ReactNode
     fullWidth?: boolean
+    isRow?: boolean
     noPad?: boolean
     noBorder?: boolean
 }
@@ -62,6 +63,7 @@ export const Section: FCWC<SectionProps> = ({
     heading,
     footer,
     children,
+    isRow,
     controls,
     fullWidth,
     noPad,
@@ -93,6 +95,7 @@ export const Section: FCWC<SectionProps> = ({
                     noBorder={noBorder}
                     className={cx('secbody', bodyClassName, {
                         'container-lg': !fullWidth,
+                        'row': isRow != false,
                     })}
                 >
                     {children}
