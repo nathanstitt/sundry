@@ -95,7 +95,7 @@ export const Section: FCWC<SectionProps> = ({
                     noBorder={noBorder}
                     className={cx('secbody', bodyClassName, {
                         'container-lg': !fullWidth,
-                        'row': isRow != false,
+                        row: isRow != false,
                     })}
                 >
                     {children}
