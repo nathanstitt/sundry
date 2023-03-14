@@ -11,15 +11,17 @@
             ]
         }
     },
+    "main": "./dist/index.cjs",
+    "exports": "./dist/index.js",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "default": "./dist/index.js",
+            "import": "./dist/index.js",
             "require": "./dist/index.cjs"
         },
         "./*": {
             "types": "./types/*.d.ts",
-            "default": "./dist/*.js",
+            "import": "./dist/*.js",
             "require": "./dist/*.cjs"
         }
     },

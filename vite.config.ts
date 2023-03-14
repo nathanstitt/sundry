@@ -19,6 +19,7 @@ const config = defineConfig({
         minify: false,
         lib: {
             entry: {
+                'index': './src/index.ts',
                 'base': './src/base.ts',
                 'ui': './src/ui.ts',
                 'form': './src/form.tsx',
