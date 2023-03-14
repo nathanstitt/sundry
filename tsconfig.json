@@ -1,12 +1,13 @@
 {
     "include": ["./src", "./types"],
-
+    "exclude": ["dist", "**/*.test.ts", "node_modules", "test/**", ".history/**"],
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "dist",
+        "declaration": true,
         "target": "ESNext",
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "node",
         "useDefineForClassFields": true,
         "allowJs": true,
         "lib": ["ESNext", "DOM"],
@@ -15,14 +16,12 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "declaration": true,
         "noEmit": false,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["vite/client", "node", "jest", "@types/testing-library__jest-dom"],
-        "typeRoots": ["node_modules/@types", "./types", "@types/testing-library__jest-dom"]
-    },
-    "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
+        "types": ["vite/client", "node"],
+        "typeRoots": ["node_modules/@types", "./types"]
+    }
 }

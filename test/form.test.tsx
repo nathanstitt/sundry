@@ -1,14 +1,12 @@
 import * as React from 'react'
-import { Form } from '../src/form'
+//import '@testing-library/jest-dom/extend-expect'
+import { Form, InputField, DateTimeField, SelectField } from '../src/form.js'
 import * as Yup from 'yup'
-import { InputField } from '../src/input-field'
-import { DateTimeField } from '../src/date-time-field'
-import { SelectField } from '../src/select-field'
 import { select } from 'react-select-event'
 import userEvent from '@testing-library/user-event'
-import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom/extend-expect'
-import { dayjs } from '../src/date'
+import { render, screen, cleanup } from '@testing-library/react'
+import { dayjs } from '../src/date.js'
+import { test, expect, vi, beforeEach } from 'vitest'
 
 function setup(jsx: any) {
     return {
@@ -17,8 +15,10 @@ function setup(jsx: any) {
     }
 }
 
+beforeEach(cleanup)
+
 test('loads and displays greeting', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
 
     expect(dayjs('2022-10-10').format('l')).toEqual('10/10/2022')
 
@@ -65,7 +65,7 @@ test('loads and displays greeting', async () => {
 })
 
 test('validation', async () => {
-    const onSubmit = jest.fn()
+    const onSubmit = vi.fn()
     const { user, findByText } = setup(
         <Form
             defaultValues={{ name: '' }}

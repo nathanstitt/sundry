@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import { styled } from './common.js'
 
 export const FloatingLabel = styled.label<{
     isRaised?: boolean

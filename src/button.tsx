@@ -1,10 +1,9 @@
-import { React, PropsWithOptionalChildren, cx } from './common'
-import styled, { CSSObject } from '@emotion/styled'
-import { BSVariants, bsClassNames } from './bs'
-import { LoadingDots as LD } from './loading-dots'
-import { IconKey, Icon } from './icon'
-import { usePendingState } from './pending'
-import { themeMedia as media } from './theme'
+import { React, PropsWithOptionalChildren, CSSObject, styled, cx } from './common.js'
+import { BSVariants, bsClassNames } from './bs.js'
+import { LoadingDots as LD } from './loading-dots.js'
+import { IconKey, Icon } from './icon.js'
+import { usePendingState } from './pending.js'
+import { themeMedia as media } from './theme.js'
 
 const iconStyle = {
     display: 'flex',

@@ -1,9 +1,8 @@
-import { Icon } from './icon'
-import { React, FCWC, useCallback, cx } from './common'
+import { Icon } from './icon.js'
+import { React, FCWC, styled, useCallback, cx } from './common.js'
 import { Box } from 'boxible'
-import styled from '@emotion/styled'
-import { themeColors, themeMedia } from './theme'
-import { useRetainedCollapse } from './use-collapse'
+import { themeColors, themeMedia } from './theme.js'
+import { useRetainedCollapse } from './use-collapse.js'
 
 const Heading = styled(Box)({
     cursor: 'pointer',
@@ -38,14 +37,20 @@ const SectionWrapper = styled.section({
     },
 })
 
+const SectionFooter = styled.div(({ noPad }: { noPad: boolean | undefined }) => ({
+    padding: noPad ? 0 : '0 1rem 1rem 1rem',
+}))
+
 export interface SectionProps {
     id: string
     bodyClassName?: string
     headingClassName?: string
     className?: string
     heading: React.ReactNode
+    footer?: React.ReactNode
     controls?: React.ReactNode
     fullWidth?: boolean
+    isRow?: boolean
     noPad?: boolean
     noBorder?: boolean
 }
@@ -56,7 +61,9 @@ export const Section: FCWC<SectionProps> = ({
     bodyClassName,
     headingClassName,
     heading,
+    footer,
     children,
+    isRow,
     controls,
     fullWidth,
     noPad,
@@ -88,10 +95,16 @@ export const Section: FCWC<SectionProps> = ({
                     noBorder={noBorder}
                     className={cx('secbody', bodyClassName, {
                         'container-lg': !fullWidth,
+                        'row': isRow != false,
                     })}
                 >
                     {children}
                 </Body>
+                {footer && (
+                    <SectionFooter className="footer" noPad={noPad}>
+                        {footer}
+                    </SectionFooter>
+                )}
             </div>
         </SectionWrapper>
     )

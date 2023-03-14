@@ -1,63 +1,43 @@
-import { FCWOC, FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common'
+import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
 import { AnyObjectSchema } from 'yup'
-import { isShallowEqual, errorToString } from './util'
-import { usePreviousDifferent } from 'rooks'
+import { isShallowEqual, errorToString } from './util.js'
+import { usePreviousValue } from './hooks.js'
 import {
+    useForm,
     useWatch as useFormValue,
-    FieldValues,
     FormProvider,
     SubmitHandler,
-    UseFormReturn,
-    UseFormRegisterReturn,
-    UseFormGetFieldState,
-    useFormContext as _useFormContext,
-    useForm,
-    useController,
-    useFormState,
     FieldError,
-    FieldPath,
-    UseControllerReturn,
 } from 'react-hook-form'
-
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
-import { Footer } from './footer'
-import { ErrorAlert } from './alert'
-import { Button, ButtonProps } from './button'
-import { ErrorTypes } from './types'
+import { Footer } from './footer.js'
+import { ErrorAlert } from './alert.js'
+import { Button, ButtonProps } from './button.js'
+import { ErrorTypes } from './types.js'
 import { useCallback } from 'react'
 
-type FieldState = UseFormGetFieldState<Record<string, string>>
-type RegisteredField = UseFormRegisterReturn<any>
-export type { FieldError, FieldState, RegisteredField }
+import {
+    FormTriggerValidation,
+    FORM_ERROR_KEY,
+    useController,
+    useFormState,
+    useFormContext,
+} from './form-hooks.js'
+import type { FieldState, RegisteredField, FormContext } from './form-hooks.js'
+export * from './form-hooks.js'
+export * from './date-time-field.js'
+export * from './date-time.js'
+export * from './floating-field.js'
+export * from './input-field.js'
+export * from './label.js'
+export * from './select-field.js'
+export * from './select.js'
 
+export type { FormContext, FieldError, FieldState, RegisteredField }
 export { useFormState, useFormValue, useController }
 
-const FORM_ERROR_KEY = 'FORM_ERROR'
-
-export type FormContext<T extends FieldValues> = UseFormReturn<T> & {
-    isReadOnly: boolean
-    setFormError(err: ErrorTypes): void
-}
-
-export const useFormContext = _useFormContext as any as <
-    TFV extends FieldValues
->() => FormContext<TFV>
-
-export function useFieldState(name: string) {
-    return useFormContext().getFieldState(name)
-}
-
-export type UseFieldReturn<
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = UseControllerReturn<TFieldValues, TName> & { isReadOnly: boolean }
-
-export function useField(name: string): UseFieldReturn {
-    const { isReadOnly } = useFormContext()
-    const fc = useController({ name })
-    return { isReadOnly, ...fc }
-}
+//const FORM_ERROR_KEY = 'FORM_ERROR'
 
 export type FormSubmitHandler<FV extends FormValues> = (
     values: FV,
@@ -84,14 +64,6 @@ interface FormProps<FV extends FormValues> {
     validationSchema?: AnyObjectSchema
 }
 
-export const FormTriggerValidation: FCWOC = () => {
-    const { trigger } = useFormContext()
-    useEffect(() => {
-        trigger()
-    }, [trigger])
-    return null
-}
-
 export function Form<FV extends FormValues>({
     action,
     children,
@@ -114,7 +86,7 @@ export function Form<FV extends FormValues>({
         //     return ret
         // },
     })
-    const prevDefaultValues = usePreviousDifferent(defaultValues)
+    const prevDefaultValues = usePreviousValue(defaultValues)
     useEffect(() => {
         if (enableReinitialize) {
             if (prevDefaultValues && !isShallowEqual(prevDefaultValues, defaultValues)) {
@@ -159,16 +131,6 @@ export function Form<FV extends FormValues>({
                 {children}
             </form>
         </FormProvider>
-    )
-}
-
-export const useSetFormError = () => {
-    const fc = useFormContext()
-    return useCallback(
-        (err: ErrorTypes) => {
-            fc.setError(FORM_ERROR_KEY, err as any)
-        },
-        [fc]
     )
 }
 

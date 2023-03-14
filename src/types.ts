@@ -28,3 +28,11 @@ export type GenericErrorObject = {
     error: true
 }
 export type ErrorTypes = CombinedError | GenericErrorObject | Error | string | false | undefined
+
+export type JSONValue = string | number | boolean | { [x: string]: JSONValue } | Array<JSONValue>
+
+export type RefElementOrNull<T> = T | null
+
+export type HTMLElementOrNull = HTMLElement | null
+
+export type CallbackRef<T extends HTMLElement | null = HTMLElementOrNull> = (node: T) => void

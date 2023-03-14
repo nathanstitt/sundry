@@ -1,5 +1,4 @@
-import { React, FC } from './common'
-import styled from '@emotion/styled'
+import { styled, React, FC } from './common.js'
 import { keyframes } from '@emotion/react'
 
 const BounceAnimation = keyframes`

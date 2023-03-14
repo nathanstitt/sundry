@@ -1,9 +1,9 @@
-import { React, useId, useState, cx } from './common'
-import styled from '@emotion/styled'
-import { useField } from './form'
-import { FloatingFieldProps, FloatingField } from './floating-field'
-import { FloatingLabel } from './label'
-import { Select, SelectOption, SelectProps, SelectValue } from './select'
+import { React, useId, styled, useState, cx } from './common.js'
+import { useField } from './form-hooks.js'
+import { FloatingFieldProps, FloatingField } from './floating-field.js'
+import { FloatingLabel } from './label.js'
+import { Select, SelectOption, SelectProps } from './select.js'
+import type { SelectOnChangeHandler } from './select.js'
 
 export interface SelectFieldProps<O extends SelectOption = SelectOption>
     extends SelectProps<O>,
@@ -45,6 +45,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
     name,
     id: providedId,
     label,
+    isDisabled,
     placeholder = '',
     isMulti,
     cacheOptions,
@@ -73,17 +74,20 @@ export function SelectField<O extends SelectOption = SelectOption>({
     const v = field.value || value
     const hasValue = Array.isArray(v) ? v.length > 0 : !!v
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
-    const onFocus = () => {
+    const onFocus = React.useCallback(() => {
         setFocusState(true)
-    }
-    const onBlur = () => {
+    }, [setFocusState])
+    const onBlur = React.useCallback(() => {
         setFocusState(false)
         field.onBlur()
-    }
-    const onChange = (value: SelectValue, option: SelectOption, meta: any) => {
-        field.onChange({ target: { ...field, value } })
-        propsOnChange?.(value, option, meta)
-    }
+    }, [field, setFocusState])
+    const onChange: SelectOnChangeHandler = React.useCallback(
+        (value, option, meta) => {
+            field.onChange({ target: { ...field, value } })
+            propsOnChange?.(value, option, meta)
+        },
+        [field, propsOnChange]
+    )
 
     const select = (
         <Select
@@ -95,7 +99,7 @@ export function SelectField<O extends SelectOption = SelectOption>({
             name={name}
             onCreateOption={onCreateOption}
             allowCreate={allowCreate}
-            isDisabled={readOnly}
+            isDisabled={isDisabled || readOnly}
             isMulti={isMulti}
             noOptionsMessage={noOptionsMessage}
             isClearable={isClearable}

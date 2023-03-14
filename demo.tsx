@@ -1,18 +1,14 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
+import { Box, DropdownMenu, Section, Yup } from './src'
 import {
-    EditingForm,
     DateTimeField,
-    SelectField,
-    InputField,
-    Yup,
+    EditingForm,
     FormSubmitHandler,
-    DropdownMenu,
-    Section,
-    Box,
-    Modal,
-    Button,
-} from './src'
+    InputField,
+    SelectField,
+    SelectOnChangeHandler,
+} from './src/form'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
@@ -27,6 +23,9 @@ export default function Demo() {
         throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
+    const logSelectChange: SelectOnChangeHandler = (v) => {
+        console.log(v)
+    }
     return (
         <div className="container mt-5">
             <h6 className="mt-4">Form test</h6>
@@ -34,6 +33,11 @@ export default function Demo() {
                 className="row"
                 defaultValues={{
                     name: '',
+                    nested: [
+                        {
+                            name: 'b',
+                        },
+                    ],
                     cbv: true,
                     rbv: 'c',
                     from: new Date('2022-10-21'),
@@ -52,6 +56,7 @@ export default function Demo() {
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
+                    onChange={logSelectChange}
                     placeholder="Select an option..."
                     label="Options"
                     options={[
@@ -59,7 +64,7 @@ export default function Demo() {
                         { label: 'B', value: 'b' },
                         { label: 'C', value: 'c' },
                     ]}
-                    name="ab"
+                    name="nested[0].name"
                 />
                 <SelectField
                     placeholder="Select without a label"
@@ -87,7 +92,12 @@ export default function Demo() {
             <h6 className="mt-4">Section test</h6>
             <Box direction="column">
                 <h4>hi</h4>
-                <Section id="section-test" className="mb-4" heading="This is a section">
+                <Section
+                    id="section-test"
+                    className="mb-4"
+                    heading="This is a section"
+                    footer={<Box justify="end">This is footer</Box>}
+                >
                     <div style={{ border: '1px solid blue', margin: 20 }}>
                         <h5>Hello world</h5>
                         <button

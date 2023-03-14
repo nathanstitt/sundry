@@ -1,10 +1,9 @@
-import { css, cx, React, PropsWithOptionalChildren } from './common'
-import styled from '@emotion/styled'
+import { css, cx, styled, React, PropsWithOptionalChildren } from './common.js'
 import { keyframes, CSSObject } from '@emotion/react'
-import { Popover, PopoverProps, Tooltip, TooltipProps } from './popover'
+import { Popover, PopoverProps, Tooltip, TooltipProps } from './popover.js'
 import { Icon as IconifyIconComponent } from '@iconify/react'
 import type { IconifyIcon } from '@iconify/react'
-import { ICON_DEFINITIONS, setSundryIcons } from './packaged-icons'
+import { ICON_DEFINITIONS, setSundryIcons } from './packaged-icons.js'
 
 const spinKeyframes = keyframes`
   from {

@@ -1,4 +1,4 @@
-import { isString } from './util'
+import { isString } from './util.js'
 
 export function toSentence(arry: string | string[], join = '&') {
     if (isString(arry)) {
@@ -10,6 +10,8 @@ export function toSentence(arry: string | string[], join = '&') {
         return arry[0]
     }
 }
+
+export const capitalize = (str: string) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
 export const titleize = (input: string) => {
     return input
@@ -47,3 +49,8 @@ export const extractSurroundingWords = (word: string, text: string) => {
     const match = text.match(wordSurround)
     return match ? match[0] : null
 }
+
+export const urlWithScheme = (str: string, scheme = 'https') =>
+    str.startsWith('http') ? '' : `${scheme}://${str}`
+
+export const urlWithoutScheme = (str: string) => str.replace(/(^\w+:|^)\/\//, '')

@@ -1,9 +1,8 @@
-import { React, FCWC, cx } from './common'
-import styled from '@emotion/styled'
+import { React, FCWC, styled, cx } from './common.js'
 import { BoxProps } from 'boxible'
-import { Col, ColProps } from './col'
-import { ExtraInfo } from './label'
-import { useFieldState } from './form'
+import { Col, ColProps } from './col.js'
+import { ExtraInfo } from './label.js'
+import { useFieldState } from './form-hooks.js'
 
 export interface FloatingFieldProps extends BoxProps, ColProps {
     id: string
