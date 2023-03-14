@@ -1,5 +1,5 @@
 import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
-import { AnyObjectSchema } from 'yup'
+import type { ObjectSchema } from 'yup'
 import { isShallowEqual, errorToString } from './util.js'
 import { usePreviousValue } from './hooks.js'
 import {
@@ -61,7 +61,7 @@ interface FormProps<FV extends FormValues> {
     validateOnMount?: boolean
     onReset?: (values: FV, ctx: FormContext<FV>) => void
     onSubmit: FormSubmitHandler<FV>
-    validationSchema?: AnyObjectSchema
+    validationSchema?: ObjectSchema<FV>
 }
 
 export function Form<FV extends FormValues>({
