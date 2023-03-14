@@ -10,6 +10,8 @@ import {
     DropdownMenu,
     Section,
     Box,
+    Modal,
+    Button,
 } from './src'
 
 import 'bootstrap/dist/css/bootstrap.css'
@@ -98,7 +100,35 @@ export default function Demo() {
                     </div>
                 </Section>
             </Box>
+
+            <h3>Modal Example</h3>
+            <ModalExamples />
         </div>
+    )
+}
+
+const ModalExamples = () => {
+    const [show1, setShow1] = React.useState<boolean>(false)
+    const [show2, setShow2] = React.useState<boolean>(false)
+    const [show3, setShow3] = React.useState<boolean>(false)
+    return (
+        <Box direction="column" width="20%" gap="large">
+            <Button onClick={() => setShow1(true)}>With close btn and no header</Button>
+            <Modal center show={show1} onHide={() => setShow1(false)}>
+                <Modal.Body>test</Modal.Body>
+            </Modal>
+
+            <Button onClick={() => setShow2(true)}>No close button</Button>
+            <Modal center show={show2} closeBtn={false} onHide={() => setShow2(false)}>
+                <Modal.Body>test</Modal.Body>
+            </Modal>
+
+            <Button onClick={() => setShow3(true)}>With header</Button>
+            <Modal center show={show3} onHide={() => setShow3(false)}>
+                <Modal.Header>A Header</Modal.Header>
+                <Modal.Body>Body Text</Modal.Body>
+            </Modal>
+        </Box>
     )
 }
 

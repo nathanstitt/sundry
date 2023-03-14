@@ -30,6 +30,14 @@ interface ModalI extends FCWC<ModalProps> {
     Footer: FCWC<ModalPartProps>
 }
 
+const CloseIcon = styled(Icon)({
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    cursor: 'pointer',
+    zIndex: 1,
+})
+
 const Modal: ModalI = ({
     className,
     header,
@@ -76,13 +84,22 @@ const Modal: ModalI = ({
                             {closeBtn && (
                                 <Icon
                                     data-test-id="modal-close-btn"
-                                    icon="close"
+                                    icon="cancel"
                                     onClick={onHide}
                                     height={28}
                                     width={28}
                                 />
                             )}
                         </Modal.Header>
+                    )}
+                    {!title && closeBtn && (
+                        <CloseIcon
+                            data-test-id="modal-close-btn"
+                            icon="xSimple"
+                            onClick={onHide}
+                            height={28}
+                            width={28}
+                        />
                     )}
                     {children}
                 </Content>

@@ -7,6 +7,7 @@ import close from '@iconify/icons-bi/x-square'
 import spin from '@iconify/icons-bi/arrow-clockwise'
 import plusSquare from '@iconify/icons-bi/plus-square'
 import minusSquare from '@iconify/icons-bi/dash-square'
+import xSimple from '@iconify/icons-bi/x'
 
 import type { IconifyIcon } from '@iconify/react'
 
@@ -23,6 +24,7 @@ export let ICON_DEFINITIONS = {
     close,
     plusSquare,
     minusSquare,
+    xSimple,
 }
 
 type IconTypes<Type> = {
