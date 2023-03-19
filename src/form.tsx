@@ -1,5 +1,5 @@
 import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
-import type { ObjectSchema } from 'yup'
+import type { AnyObjectSchema } from 'yup'
 import { isShallowEqual, errorToString } from './util.js'
 import { usePreviousValue } from './hooks.js'
 import {
@@ -14,7 +14,7 @@ import { Box } from 'boxible'
 import { Footer } from './footer.js'
 import { ErrorAlert } from './alert.js'
 import { Button, ButtonProps } from './button.js'
-import { ErrorTypes } from './types.js'
+import { FC, ErrorTypes } from './types.js'
 import { useCallback } from 'react'
 
 import {
@@ -39,7 +39,7 @@ export { useFormState, useFormValue, useController }
 
 //const FORM_ERROR_KEY = 'FORM_ERROR'
 
-export type FormSubmitHandler<FV extends FormValues> = (
+export type FormSubmitHandler<FV extends FormValues = object> = (
     values: FV,
     ctx: FormContext<FV>
 ) => void | Promise<void>
@@ -61,7 +61,7 @@ interface FormProps<FV extends FormValues> {
     validateOnMount?: boolean
     onReset?: (values: FV, ctx: FormContext<FV>) => void
     onSubmit: FormSubmitHandler<FV>
-    validationSchema?: ObjectSchema<FV>
+    validationSchema?: AnyObjectSchema
 }
 
 export function Form<FV extends FormValues>({
@@ -99,7 +99,14 @@ export function Form<FV extends FormValues>({
         return {
             isReadOnly: !!readOnly,
             setFormError(error: ErrorTypes) {
-                fc.setError(FORM_ERROR_KEY, { type: FORM_ERROR_KEY, message: errorToString(error) })
+                if (error) {
+                    fc.setError(FORM_ERROR_KEY, {
+                        type: FORM_ERROR_KEY,
+                        message: errorToString(error),
+                    })
+                } else {
+                    fc.clearErrors(FORM_ERROR_KEY)
+                }
             },
             ...fc,
         }
@@ -244,7 +251,7 @@ function SaveCancelBtn({
     )
 }
 
-export function FormError() {
+export const FormError: FC = () => {
     const fc = useFormContext()
     const fs = useFormState({ name: FORM_ERROR_KEY })
 

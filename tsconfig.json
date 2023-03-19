@@ -18,6 +18,7 @@
         "esModuleInterop": true,
         "noEmit": false,
         "noUnusedLocals": true,
+        "strictNullChecks": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "forceConsistentCasingInFileNames": true,

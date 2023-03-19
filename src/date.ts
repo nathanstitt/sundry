@@ -11,8 +11,8 @@ export { dayjs }
 
 export type DateTimeInputs = Date | string | number | dayjs.Dayjs
 
-export function formatHoursDuration(hours?: number, empty: any = ''): string {
-    if (hours == null) {
+export function formatHoursDuration(hours: number | null | undefined, empty: any = ''): string {
+    if (isNil(hours)) {
         return empty
     }
     const negative = hours < 0
@@ -44,8 +44,7 @@ export const toDateTime = (dateThing: DateTimeInputs): Date => {
     return toDayJS(dateThing).toDate()
 }
 
-export const formatDate = (dateThing?: DateTimeInputs | null, format = 'll'): string | null => {
-    if (!dateThing) return null
+export const formatDate = (dateThing: DateTimeInputs, format = 'll'): string => {
     return toDayJS(dateThing).format(format)
 }
 

@@ -9,12 +9,18 @@ export function isString(s: any): s is string {
 export function isNumber(n: any): n is number {
     return typeof n === 'number'
 }
-export function isNil(val: any): val is { val: null } | { val: undefined } {
+export function isNil(val: unknown): val is null | undefined {
     return val == null
 }
+export function nonNil<TValue>(value: TValue | null | undefined): value is TValue {
+    return !isNil(value)
+}
+export function isDefined<Value>(value: Value | undefined | null): value is Value {
+    return value != null
+}
 
-export function compact<T>(a: Array<any>): Array<T> {
-    return a.filter(Boolean)
+export function compact<T>(a: Array<T | null | undefined>): Array<T> {
+    return a.filter(isDefined)
 }
 
 export function coalesce<T>(target?: any, defaultVal?: T): T {
@@ -85,6 +91,7 @@ export function retry<T>(
 }
 
 export function emptyFn() {} // eslint-disable-line
+export const emptyObject = Object.create(null)
 
 export async function getFetchBody(resp: Response) {
     const text = await resp.text()
@@ -132,3 +139,7 @@ export function isShallowEqual(object1: Record<any, any>, object2: Record<any, a
 }
 
 export const isSSR = typeof document == 'undefined'
+
+export function toArray<T>(aryOrEl: T | Array<T>) {
+    return Array.isArray(aryOrEl) ? aryOrEl : [aryOrEl]
+}

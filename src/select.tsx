@@ -139,7 +139,7 @@ export type SelectOnChangeHandler = (
     meta: ActionMeta<SelectOptionType>
 ) => void
 
-const optionForValue = (value: SelectValue | undefined, options: SelectOptions) => {
+const optionForValue = (value: SelectValue | null | undefined, options: SelectOptions) => {
     if (isNil(value)) return null
     const v = Array.isArray(value)
         ? options.filter((o) => o && value.includes(o.value))
@@ -153,7 +153,7 @@ export type SelectLoadOptionsFn = (inputValue: string) => Promise<SelectOptions>
 
 export interface SelectProps<O extends SelectOption = SelectOption>
     extends Omit<ReactSelectProps, 'isMulti' | 'onChange' | 'name'> {
-    defaultValue?: SelectValue
+    defaultValue?: SelectValue | null | undefined
     onCreateOption?: (value: string) => void
     value?: SelectValue
     isMulti?: boolean

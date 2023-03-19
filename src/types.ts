@@ -27,7 +27,14 @@ export type GenericErrorObject = {
     message: string
     error: true
 }
-export type ErrorTypes = CombinedError | GenericErrorObject | Error | string | false | undefined
+export type ErrorTypes =
+    | CombinedError
+    | GenericErrorObject
+    | Error
+    | string
+    | false
+    | null
+    | undefined
 
 export type JSONValue = string | number | boolean | { [x: string]: JSONValue } | Array<JSONValue>
 
@@ -36,3 +43,15 @@ export type RefElementOrNull<T> = T | null
 export type HTMLElementOrNull = HTMLElement | null
 
 export type CallbackRef<T extends HTMLElement | null = HTMLElementOrNull> = (node: T) => void
+
+export type Required<T> = {
+    [P in keyof T]-?: T[P]
+}
+
+export type RequiredParameters<F extends (...args: any) => any> = F extends (
+    ...args: infer A
+) => any
+    ? Required<A>
+    : never
+
+export type NonUndefined<A> = A extends undefined ? never : A
