@@ -217,7 +217,7 @@ function SaveCancelBtn({
     showControls,
     saveLabel = 'Save',
     cancelLabel = 'Cancel',
-    deleteLabel,
+    deleteLabel = 'Delete',
 }: SaveCancelBtnProps): JSX.Element | null {
     const fc = useFormContext()
 
