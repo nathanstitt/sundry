@@ -1,12 +1,8 @@
 import { React, FCWC, cx, useId } from './common.js'
-import type {
-    UseDropdownMenuOptions,
-    DropdownProps as RUDdProps,
-} from '@restart/ui/Dropdown'
+import type { UseDropdownMenuOptions, DropdownProps as RUDdProps } from '@restart/ui/Dropdown'
 
 import { Button, ButtonProps } from './button.js'
 import Dropdown from '@restart/ui/Dropdown'
-
 
 export const dropDownMenuDefaultOptions: UseDropdownMenuOptions = {
     flip: true,
