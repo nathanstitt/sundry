@@ -1,6 +1,5 @@
 {
     "name": "@nathanstitt/sundry",
-    "type": "module",
     "private": false,
     "sideEffects": false,
     "version": "1.1.2",
@@ -102,12 +101,12 @@
         "@iconify/react": "^4.1",
         "@popperjs/core": "^2.11",
         "@react-aria/ssr": "^3.5.0",
-        "boxible": "^1.7",
+        "boxible": "^1.7.1",
         "flatpickr": "^4.6",
         "graphql": "^16.6",
         "react-hook-form": "^7.43",
         "react-popper": "^2.3",
-        "react-select": "^5.7",
+        "react-select": "^5.7.1",
         "spark-md5": "^3.0",
         "urql": "^3.0",
         "yup": "^0.32"

@@ -8,7 +8,7 @@ import { ErrorTypes } from './types.js'
 import { errorToString } from './util.js'
 
 const DEFAULT_DISPLAY_AFTER = 250
-const ICON_HEIGHT = 30; // px
+const ICON_HEIGHT = 30 // px
 
 const { useState, useEffect } = React
 
@@ -96,7 +96,11 @@ export interface SuccessPropsI {
     message: React.ReactNode
 }
 export const SuccessMessage: FC<BusyMessageProps> = ({ message }) => (
-    <Message variant="success" message={message} prefixIcon={<Icon height={ICON_HEIGHT} icon="thumbsUp" />} />
+    <Message
+        variant="success"
+        message={message}
+        prefixIcon={<Icon height={ICON_HEIGHT} icon="thumbsUp" />}
+    />
 )
 
 export interface LoadingMessageProps extends Omit<BusyMessageProps, 'message'> {
@@ -138,7 +142,11 @@ export const ErrorMessage: FC<ErrorProps> = ({ error, ...props }) => (
 )
 
 export const WarningMessage: FC<MessageProps> = ({ message, ...props }) => (
-    <Message {...props} message={message} prefixIcon={<Icon height={ICON_HEIGHT} icon="exclamationTriangle" />} />
+    <Message
+        {...props}
+        message={message}
+        prefixIcon={<Icon height={ICON_HEIGHT} icon="exclamationTriangle" />}
+    />
 )
 
 interface OptionalMessageProps {
