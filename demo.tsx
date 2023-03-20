@@ -1,14 +1,14 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
-import { Yup, DropdownMenu, Section, Box } from './src'
 import {
+    Yup, DropdownMenu, Section, Box,
     EditingForm,
     DateTimeField,
     SelectField,
     InputField,
     FormSubmitHandler,
     SelectOnChangeHandler,
-} from './src/form'
+} from './src/all.js'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
