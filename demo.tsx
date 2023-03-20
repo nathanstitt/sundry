@@ -1,7 +1,10 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import {
-    Yup, DropdownMenu, Section, Box,
+    Yup,
+    DropdownMenu,
+    Section,
+    Box,
     EditingForm,
     DateTimeField,
     SelectField,
