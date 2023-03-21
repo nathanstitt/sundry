@@ -13,6 +13,7 @@
         "lib": ["ESNext", "DOM"],
         "strict": true,
         "jsx": "react",
+        "skipLibCheck": true,
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
