@@ -1,9 +1,11 @@
 import { React, cx, isNil } from './common.js'
 import { themeColors as colors } from './theme.js'
-import { asyncComponentLoader } from './async-load.js'
 
-import type { Props as ReactSelectProps, ActionMeta } from 'react-select'
-// import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
+import ReactSelect, { components, Props as ReactSelectProps, ActionMeta } from 'react-select'
+import ReactSelectCreate from 'react-select/creatable'
+import ReactSelectAsync from 'react-select/async'
+
+const ReactSelectOption = components.Option
 
 // let ReactSelectCreate: ReactSelect | null = null
 // import('react-select/creatable').then((rsc) => (ReactSelectCreate = rsc.default))
@@ -11,18 +13,20 @@ import type { Props as ReactSelectProps, ActionMeta } from 'react-select'
 // let ReactSelectAsync: ReactSelect | null = null
 // import('react-select/async').then((rsc) => (ReactSelectAsync = rsc.default))
 
-const ReactSelectCreate = asyncComponentLoader<ReactSelectProps>(() =>
-    import('react-select/creatable').then((m) => m.default)
-)
-const ReactSelectAsync = asyncComponentLoader<ReactSelectProps>(() =>
-    import('react-select/async').then((m) => m.default)
-)
-const ReactSelect = asyncComponentLoader<ReactSelectProps>(() =>
-    import('react-select').then((m) => m.default)
-)
-const ReactSelectOption = asyncComponentLoader(() =>
-    import('react-select').then((m) => m.components.Option)
-)
+
+// import { asyncComponentLoader } from './async-load.js'
+// const ReactSelectCreate = asyncComponentLoader<ReactSelectProps>(() =>
+//     import('react-select/creatable').then((m) => m.default)
+// )
+// const ReactSelectAsync = asyncComponentLoader<ReactSelectProps>(() =>
+//     import('react-select/async').then((m) => m.default)
+// )
+// const ReactSelect = asyncComponentLoader<ReactSelectProps>(() =>
+//     import('react-select').then((m) => m.default)
+// )
+// const ReactSelectOption = asyncComponentLoader(() =>
+//     import('react-select').then((m) => m.components.Option)
+// )
 
 export type SelectOptionType = { [key: string]: any }
 
