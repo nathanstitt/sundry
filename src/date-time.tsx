@@ -142,7 +142,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
     useEffect(() => {
         return () => {
             fieldNames.forEach((fldName) => {
-                control.unregister(fldName)
+                control.unregister(fldName, { keepValue: true, keepDefaultValue: true })
             })
         }
     }, [fieldNames, control])
