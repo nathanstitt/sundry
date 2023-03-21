@@ -14,13 +14,13 @@
     "exports": {
         ".": {
             "types": "./dist/all.d.ts",
-            "import": "./dist/all.cjs",
-            "require": "./dist/all.js"
+            "import": "./dist/all.js",
+            "require": "./dist/all.cjs"
         },
         "./*": {
             "types": "./dist/*.d.ts",
-            "import": "./dist/*.cjs",
-            "require": "./dist/*.js"
+            "import": "./dist/*.js",
+            "require": "./dist/*.cjs"
         }
     },
     "files": [
