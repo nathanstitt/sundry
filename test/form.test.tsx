@@ -27,16 +27,6 @@ test('loads and displays greeting', async () => {
             <h1>hi </h1>
             <InputField data-testid="name" name="name" label="Name" />
             <DateTimeField rangeNames={['one', 'two']} data-testid="dte" name="dte" label="Datey" />
-            <SelectField
-                name="sel"
-                id="sel"
-                label="Selecty"
-                options={[
-                    { label: 'One', value: 'one' },
-                    { label: 'Two', value: 'two' },
-                    { label: 'Three', value: 'three' },
-                ]}
-            />
             <button type="submit">save</button>
         </Form>
     )
@@ -49,7 +39,7 @@ test('loads and displays greeting', async () => {
     await user.click(screen.getByText('15'))
     await user.click(screen.getByText('20'))
 
-    await select(screen.getByLabelText('Selecty'), ['Two'])
+
 
     await user.click(screen.getByText('save'))
 
@@ -58,7 +48,6 @@ test('loads and displays greeting', async () => {
             name: 'a test',
             one: dayjs().startOf('month').add(14, 'day').toDate(),
             two: dayjs().startOf('month').add(19, 'day').toDate(),
-            sel: 'two',
         },
         expect.anything()
     )

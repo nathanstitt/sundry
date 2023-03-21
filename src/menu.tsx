@@ -1,8 +1,20 @@
-import { React, FCWC, cx, useId } from './common.js'
-import type { UseDropdownMenuOptions, DropdownProps as RUDdProps } from '@restart/ui/Dropdown'
+import { React, FCWC, FC, cx, useId } from './common.js'
+import type {
+    UseDropdownMenuOptions,
+    DropdownMenuProps as RUDdMProps,
+    DropdownToggleProps,
+    DropdownProps as RUDdProps,
+} from '@restart/ui/Dropdown'
 
 import { Button, ButtonProps } from './button.js'
-import Dropdown from '@restart/ui/Dropdown'
+
+interface DD extends FC<RUDdProps> {
+    Toggle: FC<DropdownToggleProps>
+    Menu: FC<RUDdMProps>
+}
+
+let Dropdown: DD | null = null
+import('@restart/ui/Dropdown').then((dd) => (Dropdown = dd.default))
 
 export const dropDownMenuDefaultOptions: UseDropdownMenuOptions = {
     flip: true,
