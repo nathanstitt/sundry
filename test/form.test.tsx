@@ -7,6 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { render, screen, cleanup } from '@testing-library/react'
 import { dayjs } from '../src/date.js'
 import { test, expect, vi, beforeEach } from 'vitest'
+import './setup-select.js'
 
 function setup(jsx: any) {
     return {

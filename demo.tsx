@@ -12,6 +12,7 @@ import {
     FormSubmitHandler,
     SelectOnChangeHandler,
 } from './src/all.js'
+import './test/setup-select.js'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'

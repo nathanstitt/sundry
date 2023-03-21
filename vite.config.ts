@@ -4,16 +4,10 @@ import packageJson from "./package.json";
 import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle";
 import typescript from '@rollup/plugin-typescript'
 
-const packageName = packageJson.name.replace(RegExp('.*/'), '')
-
-const fileName = {
-    es: `${packageName}.mjs`,
-    cjs: `${packageName}.cjs`,
-    iife: `${packageName}.iife.js`,
-};
 
 const config = defineConfig({
     base: "./",
+    debug: true,
     build: {
         emptyOutDir: true,
         minify: false,
