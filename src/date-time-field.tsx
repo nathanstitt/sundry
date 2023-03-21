@@ -98,7 +98,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
                         {...props}
                     />
                 </Box>
-                {hasValue && !readOnly && <Icon onClick={onClear} icon="cancel" color="#cbcccb" />}
+                {hasValue && !readOnly && <Icon onClick={onClear} data-testid="clear-dates" icon="cancel" color="#cbcccb" />}
             </div>
         </Wrapper>
     )

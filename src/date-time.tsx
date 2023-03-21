@@ -54,15 +54,18 @@ export const DateTime: React.FC<DateTimeProps> = ({
     const { fieldNames, values } = useDateTimeField(name, rangeNames)
 
     const onChange = useCallback(
-        (newDates: Date[], a: any, b: any, c: any) => {
+        (newDates: Date[], value: any, fltpkr: FlatPickr, data: any) => {
             for (let i = 0; i < fieldNames.length; i++) {
                 if (newDates[i] && newDates[i].getTime() !== values[i]?.getTime()) {
                     setFieldValue(fieldNames[i], newDates[i], { shouldDirty: true })
                 }
             }
-            onChangeProp?.(newDates, a, b, c)
+            if (endRangePickrEl && newDates.length < 2) {
+                endRangePickrEl.value = '';
+            }
+            onChangeProp?.(newDates, value, fltpkr, data)
         },
-        [fieldNames, setFieldValue, onChangeProp, values]
+        [fieldNames, setFieldValue, onChangeProp, values, endRangePickrEl]
     )
 
     const onClose = useCallback(
