@@ -14,12 +14,12 @@
     "exports": {
         ".": {
             "types": "./dist/all.d.ts",
-            "import": "./dist/all.mjs",
+            "import": "./dist/all.cjs",
             "require": "./dist/all.js"
         },
         "./*": {
             "types": "./dist/*.d.ts",
-            "import": "./dist/*.mjs",
+            "import": "./dist/*.cjs",
             "require": "./dist/*.js"
         }
     },

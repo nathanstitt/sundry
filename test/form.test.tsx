@@ -39,8 +39,6 @@ test('loads and displays greeting', async () => {
     await user.click(screen.getByText('15'))
     await user.click(screen.getByText('20'))
 
-
-
     await user.click(screen.getByText('save'))
 
     expect(onSubmit).toHaveBeenCalledWith(
