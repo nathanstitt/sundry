@@ -13,7 +13,7 @@ const inputFieldToggleStyle = {
 export const InputFieldCheckbox = styled.input(inputFieldToggleStyle)
 export const InputFieldRadio = styled.input(inputFieldToggleStyle)
 export const InputFieldTextarea = styled.textarea(({ height = '110' }: any) => ({
-    '&.form-control': { minHeight: `${height}px` },
+    '&.form-control': { minHeight: `${height}px`, height: '100%' },
 }))
 const INPUTS = {
     checkbox: InputFieldCheckbox,
