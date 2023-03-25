@@ -27,7 +27,21 @@ export function coalesce<T>(target?: any, defaultVal?: T): T {
     return isNil(target) ? defaultVal : target
 }
 
-export function isEmpty(obj: null | undefined | string | Record<string, any>) {
+export function invert<T extends Record<PropertyKey, PropertyKey>>(
+    obj: T
+): {
+    [K in keyof T as T[K]]: K
+} {
+    return Object.entries(obj).reduce(
+        (acc, [key, value]) => ({
+            ...acc,
+            [value]: key,
+        }),
+        {} as any
+    )
+}
+
+export function isEmpty(obj: null | undefined | string | Record<string, any>): boolean {
     if (isString(obj)) {
         return obj === ''
     } else if (obj == null) {
