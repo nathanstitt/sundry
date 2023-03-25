@@ -5,6 +5,7 @@ import type {
     DropdownToggleProps,
     DropdownProps as RUDdProps,
 } from '@restart/ui/Dropdown'
+import { createPortal } from 'react-dom'
 
 import { Button, ButtonProps } from './button.js'
 
@@ -72,22 +73,25 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                     )}
                 </Dropdown.Toggle>
                 <Dropdown.Menu {...options} placement={placement}>
-                    {(menuProps, meta) => (
-                        <div
-                            {...menuProps}
-                            aria-labelledby={btnId}
-                            className={cx('dropdown-menu', menuClassName)}
-                            style={{
-                                transition: 'visibility 500ms, opacity 500ms',
-                                visibility: meta.show ? 'visible' : 'hidden',
-                                opacity: meta.show ? '1' : '0',
-                                display: 'block',
-                                ...menuProps.style,
-                            }}
-                        >
-                            {children}
-                        </div>
-                    )}
+                    {(menuProps, meta) =>
+                        createPortal(
+                            <div
+                                {...menuProps}
+                                aria-labelledby={btnId}
+                                className={cx('dropdown-menu', menuClassName)}
+                                style={{
+                                    transition: 'visibility 500ms, opacity 500ms',
+                                    visibility: meta.show ? 'visible' : 'hidden',
+                                    opacity: meta.show ? '1' : '0',
+                                    display: 'block',
+                                    ...menuProps.style,
+                                }}
+                            >
+                                {children}
+                            </div>,
+                            document.body
+                        )
+                    }
                 </Dropdown.Menu>
             </div>
         </Dropdown>
