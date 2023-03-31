@@ -12,9 +12,9 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
 import { Footer } from './footer.js'
-import { ErrorAlert } from './alert.js'
+import { FormStatusAlert } from './form-status-alert.js'
 import { Button, ButtonProps } from './button.js'
-import { FC, ErrorTypes } from './types.js'
+import { ErrorTypes } from './types.js'
 import { useCallback } from 'react'
 
 import {
@@ -33,18 +33,17 @@ export * from './input-field.js'
 export * from './label.js'
 export * from './select-field.js'
 export * from './select.js'
+export * from './form-hooks.js'
 
 export type { FormContext, FieldError, FieldState, RegisteredField }
 export { useFormState, useFormValue, useController }
-
-//const FORM_ERROR_KEY = 'FORM_ERROR'
 
 export type FormSubmitHandler<FV extends FormValues = object> = (
     values: FV,
     ctx: FormContext<FV>
 ) => void | Promise<void>
-export type FormCancelHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
-export type FormDeleteHandler<FV extends FormValues> = (fc: FormContext<FV>) => void
+export type FormCancelHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => void
+export type FormDeleteHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => void
 
 export type FormValues = Record<string, any>
 
@@ -117,7 +116,7 @@ export function Form<FV extends FormValues>({
             try {
                 await onSubmit(values, extCtx)
                 if (!fc.getFieldState('FORM_ERROR').error) {
-                    fc.reset(values)
+                    fc.reset(values, { keepTouched: true, keepIsSubmitted: true, keepSubmitCount: true })
                 }
             } catch (err: any) {
                 extCtx.setFormError(err)
@@ -221,9 +220,9 @@ function SaveCancelBtn({
 }: SaveCancelBtnProps): JSX.Element | null {
     const fc = useFormContext()
 
-    const { isDirty, isSubmitting } = useFormState()
+    const { isDirty, isSubmitting, isSubmitted } = useFormState()
 
-    if (!showControls && !isDirty) {
+    if (!showControls && !isDirty &&!isSubmitted) {
         return null
     }
 
@@ -251,18 +250,11 @@ function SaveCancelBtn({
     )
 }
 
-export const FormError: FC = () => {
-    const fc = useFormContext()
-    const fs = useFormState({ name: FORM_ERROR_KEY })
-
-    const err = fs.errors[FORM_ERROR_KEY] as undefined | ErrorTypes
-    const onDismiss = () => {
-        fc.clearErrors(FORM_ERROR_KEY)
-    }
-    return <ErrorAlert error={err} onDismiss={onDismiss} />
-}
 
 interface EditingFormProps<FV extends FormValues> extends FormProps<FV> {
+    name: string
+    submittingMessage?: string
+    submittedMessage?: string
     saveLabel?: React.ReactNode
     cancelLabel?: React.ReactNode
     deleteLabel?: React.ReactNode
@@ -277,12 +269,15 @@ export function EditingForm<FV extends FormValues>({
     saveLabel,
     cancelLabel,
     deleteLabel,
+    name,
+    submittedMessage,
+    submittingMessage,
     ...props
 }: EditingFormProps<FV>): JSX.Element {
     return (
         <Form {...props} className={cx('editing', 'row', className)}>
             {children}
-            <FormError />
+            {name && <FormStatusAlert name={name} submittingMessage={submittingMessage} submittedMessage={submittedMessage} />}
             <SaveCancelBtn
                 saveLabel={saveLabel}
                 cancelLabel={cancelLabel}

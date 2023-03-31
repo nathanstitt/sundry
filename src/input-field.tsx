@@ -31,6 +31,9 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
     overflow: 'hidden',
     label: {
         flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',
     },
 })
 

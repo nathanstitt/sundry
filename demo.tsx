@@ -22,9 +22,11 @@ interface FormData {
 }
 
 export default function Demo() {
-    const onSubmit: FormSubmitHandler<FormData> = (values, _) => {
+    const onSubmit: FormSubmitHandler<FormData> = async (values, _) => {
         console.log(values) // eslint-disable-line no-console
-        throw 'uh oh'
+
+        await new Promise( r => setTimeout(r, 2000) )
+        //throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
     const logSelectChange: SelectOnChangeHandler = (v) => {
@@ -34,6 +36,7 @@ export default function Demo() {
         <div className="container mt-5">
             <h6 className="mt-4">Form test</h6>
             <EditingForm
+                name="Demo Form"
                 className="row"
                 defaultValues={{
                     name: '',
@@ -43,6 +46,7 @@ export default function Demo() {
                         },
                     ],
                     cbv: true,
+                    bc: 'a',
                     rbv: 'c',
                     from: new Date('2022-10-21'),
                     to: new Date('2022-11-02'),

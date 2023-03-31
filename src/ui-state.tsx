@@ -104,20 +104,22 @@ export const SuccessMessage: FC<BusyMessageProps> = ({ message }) => (
 )
 
 export interface LoadingMessageProps extends Omit<BusyMessageProps, 'message'> {
-    name: string
+    name?: string
     verb?: string
+    message?: string
 }
 export const LoadingMessage: FC<LoadingMessageProps> = ({
     name,
     className,
     overlay,
     verb = 'Loading',
+    message = `${verb} ${name}`,
     ...props
 }) => (
     <BusyMessage
         variant="loading"
         overlay={overlay}
-        message={`${verb} ${name}`}
+        message={message}
         className={className}
         {...props}
     />
@@ -164,15 +166,20 @@ export const NotFound: FC<OptionalMessageProps> = ({ message = 'Not Found', ...p
 
 export interface DelayedProps {
     children: React.ReactElement
+    onShown?: () => void
     delayAmount?: number
 }
 
-export const Delayed: FC<DelayedProps> = ({ children, delayAmount = DEFAULT_DISPLAY_AFTER }) => {
+export const Delayed: FC<DelayedProps> = ({ children, onShown, delayAmount = DEFAULT_DISPLAY_AFTER }) => {
     const [isVisible, setVisible] = useState<boolean>(false)
+    const setShown = React.useCallback(() => {
+        setVisible(true)
+        onShown?.()
+    }, [onShown, setVisible])
     useEffect(() => {
-        const timeoutId = setTimeout(() => setVisible(true), delayAmount)
+        const timeoutId = setTimeout(setShown, delayAmount)
         return () => clearTimeout(timeoutId)
-    }, [delayAmount])
+    }, [delayAmount, setShown])
     if (isVisible) {
         return children
     }
