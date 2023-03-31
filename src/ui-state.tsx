@@ -170,7 +170,11 @@ export interface DelayedProps {
     delayAmount?: number
 }
 
-export const Delayed: FC<DelayedProps> = ({ children, onShown, delayAmount = DEFAULT_DISPLAY_AFTER }) => {
+export const Delayed: FC<DelayedProps> = ({
+    children,
+    onShown,
+    delayAmount = DEFAULT_DISPLAY_AFTER,
+}) => {
     const [isVisible, setVisible] = useState<boolean>(false)
     const setShown = React.useCallback(() => {
         setVisible(true)

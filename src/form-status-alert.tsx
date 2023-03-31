@@ -33,7 +33,7 @@ interface FormStatusAlertProps {
     submittingMessage?: string
     submittedMessage?: string
 }
-export const FormStatusAlert:FC<FormStatusAlertProps> = ({
+export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     name,
     submittingMessage = `${name} is saving`,
     submittedMessage = `${name} was submitted`,
@@ -45,9 +45,16 @@ export const FormStatusAlert:FC<FormStatusAlertProps> = ({
     let body: React.ReactElement<any, any> | null = null
 
     const setWasShown = () => _setWasShown(true)
-    const wasSubmittedShown = Boolean(submittedMessage && previousSubmitCount != null && previousSubmitCount !== submitCount)
+    const wasSubmittedShown = Boolean(
+        submittedMessage && previousSubmitCount != null && previousSubmitCount !== submitCount
+    )
 
-    if (isSubmitting) body = <Delayed onShown={setWasShown}><LoadingMessage message={submittingMessage} /></Delayed>
+    if (isSubmitting)
+        body = (
+            <Delayed onShown={setWasShown}>
+                <LoadingMessage message={submittingMessage} />
+            </Delayed>
+        )
     if (err) body = <ErrorAlert error={err} onDismiss={onDismiss} />
 
     if (wasSubmittedShown && submittedMessage) {
@@ -60,7 +67,6 @@ export const FormStatusAlert:FC<FormStatusAlertProps> = ({
         } else if (err || wasSubmittedShown) {
             setWasShown()
         }
-
     }, [err, wasSubmittedShown, isDirty])
 
     if (body || wasShown) {

@@ -25,7 +25,7 @@ export default function Demo() {
     const onSubmit: FormSubmitHandler<FormData> = async (values, _) => {
         console.log(values) // eslint-disable-line no-console
 
-        await new Promise( r => setTimeout(r, 2000) )
+        await new Promise((r) => setTimeout(r, 2000))
         //throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }

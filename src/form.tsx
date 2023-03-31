@@ -34,6 +34,7 @@ export * from './label.js'
 export * from './select-field.js'
 export * from './select.js'
 export * from './form-hooks.js'
+export * from './form-status-alert.js'
 
 export type { FormContext, FieldError, FieldState, RegisteredField }
 export { useFormState, useFormValue, useController }
@@ -116,7 +117,11 @@ export function Form<FV extends FormValues>({
             try {
                 await onSubmit(values, extCtx)
                 if (!fc.getFieldState('FORM_ERROR').error) {
-                    fc.reset(values, { keepTouched: true, keepIsSubmitted: true, keepSubmitCount: true })
+                    fc.reset(values, {
+                        keepTouched: true,
+                        keepIsSubmitted: true,
+                        keepSubmitCount: true,
+                    })
                 }
             } catch (err: any) {
                 extCtx.setFormError(err)
@@ -222,7 +227,7 @@ function SaveCancelBtn({
 
     const { isDirty, isSubmitting, isSubmitted } = useFormState()
 
-    if (!showControls && !isDirty &&!isSubmitted) {
+    if (!showControls && !isDirty && !isSubmitted) {
         return null
     }
 
@@ -250,7 +255,6 @@ function SaveCancelBtn({
     )
 }
 
-
 interface EditingFormProps<FV extends FormValues> extends FormProps<FV> {
     name: string
     submittingMessage?: string
@@ -277,7 +281,13 @@ export function EditingForm<FV extends FormValues>({
     return (
         <Form {...props} className={cx('editing', 'row', className)}>
             {children}
-            {name && <FormStatusAlert name={name} submittingMessage={submittingMessage} submittedMessage={submittedMessage} />}
+            {name && (
+                <FormStatusAlert
+                    name={name}
+                    submittingMessage={submittingMessage}
+                    submittedMessage={submittedMessage}
+                />
+            )}
             <SaveCancelBtn
                 saveLabel={saveLabel}
                 cancelLabel={cancelLabel}
