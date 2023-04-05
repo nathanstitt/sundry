@@ -82,6 +82,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             type = 'text',
             onChange: onChangeProp,
             placeholder,
+            addOnControls,
             ...props
         } = forwardedProps
         const autoId = useId()
@@ -146,6 +147,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 id={id}
                 name={name}
                 label={labelEl}
+                addOnControls={addOnControls}
                 {...props}
                 className={cx(className, {
                     'form-control': isCheckLike,
