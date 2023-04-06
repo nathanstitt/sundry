@@ -157,3 +157,11 @@ export const isSSR = typeof document == 'undefined'
 export function toArray<T>(aryOrEl: T | Array<T>) {
     return Array.isArray(aryOrEl) ? aryOrEl : [aryOrEl]
 }
+
+export function whenDomReady(fn: () => void): void {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(fn, 1)
+    } else {
+        document.addEventListener('DOMContentLoaded', fn)
+    }
+}
