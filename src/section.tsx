@@ -2,7 +2,7 @@ import { Icon } from './icon.js'
 import { React, FCWC, styled, useCallback, cx } from './common.js'
 import { Box } from 'boxible'
 import { themeColors, themeMedia } from './theme.js'
-import { useRetainedCollapse } from './use-collapse.js'
+import { useRetainedCollapse, useCollapse, useControlledCollapse } from './use-collapse.js'
 
 const Heading = styled(Box)({
     cursor: 'pointer',
@@ -53,11 +53,22 @@ export interface SectionProps {
     isRow?: boolean
     noPad?: boolean
     noBorder?: boolean
+    retainState?: boolean
+    onToggle?: (isExpanded: boolean) => void
+    defaultCollapsed?: boolean
+    isExpanded?: boolean
 }
 
-export const Section: FCWC<SectionProps> = ({
+type URSectionProps = SectionProps & {
+    collapseProps: any
+}
+
+const SectionDOM: FCWC<URSectionProps> = ({
     id,
     className,
+    isExpanded,
+    collapseProps,
+    onToggle,
     bodyClassName,
     headingClassName,
     heading,
@@ -69,9 +80,9 @@ export const Section: FCWC<SectionProps> = ({
     noPad,
     noBorder,
 }) => {
-    const { getCollapseProps, setExpanded, isExpanded } = useRetainedCollapse(id, true)
-    const onClick = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
-
+    const onClick = useCallback(() => {
+        onToggle?.(!isExpanded)
+    }, [onToggle])
     return (
         <SectionWrapper
             id={`${id}-section`}
@@ -89,7 +100,7 @@ export const Section: FCWC<SectionProps> = ({
                 </Box>
                 {controls && <Box>{controls}</Box>}
             </Heading>
-            <div {...getCollapseProps()}>
+            <div {...collapseProps}>
                 <Body
                     noPad={noPad}
                     noBorder={noBorder}
@@ -108,4 +119,78 @@ export const Section: FCWC<SectionProps> = ({
             </div>
         </SectionWrapper>
     )
+}
+
+const RetainedSection: FCWC<SectionProps> = ({ id, ...props }) => {
+    const { getCollapseProps, setExpanded, isExpanded } = useRetainedCollapse(id, true)
+    const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
+
+    return (
+        <SectionDOM
+            id={id}
+            onToggle={onToggle}
+            isExpanded={isExpanded}
+            {...props}
+            collapseProps={getCollapseProps()}
+        />
+    )
+}
+
+const UnRetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props }) => {
+    const { getCollapseProps, setExpanded, isExpanded } = useCollapse(defaultCollapsed)
+    const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
+
+    return (
+        <SectionDOM
+            id={id}
+            onToggle={onToggle}
+            isExpanded={isExpanded}
+            {...props}
+            collapseProps={getCollapseProps()}
+        />
+    )
+}
+
+type ControlledSectionProps = Omit<SectionProps, 'isExpanded' | 'onToggle'> & {
+    isExpanded: boolean
+    onToggle: (isToggled: boolean) => void
+}
+const ControlledSection: FCWC<ControlledSectionProps> = ({
+    id,
+    isExpanded,
+    onToggle: onToggleProp,
+    ...props
+}) => {
+    const { getCollapseProps, setExpanded } = useControlledCollapse(isExpanded, (isExpanded) => {
+        onToggleProp(isExpanded)
+    })
+    const onToggle = useCallback(() => {
+        setExpanded(!isExpanded)
+    }, [isExpanded, setExpanded])
+
+    //const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
+
+    return (
+        <SectionDOM
+            id={id}
+            onToggle={onToggle}
+            isExpanded={isExpanded}
+            {...props}
+            collapseProps={getCollapseProps()}
+        />
+    )
+}
+
+export const Section: FCWC<SectionProps> = ({
+    retainState = true,
+    isExpanded,
+    onToggle,
+    ...props
+}) => {
+    console.log(retainState, isExpanded, onToggle)
+    if (isExpanded != null && onToggle) {
+        return <ControlledSection {...props} onToggle={onToggle} isExpanded={isExpanded} />
+    }
+    if (retainState) return <RetainedSection {...props} />
+    return <UnRetainedSection {...props} />
 }

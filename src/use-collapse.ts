@@ -9,7 +9,7 @@ export const setIsExpandedImpl = (fn: typeof useIsExpanded) => {
     useIsExpanded = fn
 }
 
-function _useCollapse(isExpanded: boolean, setExpanded: (e: boolean) => void) {
+export function useControlledCollapse(isExpanded: boolean, setExpanded: (e: boolean) => void) {
     const ref = useRef<HTMLDivElement>(null)
     const lastExpanded = useRef(isExpanded)
 
@@ -95,10 +95,10 @@ function _useCollapse(isExpanded: boolean, setExpanded: (e: boolean) => void) {
 
 export const useRetainedCollapse = (id: string, defaultExpanded: boolean) => {
     const [isExpanded, setExpanded] = useIsExpanded(id, defaultExpanded)
-    return _useCollapse(isExpanded, setExpanded)
+    return useControlledCollapse(isExpanded, setExpanded)
 }
 
 export const useCollapse = (defaultExpanded = true) => {
     const [isExpanded, setExpanded] = useState(defaultExpanded)
-    return _useCollapse(isExpanded, setExpanded)
+    return useControlledCollapse(isExpanded, setExpanded)
 }

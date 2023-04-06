@@ -22,6 +22,7 @@ interface FormData {
 }
 
 export default function Demo() {
+    const [isExpanded, setExpanded] = React.useState(false)
     const onSubmit: FormSubmitHandler<FormData> = async (values, _) => {
         console.log(values) // eslint-disable-line no-console
 
@@ -98,10 +99,12 @@ export default function Demo() {
             </div>
 
             <h6 className="mt-4">Section test</h6>
-            <Box direction="column">
+            <Box direction="column" style={{ minHeight: '300px' }}>
                 <h4>hi</h4>
                 <Section
                     id="section-test"
+                    onToggle={(v) => setExpanded(!isExpanded)}
+                    isExpanded={isExpanded}
                     className="mb-4"
                     heading="This is a section"
                     footer={<Box justify="end">This is footer</Box>}
