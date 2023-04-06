@@ -48,6 +48,10 @@ export const formatDate = (dateThing: DateTimeInputs, format = 'll'): string => 
     return toDayJS(dateThing).format(format)
 }
 
+export const formatDateTime = (dateThing: DateTimeInputs, format = 'll LT'): string => {
+    return toDayJS(dateThing).format(format)
+}
+
 export const distance = (
     fromDateThing: DateTimeInputs,
     toDateThing: DateTimeInputs,
@@ -83,6 +87,14 @@ export const durationToDecimal = (t: string) => {
     return parseFloat(arr[0] + '.' + (dec < 10 ? '0' : '') + dec)
 }
 
+export const durationOrDigitsToDecimal = (durationOrHours: string | undefined) => {
+    const hours = (durationOrHours || '').replace(',', '.').replace(/[^\d|.|:]+/, '')
+    if (hours.match(/:/)) {
+        return durationToDecimal(hours)
+    }
+    return Number(hours)
+}
+
 export const nowDayOnly = () => dayjs().format('YYYY-MM-DD')
 export const toDayOnly = (dateThing?: DateTimeInputs) =>
     toDayJS(dateThing || '').format('YYYY-MM-DD')
@@ -93,4 +105,8 @@ export const convertPropertyToDayOnly = (obj: any, property: string) => {
 
 export function toIsoStr(dateThing: DateTimeInputs) {
     return toDayJS(dateThing).toISOString()
+}
+
+export function isIsoDateLike(s: string) {
+    return Boolean(s.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d/))
 }
