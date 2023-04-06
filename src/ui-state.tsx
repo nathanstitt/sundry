@@ -16,21 +16,23 @@ const H = styled.h3`
     margin: 0;
 `
 
-export const StyledMessage = styled(Box)`
-    padding: 1.2rem 2rem;
-    border: 1px solid ${colors.border};
-    background: ${colors.well};
-    svg {
-        min-width: 20px;
-        width: 20px;
-    }
-    h3 + svg {
-        margin-right: 0.5rem;
-    }
-    svg + h3 {
-        margin-left: 0.5rem;
-    }
-`
+export const StyledMessage = styled(Box)(
+    ({ border = '1px solid ${colors.border}' }: { border?: string | false }) => ({
+        padding: '1.2rem 2rem',
+        border: border ? border : undefined,
+        background: colors.well,
+        svg: {
+            minWidth: 20,
+            width: 20,
+        },
+        'h3 + svg': {
+            marginRight: '0.5rem',
+        },
+        'svg + h3': {
+            marginLeft: '0.5rem',
+        },
+    })
+)
 
 const BOX_WIDTH = 360
 
@@ -48,6 +50,7 @@ export const MessageBox = styled(Box)({
 export interface MessageProps {
     message: React.ReactNode
     variant?: string
+    border?: string | false
     className?: string
     prefixIcon?: React.ReactNode
     suffixIcon?: React.ReactNode
@@ -58,6 +61,7 @@ export interface MessageProps {
 export const Message: FC<MessageProps> = ({
     variant,
     message,
+    border,
     prefixIcon,
     suffixIcon,
     className,
@@ -65,13 +69,18 @@ export const Message: FC<MessageProps> = ({
     overlay,
 }) => (
     <MessageBox
-        className={cx(className, { overlay })}
+        className={cx('message-box', className, { overlay })}
         data-variant={variant}
         data-test-id="message-box"
         align="center"
         justify="center"
     >
-        <StyledMessage align="center" justify="center" width={expandWidth ? 'auto' : '450px'}>
+        <StyledMessage
+            align="center"
+            justify="center"
+            border={border}
+            width={expandWidth ? 'auto' : '450px'}
+        >
             {prefixIcon}
             <H>{message}</H>
             {suffixIcon}

@@ -23,7 +23,7 @@ const Heading = styled(Box)({
 const Body = styled.div(({ noPad, noBorder }: { noBorder?: boolean; noPad?: boolean }) => ({
     padding: noPad ? '0' : '1rem',
     [themeMedia.mobile]: {
-        padding: '0.3rem',
+        padding: noPad ? '0' : '0.3rem',
     },
     borderWidth: noBorder ? 0 : 1,
 }))
