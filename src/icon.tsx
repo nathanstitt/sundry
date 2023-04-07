@@ -27,6 +27,7 @@ export type IconSpec = IconKey | IconifyIconDefinition | IconifyIcon
 export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' | 'width'> {
     icon: IconSpec
     title?: string
+    iconName?: string
     color?: string
     className?: string
     busy?: boolean
@@ -63,6 +64,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
             children,
             busy,
             className,
+            iconName,
             tooltipProps = {},
             popoverProps = {},
             'data-test-id': dti,
@@ -74,7 +76,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         const icon = busy ? 'spin' : iconProp
         let iconEl = (
             <IconifyIconComponent
-                data-icon-name={icon}
+                data-icon-name={iconName}
                 ref={ref || undefined}
                 data-test-id={onClick ? undefined : dti}
                 icon={typeof icon === 'object' ? icon : ICON_DEFINITIONS[icon]}
@@ -101,7 +103,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         if (onClick) {
             return (
                 <IconBtn
-                    data-button-icon={icon}
+                    data-button-icon={iconName}
                     data-test-id={dti}
                     type={buttonType}
                     disabled={busy}
