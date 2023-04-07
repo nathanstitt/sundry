@@ -160,8 +160,7 @@ export const WarningMessage: FC<MessageProps> = ({ message, ...props }) => (
     />
 )
 
-interface OptionalMessageProps {
-    className?: string
+interface OptionalMessageProps extends Omit<MessageProps, 'message'> {
     message?: string
 }
 export const NotFound: FC<OptionalMessageProps> = ({ message = 'Not Found', ...props }) => (
