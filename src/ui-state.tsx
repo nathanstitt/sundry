@@ -16,23 +16,23 @@ const H = styled.h3`
     margin: 0;
 `
 
-export const StyledMessage = styled(Box)(
-    ({ border = '1px solid ${colors.border}' }: { border?: string | false }) => ({
-        padding: '1.2rem 2rem',
-        border: border ? border : undefined,
-        background: colors.well,
-        svg: {
-            minWidth: 20,
-            width: 20,
-        },
-        'h3 + svg': {
-            marginRight: '0.5rem',
-        },
-        'svg + h3': {
-            marginLeft: '0.5rem',
-        },
-    })
-)
+export const StyledMessage = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'border',
+})(({ border = '1px solid ${colors.border}' }: { border?: string | false }) => ({
+    padding: '1.2rem 2rem',
+    border: border ? border : undefined,
+    background: colors.well,
+    svg: {
+        minWidth: 20,
+        width: 20,
+    },
+    'h3 + svg': {
+        marginRight: '0.5rem',
+    },
+    'svg + h3': {
+        marginLeft: '0.5rem',
+    },
+}))
 
 const BOX_WIDTH = 360
 
