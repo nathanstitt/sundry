@@ -74,6 +74,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         const icon = busy ? 'spin' : iconProp
         let iconEl = (
             <IconifyIconComponent
+                data-icon-name={icon}
                 ref={ref || undefined}
                 data-test-id={onClick ? undefined : dti}
                 icon={typeof icon === 'object' ? icon : ICON_DEFINITIONS[icon]}
@@ -100,6 +101,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
         if (onClick) {
             return (
                 <IconBtn
+                    data-button-icon={icon}
                     data-test-id={dti}
                     type={buttonType}
                     disabled={busy}
