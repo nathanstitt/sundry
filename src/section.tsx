@@ -187,7 +187,6 @@ export const Section: FCWC<SectionProps> = ({
     onToggle,
     ...props
 }) => {
-    console.log(retainState, isExpanded, onToggle)
     if (isExpanded != null && onToggle) {
         return <ControlledSection {...props} onToggle={onToggle} isExpanded={isExpanded} />
     }
