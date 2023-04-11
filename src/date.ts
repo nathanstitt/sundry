@@ -16,9 +16,13 @@ export function formatHoursDuration(hours: number | null | undefined, empty: any
         return empty
     }
     const negative = hours < 0
-    const posHours = Math.abs(hours)
-    const h = String(Math.round(60 * (posHours % 1)))
-    return `${negative ? '-' : ''}${Math.floor(posHours)}:${h.padStart(2, '0')}`
+    let posHours = Math.abs(hours)
+    let mins = String(Math.round(60 * (posHours % 1)))
+    if (mins == '60') {
+        mins = '0'
+        posHours += 1
+    }
+    return `${negative ? '-' : ''}${Math.floor(posHours)}:${mins.padStart(2, '0')}`
 }
 
 export const toDayJS = (dateThing: DateTimeInputs): dayjs.Dayjs => {
@@ -52,7 +56,7 @@ export const formatDateTime = (dateThing: DateTimeInputs, format = 'll LT'): str
     return toDayJS(dateThing).format(format)
 }
 
-export const distance = (
+export const distanceBetween = (
     fromDateThing: DateTimeInputs,
     toDateThing: DateTimeInputs,
     unit: OpUnitType,
@@ -96,8 +100,10 @@ export const durationOrDigitsToDecimal = (durationOrHours: string | undefined) =
 }
 
 export const nowDayOnly = () => dayjs().format('YYYY-MM-DD')
+
 export const toDayOnly = (dateThing?: DateTimeInputs) =>
     toDayJS(dateThing || '').format('YYYY-MM-DD')
+
 export const convertPropertyToDayOnly = (obj: any, property: string) => {
     if (isNil(obj[property])) return obj[property]
     return (obj[property] = dayjs(obj[property]).format('YYYY-MM-DD'))
