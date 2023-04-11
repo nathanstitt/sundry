@@ -4,7 +4,7 @@ import { usePreviousValue } from './hooks.js'
 import { FORM_ERROR_KEY, useFormState, useFormContext } from './form-hooks.js'
 import { ErrorAlert, Alert } from './alert.js'
 import { Delayed, LoadingMessage } from './ui-state.js'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 const useFormError = (): [ErrorTypes, () => void] => {
     const fc = useFormContext()
@@ -39,35 +39,37 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     submittedMessage = `${name} was submitted`,
 }) => {
     const [err, onDismiss] = useFormError()
-    const { submitCount, isSubmitting, isDirty } = useFormState()
+    const { isSubmitting, isDirty } = useFormState()
+    const wasSubmitting = usePreviousValue(isSubmitting)
+
     const [wasShown, _setWasShown] = useState(false)
-    const previousSubmitCount = usePreviousValue(submitCount || 0)
+
     let body: React.ReactElement<any, any> | null = null
 
-    const setWasShown = () => _setWasShown(true)
-    const wasSubmittedShown = Boolean(
-        submittedMessage && previousSubmitCount != null && previousSubmitCount !== submitCount
-    )
+    const setWasShown = useCallback(() => _setWasShown(true), [_setWasShown])
+    const hideWasShown = useCallback(() => _setWasShown(false), [_setWasShown])
 
-    if (isSubmitting)
+    if (isSubmitting) {
         body = (
             <Delayed onShown={setWasShown}>
                 <LoadingMessage message={submittingMessage} />
             </Delayed>
         )
+    }
     if (err) body = <ErrorAlert error={err} onDismiss={onDismiss} />
 
-    if (wasSubmittedShown && submittedMessage) {
-        body = <Alert message={submittedMessage} />
+    if (!body && wasShown && submittedMessage) {
+        body = <Alert message={submittedMessage} onDismiss={hideWasShown} />
     }
 
     useEffect(() => {
-        if (wasSubmittedShown && isDirty) {
-            _setWasShown(false)
-        } else if (err || wasSubmittedShown) {
+        if (wasSubmitting && !isSubmitting) {
             setWasShown()
         }
-    }, [err, wasSubmittedShown, isDirty])
+        if (wasShown && isDirty) {
+            hideWasShown()
+        }
+    }, [err, isSubmitting, wasSubmitting, wasShown, isDirty])
 
     if (body || wasShown) {
         return <StatusWrapper>{body}</StatusWrapper>
