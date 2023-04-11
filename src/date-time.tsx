@@ -107,7 +107,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
                 if (
                     values.find((dt, i) => dt?.getTime() !== flatpickr.selectedDates[i]?.getTime())
                 ) {
-                    flatpickr.setDate(values, true)
+                    flatpickr.setDate(values)
                 }
             }
         } else {
