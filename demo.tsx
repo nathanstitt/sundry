@@ -1,14 +1,15 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import {
-    Yup,
-    DropdownMenu,
-    Section,
     Box,
-    EditingForm,
-    DateTimeField,
-    SelectField,
+    Yup,
+    Message,
+    Section,
     InputField,
+    EditingForm,
+    SelectField,
+    DropdownMenu,
+    DateTimeField,
     FormSubmitHandler,
     SelectOnChangeHandler,
 } from './src/all.js'
@@ -35,6 +36,7 @@ export default function Demo() {
     }
     return (
         <div className="container mt-5">
+            <Message message="hello" />
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 name="Demo Form"

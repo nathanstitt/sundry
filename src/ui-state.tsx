@@ -6,6 +6,7 @@ import { themeColors as colors } from './theme.js'
 import { LoadingDots as LD } from './loading-dots.js'
 import { ErrorTypes } from './types.js'
 import { errorToString } from './util.js'
+import type { Property } from 'csstype'
 
 const DEFAULT_DISPLAY_AFTER = 250
 const ICON_HEIGHT = 30 // px
@@ -18,21 +19,23 @@ const H = styled.h3`
 
 export const StyledMessage = styled(Box, {
     shouldForwardProp: (prop) => prop !== 'border',
-})(({ border = '1px solid ${colors.border}' }: { border?: string | false }) => ({
-    padding: '1.2rem 2rem',
-    border: border ? border : undefined,
-    background: colors.well,
-    svg: {
-        minWidth: 20,
-        width: 20,
-    },
-    'h3 + svg': {
-        marginRight: '0.5rem',
-    },
-    'svg + h3': {
-        marginLeft: '0.5rem',
-    },
-}))
+})(({ border = `1px solid ${colors.wellBorder}` }: { border?: Property.Border | false }) => {
+    return {
+        padding: '1.2rem 2rem',
+        border: border ? border : undefined,
+        background: colors.well,
+        svg: {
+            minWidth: 20,
+            width: 20,
+        },
+        'h3 + svg': {
+            marginRight: '0.5rem',
+        },
+        'svg + h3': {
+            marginLeft: '0.5rem',
+        },
+    }
+})
 
 const BOX_WIDTH = 360
 
@@ -67,27 +70,29 @@ export const Message: FC<MessageProps> = ({
     className,
     expandWidth,
     overlay,
-}) => (
-    <MessageBox
-        className={cx('message-box', className, { overlay })}
-        data-variant={variant}
-        data-test-id="message-box"
-        align="center"
-        justify="center"
-    >
-        <StyledMessage
+}) => {
+    console.log({ border })
+    return (
+        <MessageBox
+            className={cx('message-box', className, { overlay })}
+            data-variant={variant}
+            data-test-id="message-box"
             align="center"
             justify="center"
-            border={border}
-            width={expandWidth ? 'auto' : '450px'}
         >
-            {prefixIcon}
-            <H>{message}</H>
-            {suffixIcon}
-        </StyledMessage>
-    </MessageBox>
-)
-
+            <StyledMessage
+                align="center"
+                justify="center"
+                border={border}
+                width={expandWidth ? 'auto' : '450px'}
+            >
+                {prefixIcon}
+                <H>{message}</H>
+                {suffixIcon}
+            </StyledMessage>
+        </MessageBox>
+    )
+}
 export interface BusyMessageProps extends MessageProps {
     variant?: string
 }

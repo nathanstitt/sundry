@@ -6,6 +6,7 @@ export const themeColors = {
     border: '#284770',
     tableStripe: '#e8e8e8',
     well: '#fafafa',
+    wellBorder: '#bdbdbd',
 
     input: { border: '#ced4da' },
     line: '#cfcfcf',
