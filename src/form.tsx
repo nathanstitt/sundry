@@ -206,7 +206,7 @@ export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
     )
 }
 
-interface SaveCancelBtnProps {
+export interface SaveCancelBtnProps {
     showControls?: boolean
     onDelete?: FormDeleteHandler<any>
     onCancel?: FormCancelHandler<any>
@@ -215,7 +215,7 @@ interface SaveCancelBtnProps {
     deleteLabel?: React.ReactNode
 }
 
-function SaveCancelBtn({
+export function SaveCancelBtn({
     onCancel,
     onDelete,
     showControls,
@@ -289,6 +289,7 @@ export function EditingForm<FV extends FormValues>({
                 />
             )}
             <SaveCancelBtn
+                css={{ textAlign: 'center' }}
                 saveLabel={saveLabel}
                 cancelLabel={cancelLabel}
                 deleteLabel={deleteLabel}
