@@ -24,7 +24,11 @@ export const FormError: FC = () => {
 }
 
 const StatusWrapper = styled.div({
-    minHeight: '75px',
+    minHeight: '60px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    '.alert, .message-box': { marginBottom: 0 },
 })
 
 interface FormStatusAlertProps {
