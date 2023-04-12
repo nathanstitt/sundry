@@ -82,7 +82,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
 }) => {
     const onClick = useCallback(() => {
         onToggle?.(!isExpanded)
-    }, [onToggle])
+    }, [onToggle, isExpanded])
     return (
         <SectionWrapper
             id={`${id}-section`}

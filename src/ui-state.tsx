@@ -71,7 +71,6 @@ export const Message: FC<MessageProps> = ({
     expandWidth,
     overlay,
 }) => {
-    console.log({ border })
     return (
         <MessageBox
             className={cx('message-box', className, { overlay })}

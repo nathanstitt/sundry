@@ -69,7 +69,7 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
         if (wasShown && isDirty) {
             hideWasShown()
         }
-    }, [err, isSubmitting, wasSubmitting, wasShown, isDirty])
+    }, [err, isSubmitting, wasSubmitting, wasShown, isDirty, hideWasShown, setWasShown])
 
     if (body || wasShown) {
         return <StatusWrapper>{body}</StatusWrapper>
