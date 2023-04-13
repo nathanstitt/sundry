@@ -289,7 +289,6 @@ export function EditingForm<FV extends FormValues>({
                 />
             )}
             <SaveCancelBtn
-                css={{ textAlign: 'center' }}
                 saveLabel={saveLabel}
                 cancelLabel={cancelLabel}
                 deleteLabel={deleteLabel}
