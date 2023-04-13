@@ -8,7 +8,7 @@ jobs:
         runs-on: ubuntu-22.04
         timeout-minutes: 10
         steps:
-            - uses: szenius/set-timezone@v1.0
+            - uses: szenius/set-timezone@v1.2
               with:
                   timezoneLinux: 'US/Central'
             - uses: actions/checkout@v3
