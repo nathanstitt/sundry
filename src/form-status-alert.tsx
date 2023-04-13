@@ -40,7 +40,7 @@ interface FormStatusAlertProps {
 export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     name,
     submittingMessage = `${name} is saving`,
-    submittedMessage = `${name} was submitted`,
+    submittedMessage = `${name} was saved`,
 }) => {
     const [err, onDismiss] = useFormError()
     const { isSubmitting, isDirty } = useFormState()
