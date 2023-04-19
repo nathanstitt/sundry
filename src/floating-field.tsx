@@ -19,7 +19,11 @@ export interface FloatingFieldProps extends BoxProps, ColProps {
     marginBottom?: boolean | number
 }
 
-const Wrapper = styled(Col)({})
+const Wrapper = styled(Col)({
+    'input.form-control': {
+        minHeight: '100%',
+    }
+})
 
 const Body = styled.div({
     flex: 1,
