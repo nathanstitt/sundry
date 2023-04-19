@@ -107,13 +107,9 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         const onChange = useCallback(
             (ev: React.ChangeEvent<HTMLInputElement>) => {
                 const { value } = ev.target
-                const changeEvent =
-                    type == 'number'
-                        ? {
-                              ...ev,
-                              target: { ...ev.target, value: value === '' ? null : Number(value) },
-                          }
-                        : ev
+                const changeEvent = (type !== 'number') ?
+                    ev : { ...ev, target: { ...ev.target, value: value === '' ? null : Number(value) } }
+
                 field.onChange(changeEvent)
                 onChangeProp?.(changeEvent)
             },
