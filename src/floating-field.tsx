@@ -22,7 +22,7 @@ export interface FloatingFieldProps extends BoxProps, ColProps {
 const Wrapper = styled(Col)({
     'input.form-control': {
         minHeight: '100%',
-    }
+    },
 })
 
 const Body = styled.div({

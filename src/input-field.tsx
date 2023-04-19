@@ -3,6 +3,7 @@ import { FloatingField, FloatingFieldProps } from './floating-field.js'
 import { useField } from './form-hooks.js'
 import { useCallback } from 'react'
 import { useForkRef } from './hooks.js'
+import { isNil } from './util.js'
 
 const inputFieldToggleStyle = {
     padding: 0,
@@ -105,10 +106,18 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         )
         const onChange = useCallback(
             (ev: React.ChangeEvent<HTMLInputElement>) => {
-                field.onChange(ev)
-                onChangeProp?.(ev)
+                const { value } = ev.target
+                const changeEvent =
+                    type == 'number'
+                        ? {
+                              ...ev,
+                              target: { ...ev.target, value: value === '' ? null : Number(value) },
+                          }
+                        : ev
+                field.onChange(changeEvent)
+                onChangeProp?.(changeEvent)
             },
-            [onChangeProp, field]
+            [onChangeProp, field, type]
         )
 
         let checked: boolean | undefined = undefined
@@ -117,7 +126,8 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         } else if (type === 'checkbox') {
             checked = !!field.value
         }
-        const value = props.value || field.value || ''
+        const value = isNil(props.value) ? (isNil(field.value) ? '' : field.value) : props.value
+
         const input = (
             <InputComponent
                 {...field}
