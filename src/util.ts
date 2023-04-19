@@ -165,3 +165,7 @@ export function whenDomReady(fn: () => void): void {
         document.addEventListener('DOMContentLoaded', fn)
     }
 }
+
+export function firstNonNil(...values: Array<null | undefined | number>): number | null {
+    return values.find(nonNil) || null
+}
