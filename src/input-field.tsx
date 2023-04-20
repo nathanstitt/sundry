@@ -4,6 +4,7 @@ import { useField } from './form-hooks.js'
 import { useCallback } from 'react'
 import { useForkRef } from './hooks.js'
 import { isNil } from './util.js'
+import { omitColSizeProps } from './col.js'
 
 const inputFieldToggleStyle = {
     padding: 0,
@@ -35,6 +36,8 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
         display: 'flex',
         alignItems: 'center',
         height: '100%',
+        lineHeight: '105%',
+        opacity: '0.85',
     },
 })
 
@@ -46,7 +49,7 @@ const Label = styled.label({
 export interface InputProps
     extends Omit<
             React.HTMLProps<HTMLInputElement>,
-            'name' | 'height' | 'width' | 'wrap' | 'label' | 'onResize' | 'onResizeCapture'
+            'name' | 'size' | 'height' | 'width' | 'wrap' | 'label' | 'onResize' | 'onResizeCapture'
         >,
         Omit<FloatingFieldProps, 'label' | 'id'> {
     name: string
@@ -82,7 +85,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             disabled: propsDisabled,
             type = 'text',
             onChange: onChangeProp,
-            placeholder,
+            placeholder = label,
             addOnControls,
             ...props
         } = forwardedProps
@@ -127,7 +130,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         const input = (
             <InputComponent
                 {...field}
-                {...props}
+                {...omitColSizeProps(props)}
                 value={value}
                 id={id}
                 ref={ref}

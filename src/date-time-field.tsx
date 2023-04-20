@@ -6,6 +6,7 @@ import { FloatingField, FloatingFieldProps } from './floating-field.js'
 import { FloatingLabel } from './label.js'
 import { Icon } from './icon.js'
 import { useDateTimeField } from './date-time-hook.js'
+import { omitColSizeProps } from './col.js'
 
 interface DateTimeFieldFieldProps
     extends DateTimeProps,
@@ -95,7 +96,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
                         withTime={withTime}
                         rangeNames={rangeNames}
                         data-enable-time={withTime}
-                        {...props}
+                        {...omitColSizeProps(props)}
                     />
                 </Box>
                 {hasValue && !readOnly && (
