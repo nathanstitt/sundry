@@ -41,7 +41,6 @@ export const Col: FCWC<ColProps> = ({
     offset = {},
     ...props
 }) => {
-
     return (
         <Box
             className={cx(className, {
@@ -80,12 +79,11 @@ interface RowBreakProps {
     only?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 }
 
-export const RowBreak:FC<RowBreakProps> = ({
-    className,
-    only,
-}) => (
-    <div className={cx('w-100', className, {
-        'd-none': !!only,
-        [`d-${only}-block`]: !!only
-    })} />
+export const RowBreak: FC<RowBreakProps> = ({ className, only }) => (
+    <div
+        className={cx('w-100', className, {
+            'd-none': !!only,
+            [`d-${only}-block`]: !!only,
+        })}
+    />
 )
