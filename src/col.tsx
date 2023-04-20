@@ -1,25 +1,25 @@
 import { React, FC, FCWC, cx, omit } from './common.js'
 import { Box, BoxProps } from 'boxible'
 
-type Sizes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+export type ColumnSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 export interface ColProps extends BoxProps {
     className?: string
     auto?: boolean
-    size?: Sizes
-    sm?: Sizes
-    md?: Sizes
-    lg?: Sizes
-    xl?: Sizes
-    xxl?: Sizes
+    size?: ColumnSize
+    sm?: ColumnSize
+    md?: ColumnSize
+    lg?: ColumnSize
+    xl?: ColumnSize
+    xxl?: ColumnSize
     fluid?: boolean
     offset?: {
-        xs?: Sizes
-        sm?: Sizes
-        md?: Sizes
-        lg?: Sizes
-        xl?: Sizes
-        xxl?: Sizes
+        xs?: ColumnSize
+        sm?: ColumnSize
+        md?: ColumnSize
+        lg?: ColumnSize
+        xl?: ColumnSize
+        xxl?: ColumnSize
     }
 }
 
