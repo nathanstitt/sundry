@@ -129,7 +129,7 @@ const smallStyles = {
             minHeight: '30px',
             height: '30px',
             minWidth: '80px',
-            boxShadow: state.isFocused ? null : null,
+            boxShadow: null,
         }
     },
 
