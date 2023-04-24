@@ -100,6 +100,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
             flatpickr.set('onChange', onChange)
             flatpickr.set('onClose', onClose)
             flatpickr.set('onOpen', onOpenProp)
+            flatpickr.set('clickOpens', !readOnly)
 
             if (!values.length) {
                 flatpickr.clear()
