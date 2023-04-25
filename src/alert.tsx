@@ -44,7 +44,7 @@ export const Alert: FC<AlertProps> = ({
     return (
         <Wrapper
             role="alert"
-            data-test-id="alert"
+            data-testid="alert"
             className={cx('alert', bsClassNames('alert', types)[0], className, {
                 'alert-dismissible': canDismiss,
             })}

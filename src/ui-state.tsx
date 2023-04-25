@@ -75,7 +75,7 @@ export const Message: FC<MessageProps> = ({
         <MessageBox
             className={cx('message-box', className, { overlay })}
             data-variant={variant}
-            data-test-id="message-box"
+            data-testid="message-box"
             align="center"
             justify="center"
         >
@@ -170,7 +170,7 @@ interface OptionalMessageProps extends Omit<MessageProps, 'message'> {
 export const NotFound: FC<OptionalMessageProps> = ({ message = 'Not Found', ...props }) => (
     <Message
         {...props}
-        data-test-id="not-found-msg-box"
+        data-testid="not-found-msg-box"
         prefixIcon={<Icon height={ICON_HEIGHT} icon="exclamationCircle" />}
         message={message}
     />

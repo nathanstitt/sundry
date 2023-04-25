@@ -86,7 +86,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
     return (
         <SectionWrapper
             id={`${id}-section`}
-            data-test-id={`${id}-section`}
+            data-testid={`${id}-section`}
             className={cx('section', 'card', className)}
         >
             <Heading as="h3" className={cx('sechead', headingClassName)}>

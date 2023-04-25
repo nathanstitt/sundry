@@ -79,7 +79,7 @@ const Modal: ModalI = ({
                             <h5 className="modal-title">{title}</h5>
                             {closeBtn && (
                                 <Icon
-                                    data-test-id="modal-close-btn"
+                                    data-testid="modal-close-btn"
                                     icon="close"
                                     onClick={onHide}
                                     height={28}

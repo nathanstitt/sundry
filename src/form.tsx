@@ -171,7 +171,7 @@ export const FormCancelButton: FCWC<FormCancelButtonProps> = ({
     return (
         <Button
             secondary
-            data-test-id="form-cancel-btn"
+            data-testid="form-cancel-btn"
             onClick={onFormCancel}
             disabled={isSubmitting}
             {...props}
@@ -198,7 +198,7 @@ export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
             primary={primary}
             busyMessage={busyMessage}
             busy={isSubmitting}
-            data-test-id="form-save-btn"
+            data-testid="form-save-btn"
             {...props}
         >
             {children}
@@ -238,7 +238,7 @@ export function SaveCancelBtn({
             {onDelete && (
                 <Button
                     danger
-                    data-test-id="form-delete-btn"
+                    data-testid="form-delete-btn"
                     disabled={isSubmitting}
                     onClick={onFormDelete}
                 >
