@@ -6,9 +6,7 @@
     "version": "1.4.0",
     "typesVersions": {
         "*": {
-            "*": [
-                "dist/*"
-            ]
+            "*": ["dist/*"]
         }
     },
     "exports": {
@@ -23,10 +21,7 @@
             "require": "./dist/*.cjs"
         }
     },
-    "files": [
-        "src",
-        "dist"
-    ],
+    "files": ["src", "dist"],
     "typings": "dist/index.d.ts",
     "scripts": {
         "demo": "vite --host --open",
@@ -85,6 +80,7 @@
         "react-select-event": "^5.5.1",
         "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.23",
         "stylelint": "^15.2.0",
+        "@types/loadable__component": "^5.13.4",
         "stylelint-config-recommended": "^10.0.1",
         "stylelint-config-sass-guidelines": "^9.0.1",
         "ts-node": "^10.9.1",
@@ -102,8 +98,7 @@
         "@popperjs/core": "^2.11",
         "@react-aria/ssr": "^3.5.0",
         "@restart/ui": "^1.6.2",
-        "@types/loadable__component": "^5.13.4",
-        "boxible": "^1.7.1",
+        "boxible": "^1.7.2",
         "flatpickr": "^4.6",
         "graphql": "^16.6",
         "react-hook-form": "^7.43",

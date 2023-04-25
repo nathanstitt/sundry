@@ -19,7 +19,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
 
 interface FormData {
-    [key: string]: string | boolean | Date
+    [key: string]: string | boolean | Date | { name: string }[]
 }
 
 export default function Demo() {
@@ -53,7 +53,7 @@ export default function Demo() {
                     rbv: 'c',
                     from: new Date('2022-10-21'),
                     to: new Date('2022-11-02'),
-                }}
+                } satisfies FormData}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
                 })}

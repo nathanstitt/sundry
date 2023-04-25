@@ -1,6 +1,7 @@
 import { React, FCWC, useState, cx, useCallback } from './common.js'
 import { usePopper } from 'react-popper'
 import { useOutsideClickRef, useRefElement } from './hooks.js'
+import { Box } from 'boxible'
 
 interface ControlledPopoverProps {
     show: boolean
@@ -89,7 +90,9 @@ export const Popover: FCWC<PopoverProps> = ({
     const [ref] = useOutsideClickRef(onHide)
 
     return (
-        <div
+        <Box
+            centered
+            {...popoverProps}
             ref={(s) => setWrapperRef(s || undefined)}
             className={cx('popover-wrapper', className)}
             onClick={onShow}
@@ -104,7 +107,7 @@ export const Popover: FCWC<PopoverProps> = ({
             <ControlledPopover ref={ref} target={wrapperRef} show={isShown} {...popoverProps}>
                 {popover}
             </ControlledPopover>
-        </div>
+        </Box>
     )
 }
 
@@ -117,7 +120,9 @@ export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...t
     const [setWrapperRef, wrapperRef] = useRefElement<HTMLElement>()
 
     return (
-        <div
+        <Box
+            centered
+            {...tooltipProps}
             ref={setWrapperRef}
             className={cx('tooltip-wrapper', className)}
             onMouseEnter={() => {
@@ -136,6 +141,6 @@ export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...t
             >
                 {tooltip}
             </ControlledPopover>
-        </div>
+        </Box>
     )
 }
