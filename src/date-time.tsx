@@ -10,6 +10,7 @@ export interface DateTimeProps {
     format?: string
     readOnly?: boolean
     options?: FlatPickr.Options.Options
+    placeholder?: string
 
     onOpen?: FlatPickr.Options.Hook
     onClose?: FlatPickr.Options.Hook
