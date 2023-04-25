@@ -3,10 +3,12 @@
     "private": false,
     "type": "module",
     "sideEffects": false,
-    "version": "1.4.0",
+    "version": "1.4.1",
     "typesVersions": {
         "*": {
-            "*": ["dist/*"]
+            "*": [
+                "dist/*"
+            ]
         }
     },
     "exports": {
@@ -21,7 +23,10 @@
             "require": "./dist/*.cjs"
         }
     },
-    "files": ["src", "dist"],
+    "files": [
+        "src",
+        "dist"
+    ],
     "typings": "dist/index.d.ts",
     "scripts": {
         "demo": "vite --host --open",
@@ -56,6 +61,7 @@
         "@testing-library/react-hooks": "^8.0.1",
         "@testing-library/user-event": "^14.4.3",
         "@types/jsdom": "^21.1.0",
+        "@types/loadable__component": "^5.13.4",
         "@types/node": "^18.14.2",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
@@ -80,7 +86,6 @@
         "react-select-event": "^5.5.1",
         "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.23",
         "stylelint": "^15.2.0",
-        "@types/loadable__component": "^5.13.4",
         "stylelint-config-recommended": "^10.0.1",
         "stylelint-config-sass-guidelines": "^9.0.1",
         "ts-node": "^10.9.1",
