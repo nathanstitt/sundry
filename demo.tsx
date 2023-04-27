@@ -3,6 +3,7 @@ import * as React from 'react'
 import {
     Box,
     Yup,
+    Icon,
     Message,
     Section,
     InputField,
@@ -36,7 +37,9 @@ export default function Demo() {
     }
     return (
         <div className="container mt-5">
-            <Message message="hello" />
+            <Message message="hello" hint="This is a test of the MessageBox"
+                prefixIcon={<Icon icon="clock" />}
+            />
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 name="Demo Form"

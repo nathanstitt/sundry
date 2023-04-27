@@ -1,4 +1,5 @@
 import { Icon } from './icon.js'
+import { CSSProperties } from 'react'
 import { React, FCWC, styled, useCallback, cx } from './common.js'
 import { Box } from 'boxible'
 import { themeColors, themeMedia } from './theme.js'
@@ -20,11 +21,25 @@ const Heading = styled(Box)({
     borderBottom: '1px solid #ddd',
 })
 
-const Body = styled.div(({ noPad, noBorder }: { noBorder?: boolean; noPad?: boolean }) => ({
-    padding: noPad ? '0' : '1rem',
+type BodyProps = {
+    padding?: CSSProperties['padding'],
+    scrollable?: boolean,
+    maxHeight?: CSSProperties['maxHeight'],
+    minHeight?: CSSProperties['minHeight'],
+    noBorder?: boolean;
+    noPad?: boolean
+}
+const Body = styled.div(({
+    noPad, noBorder, maxHeight, minHeight, padding = '1rem',
+}: BodyProps) => ({
+    padding: noPad ? 0 : padding,
     [themeMedia.mobile]: {
         padding: noPad ? '0' : '0.3rem',
     },
+    minHeight,
+    maxHeight,
+    alignContent: 'flex-start',
+    overflow: maxHeight ? 'auto' : 'visible',
     borderWidth: noBorder ? 0 : 1,
 }))
 
@@ -43,7 +58,6 @@ const SectionFooter = styled.div(({ noPad }: { noPad: boolean | undefined }) => 
 
 export interface SectionProps {
     id: string
-    bodyClassName?: string
     headingClassName?: string
     className?: string
     heading: React.ReactNode
@@ -57,10 +71,16 @@ export interface SectionProps {
     onToggle?: (isExpanded: boolean) => void
     defaultCollapsed?: boolean
     isExpanded?: boolean
+    bodyClassName?: string
+    hideCollapsedControls?: boolean
+    bodyPadding?: CSSProperties['padding'],
+    maxHeight?: CSSProperties['maxHeight'],
+    minHeight?: CSSProperties['minHeight'],
 }
 
 type URSectionProps = SectionProps & {
     collapseProps: any
+    dispayAsExpanded: boolean
 }
 
 const SectionDOM: FCWC<URSectionProps> = ({
@@ -78,6 +98,11 @@ const SectionDOM: FCWC<URSectionProps> = ({
     controls,
     fullWidth,
     noPad,
+    dispayAsExpanded,
+    hideCollapsedControls = false,
+    bodyPadding,
+    minHeight = 100,
+    maxHeight,
     noBorder,
 }) => {
     const onClick = useCallback(() => {
@@ -94,16 +119,19 @@ const SectionDOM: FCWC<URSectionProps> = ({
                     <Icon
                         className="me-1"
                         color={themeColors.gray2}
-                        icon={isExpanded ? 'minusSquare' : 'plusSquare'}
+                        icon={dispayAsExpanded ? 'minusSquare' : 'plusSquare'}
                     />
                     {heading}
                 </Box>
-                {controls && <Box>{controls}</Box>}
+                {controls && (!hideCollapsedControls || dispayAsExpanded) ? <Box>{controls}</Box> : null}
             </Heading>
             <div {...collapseProps}>
                 <Body
                     noPad={noPad}
+                    padding={bodyPadding}
                     noBorder={noBorder}
+                    maxHeight={maxHeight}
+                    minHeight={isExpanded ? minHeight : 0}
                     className={cx('secbody', bodyClassName, {
                         'container-lg': !fullWidth,
                         row: isRow != false,
@@ -121,8 +149,9 @@ const SectionDOM: FCWC<URSectionProps> = ({
     )
 }
 
-const RetainedSection: FCWC<SectionProps> = ({ id, ...props }) => {
-    const { getCollapseProps, setExpanded, isExpanded } = useRetainedCollapse(id, true)
+const RetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props }) => {
+    const { getCollapseProps, setExpanded, isExpanded, dispayAsExpanded } = useRetainedCollapse(id, !!defaultCollapsed)
+
     const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
 
     return (
@@ -130,6 +159,7 @@ const RetainedSection: FCWC<SectionProps> = ({ id, ...props }) => {
             id={id}
             onToggle={onToggle}
             isExpanded={isExpanded}
+            dispayAsExpanded={dispayAsExpanded}
             {...props}
             collapseProps={getCollapseProps()}
         />
@@ -137,7 +167,8 @@ const RetainedSection: FCWC<SectionProps> = ({ id, ...props }) => {
 }
 
 const UnRetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props }) => {
-    const { getCollapseProps, setExpanded, isExpanded } = useCollapse(defaultCollapsed)
+
+    const { getCollapseProps, setExpanded, isExpanded, dispayAsExpanded } = useCollapse(defaultCollapsed)
     const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
 
     return (
@@ -146,6 +177,7 @@ const UnRetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props 
             onToggle={onToggle}
             isExpanded={isExpanded}
             {...props}
+            dispayAsExpanded={dispayAsExpanded}
             collapseProps={getCollapseProps()}
         />
     )
@@ -161,20 +193,20 @@ const ControlledSection: FCWC<ControlledSectionProps> = ({
     onToggle: onToggleProp,
     ...props
 }) => {
-    const { getCollapseProps, setExpanded } = useControlledCollapse(isExpanded, (isExpanded) => {
+    const { getCollapseProps, setExpanded, dispayAsExpanded } = useControlledCollapse(isExpanded, (isExpanded) => {
         onToggleProp(isExpanded)
     })
+
     const onToggle = useCallback(() => {
         setExpanded(!isExpanded)
     }, [isExpanded, setExpanded])
-
-    //const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
 
     return (
         <SectionDOM
             id={id}
             onToggle={onToggle}
             isExpanded={isExpanded}
+            dispayAsExpanded={dispayAsExpanded}
             {...props}
             collapseProps={getCollapseProps()}
         />
