@@ -150,7 +150,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
 }
 
 const RetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props }) => {
-    const { getCollapseProps, setExpanded, isExpanded, dispayAsExpanded } = useRetainedCollapse(id, !!defaultCollapsed)
+    const { getCollapseProps, setExpanded, isExpanded, dispayAsExpanded } = useRetainedCollapse(id, !defaultCollapsed)
 
     const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
 
@@ -168,7 +168,7 @@ const RetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props })
 
 const UnRetainedSection: FCWC<SectionProps> = ({ id, defaultCollapsed, ...props }) => {
 
-    const { getCollapseProps, setExpanded, isExpanded, dispayAsExpanded } = useCollapse(defaultCollapsed)
+    const { getCollapseProps, setExpanded, isExpanded, dispayAsExpanded } = useCollapse(!defaultCollapsed)
     const onToggle = useCallback(() => setExpanded(!isExpanded), [isExpanded, setExpanded])
 
     return (
