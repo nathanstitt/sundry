@@ -52,6 +52,7 @@ export const MessageBox = styled(Box)({
 
 export interface MessageProps {
     message: React.ReactNode
+    hint?: React.ReactNode
     variant?: string
     border?: string | false
     className?: string
@@ -60,6 +61,11 @@ export interface MessageProps {
     expandWidth?: boolean
     overlay?: boolean
 }
+
+const Hint = styled.span({
+    fontSize: '0.9rem',
+    color: colors.lightText,
+})
 
 export const Message: FC<MessageProps> = ({
     variant,
@@ -70,6 +76,7 @@ export const Message: FC<MessageProps> = ({
     className,
     expandWidth,
     overlay,
+    hint,
 }) => {
     return (
         <MessageBox
@@ -80,15 +87,19 @@ export const Message: FC<MessageProps> = ({
             justify="center"
         >
             <StyledMessage
-                align="center"
-                justify="center"
+                direction="column"
+                centered
                 border={border}
                 width={expandWidth ? 'auto' : '450px'}
             >
-                {prefixIcon}
-                <H>{message}</H>
-                {suffixIcon}
+                <Box centered>
+                    {prefixIcon}
+                    <H>{message}</H>
+                    {suffixIcon}
+                </Box>
+                {hint && <Hint>{hint}</Hint>}
             </StyledMessage>
+
         </MessageBox>
     )
 }

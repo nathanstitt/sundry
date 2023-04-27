@@ -215,3 +215,16 @@ export function useInterval(
         return () => window.clearInterval(interval)
     }, [intervalDurationMs, pause, immediate])
 }
+
+export function useToggle(initialValue = false) {
+    const [isEnabled, setValue] = useState(initialValue)
+    const setEnabled = useCallback(() => setValue(true), [setValue])
+    const setDisabled = useCallback(() => setValue(false), [setValue])
+    const setToggled = useCallback((v: boolean) => setValue(v), [])
+    return useMemo(() => ({
+        isEnabled,
+        setDisabled,
+        setEnabled,
+        setToggled,
+    }),[isEnabled, setDisabled, setEnabled, setToggled])
+}

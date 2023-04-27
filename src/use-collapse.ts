@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useLocalstorageState } from './use-local-storage.js'
+import { useToggle } from './hooks.js'
 
 let useIsExpanded = (id: string, defaultExpanded: boolean) => {
     return useLocalstorageState(id, defaultExpanded)
@@ -10,6 +11,7 @@ export const setIsExpandedImpl = (fn: typeof useIsExpanded) => {
 }
 
 export function useControlledCollapse(isExpanded: boolean, setExpanded: (e: boolean) => void) {
+    const { isEnabled: dispayAsExpanded, setToggled: onToggleComplete } = useToggle(isExpanded)
     const ref = useRef<HTMLDivElement>(null)
     const lastExpanded = useRef(isExpanded)
 
@@ -59,6 +61,7 @@ export function useControlledCollapse(isExpanded: boolean, setExpanded: (e: bool
                                     maskElem.style.height = 'auto'
                                 }
                             }
+                            onToggleComplete(isExpanded)
                         }
                         maskElem.style.height = endHeight + 'px'
                     })
@@ -71,7 +74,7 @@ export function useControlledCollapse(isExpanded: boolean, setExpanded: (e: bool
         return function () {
             maskElem.ontransitionend = null
         }
-    }, [isExpanded, ref, firstUpdate, lastExpanded])
+    }, [isExpanded, ref, firstUpdate, lastExpanded, onToggleComplete])
 
     const getCollapseProps = useCallback(
         () => ({
@@ -88,8 +91,9 @@ export function useControlledCollapse(isExpanded: boolean, setExpanded: (e: bool
             getCollapseProps,
             isExpanded,
             setExpanded,
+            dispayAsExpanded,
         }),
-        [getCollapseProps, setExpanded, isExpanded]
+        [getCollapseProps, setExpanded, isExpanded, dispayAsExpanded]
     )
 }
 
