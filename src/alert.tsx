@@ -1,5 +1,6 @@
 import { React, FC, useEffect, cx, styled, useState } from './common.js'
 import { ColProps } from './col.js'
+import { Box } from 'boxible'
 import { CombinedError } from 'urql'
 import { errorToString } from './util.js'
 import { BSVariants, bsClassNames } from './bs.js'
@@ -8,6 +9,7 @@ import { Icon } from './icon.js'
 import { ErrorTypes } from './types.js'
 
 export interface AlertProps extends BSVariants, ColProps {
+    icon?: React.ReactNode
     message?: string
     onDismiss?(): void
     className?: string
@@ -25,6 +27,7 @@ const Wrapper = styled.div({
 export const Alert: FC<AlertProps> = ({
     message,
     onDismiss,
+    icon,
     className = '',
     canDismiss = true,
     ...types
@@ -40,7 +43,9 @@ export const Alert: FC<AlertProps> = ({
     if (!(visible && message)) {
         return null
     }
-
+    if (typeof icon == 'string') {
+        icon = <Icon icon={icon as any} />
+    }
     return (
         <Wrapper
             role="alert"
@@ -49,7 +54,7 @@ export const Alert: FC<AlertProps> = ({
                 'alert-dismissible': canDismiss,
             })}
         >
-            <div>{message}</div>
+            <Box gap align={'center'}>{icon}{message}</Box>
             {canDismiss && (
                 <button
                     type="button"
@@ -80,7 +85,7 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissPro
         onDismissProp?.()
     }
 
-    return <Alert danger message={errorToString(error)} onDismiss={onDismiss} />
+    return <Alert icon="exclamationCircle" danger message={errorToString(error)} onDismiss={onDismiss} />
 }
 
 const Pending = styled.span({
