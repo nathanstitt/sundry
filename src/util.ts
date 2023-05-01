@@ -169,3 +169,11 @@ export function whenDomReady(fn: () => void): void {
 export function firstNonNil(...values: Array<null | undefined | number>): number | null {
     return values.find(nonNil) || null
 }
+
+// Same as `Object.assign()` but with type inference
+export function objectAssign<Obj extends Object, ObjAddendum>(
+  obj: Obj,
+  objAddendum: ObjAddendum
+): asserts obj is Obj & ObjAddendum {
+  Object.assign(obj, objAddendum)
+}

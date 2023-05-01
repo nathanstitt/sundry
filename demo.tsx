@@ -4,6 +4,8 @@ import {
     Box,
     Yup,
     Icon,
+    Toast,
+    Button,
     Message,
     Section,
     InputField,
@@ -40,6 +42,7 @@ export default function Demo() {
             <Message message="hello" hint="This is a test of the MessageBox"
                 prefixIcon={<Icon icon="clock" />}
             />
+            <Button onClick={() => Toast.show({ message: 'hello' })}>Show Toast</Button>
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 name="Demo Form"

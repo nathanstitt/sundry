@@ -70,7 +70,7 @@ interface useEventListenerOptions<T extends Document | Window | HTMLElement>
 
 type WindowEventHandler<T extends keyof WindowEventMap> = (event: WindowEventMap[T]) => void
 type DocumentEventHandler<T extends keyof DocumentEventMap> = (event: DocumentEventMap[T]) => void
-type ElementEventHandler<T extends keyof HTMLElementEventMap> = HTMLElementEventMap[T]
+type ElementEventHandler<T extends keyof HTMLElementEventMap> = (event: HTMLElementEventMap[T]) => void
 
 export function useEventListener<K extends keyof WindowEventMap, T extends Window>(
     eventName: K,
