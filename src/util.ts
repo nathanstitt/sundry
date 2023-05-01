@@ -171,9 +171,9 @@ export function firstNonNil(...values: Array<null | undefined | number>): number
 }
 
 // Same as `Object.assign()` but with type inference
-export function objectAssign<Obj extends Object, ObjAddendum>(
-  obj: Obj,
-  objAddendum: ObjAddendum
+export function objectAssign<Obj extends object, ObjAddendum>(
+    obj: Obj,
+    objAddendum: ObjAddendum
 ): asserts obj is Obj & ObjAddendum {
-  Object.assign(obj, objAddendum)
+    Object.assign(obj, objAddendum)
 }
