@@ -2,20 +2,20 @@ import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import {
     Box,
-    Yup,
-    Icon,
-    Toast,
     Button,
+    DateTimeField,
+    DropdownMenu,
+    EditingForm,
+    FormSubmitHandler,
+    Icon,
+    InputField,
     Message,
     Section,
-    InputField,
-    EditingForm,
     SelectField,
-    DropdownMenu,
-    useDeviceSize,
-    DateTimeField,
-    FormSubmitHandler,
     SelectOnChangeHandler,
+    Toast,
+    useDeviceSize,
+    Yup,
 } from './src/all.js'
 import './test/setup-select.js'
 
@@ -41,28 +41,54 @@ export default function Demo() {
     }
     return (
         <div className="container mt-5">
-            <Message message="hello" hint="This is a test of the MessageBox"
+            <Message
+                message="hello"
+                hint="This is a test of the MessageBox"
                 prefixIcon={<Icon icon="clock" />}
             />
             <h6>Display size = {displaySize}</h6>
-            <Button onClick={() => Toast.show({ message: 'hello' })}>Show Toast</Button>
+            <Button
+                onClick={() =>
+                    Toast.show({
+                        title: 'cool title!',
+                        message: 'hello',
+                        autohide: false,
+                        placement: 'topRight',
+                    })
+                }
+            >
+                Show Toast
+            </Button>
+
+            <Button
+                onClick={() =>
+                    Toast.show({
+                        message: 'hello',
+                        autohide: false,
+                    })
+                }
+            >
+                Show Toast without title
+            </Button>
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 name="Demo Form"
                 className="row"
-                defaultValues={{
-                    name: '',
-                    nested: [
-                        {
-                            name: 'b',
-                        },
-                    ],
-                    cbv: true,
-                    bc: 'a',
-                    rbv: 'c',
-                    from: new Date('2022-10-21'),
-                    to: new Date('2022-11-02'),
-                } satisfies FormData}
+                defaultValues={
+                    {
+                        name: '',
+                        nested: [
+                            {
+                                name: 'b',
+                            },
+                        ],
+                        cbv: true,
+                        bc: 'a',
+                        rbv: 'c',
+                        from: new Date('2022-10-21'),
+                        to: new Date('2022-11-02'),
+                    } satisfies FormData
+                }
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
                 })}
