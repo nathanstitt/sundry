@@ -2,20 +2,21 @@ import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import {
     Box,
-    Button,
-    DateTimeField,
-    DropdownMenu,
-    EditingForm,
-    FormSubmitHandler,
+    Yup,
     Icon,
-    InputField,
+    Toast,
+    Button,
     Message,
     Section,
+    InputField,
+    EditingForm,
     SelectField,
-    SelectOnChangeHandler,
-    Toast,
+    whenDomReady,
+    DropdownMenu,
+    DateTimeField,
     useDeviceSize,
-    Yup,
+    FormSubmitHandler,
+    SelectOnChangeHandler,
 } from './src/all.js'
 import './test/setup-select.js'
 
@@ -147,7 +148,7 @@ export default function Demo() {
                     footer={<Box justify="end">This is footer</Box>}
                 >
                     <div style={{ border: '1px solid blue', margin: 20 }}>
-                        <h5>Hello world</h5>
+                        <h5>Hello World</h5>
                         <button
                             onClick={(ev) => {
                                 ev.currentTarget.parentElement!.style!.height = '200px'
@@ -162,12 +163,14 @@ export default function Demo() {
     )
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
+
+whenDomReady(() => {
     const el = document.getElementById('app')
-    const root = createRoot(el)
+    const root = createRoot(el!)
     root.render(
         <React.StrictMode>
             <Demo />
         </React.StrictMode>
     )
 })
+

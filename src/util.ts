@@ -159,6 +159,7 @@ export function toArray<T>(aryOrEl: T | Array<T>) {
 }
 
 export function whenDomReady(fn: () => void): void {
+    if (isSSR) return
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         setTimeout(fn, 1)
     } else {

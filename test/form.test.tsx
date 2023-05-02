@@ -1,3 +1,6 @@
+/**
+ * @vitest-environment jsdom
+ */
 import * as React from 'react'
 //import '@testing-library/jest-dom/extend-expect'
 import { Form, InputField, DateTimeField, SelectField } from '../src/form.js'

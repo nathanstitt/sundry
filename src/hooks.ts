@@ -207,7 +207,7 @@ export function useInterval(
     }
 
     useEffect(() => {
-        if (pause) {
+        if (pause || isSSR) {
             return emptyFn
         }
         if (immediate && !wasCalled.current) {

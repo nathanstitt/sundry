@@ -40,7 +40,7 @@ const config = defineConfig({
         }
     },
     test: {
-        environment: 'jsdom',
+        environment: 'node',
     },
 });
 

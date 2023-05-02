@@ -1,3 +1,7 @@
+/**
+ * @vitest-environment jsdom
+ *  vitest fake timers need a dom, not the hook itself
+ */
 import { renderHook } from '@testing-library/react-hooks'
 import { useState } from 'react'
 import { act, cleanup } from '@testing-library/react'
