@@ -2,20 +2,20 @@ import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import {
     Box,
-    Yup,
-    Icon,
-    Toast,
     Button,
+    DateTimeField,
+    DropdownMenu,
+    EditingForm,
+    FormSubmitHandler,
+    Icon,
+    InputField,
     Message,
     Section,
-    InputField,
-    EditingForm,
     SelectField,
-    DropdownMenu,
-    useDeviceSize,
-    DateTimeField,
-    FormSubmitHandler,
     SelectOnChangeHandler,
+    Toast,
+    useDeviceSize,
+    Yup,
 } from './src/all.js'
 import './test/setup-select.js'
 
@@ -53,7 +53,7 @@ export default function Demo() {
                         title: 'cool title!',
                         message: 'hello',
                         autohide: false,
-                        placement: 'bottomRight',
+                        placement: 'topRight',
                     })
                 }
             >

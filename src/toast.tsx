@@ -1,8 +1,8 @@
 import { React, FC, useEffect, useRef, cx, useState } from './common.js'
 import { createRoot } from 'react-dom/client'
-import BSToast from 'bootstrap/js/dist/toast'
+import type BSToastT from 'bootstrap/js/dist/toast'
 
-export interface ToastProps extends Partial<BSToast.Options> {
+export interface ToastProps extends Partial<BSToastT.Options> {
     title?: string
     className?: string
     message?: React.ReactNode
@@ -47,19 +47,21 @@ export const ToastC: FC<ToastProps> = ({
     useEffect(() => {
         const el = toastRef.current
         if (!el) return
-        let bsToast = BSToast.getInstance(el)
-        if (!bsToast) {
-            bsToast = new BSToast(el, {
-                delay,
-                autohide,
-                animation,
-            })
-            el.addEventListener('hidden.bs.toast', function () {
-                el.parentElement?.remove()
-                setHidden(true)
-            })
-            bsToast.show()
-        }
+        import('bootstrap/js/dist/toast').then(({ default: BSToast }) => {
+            let bsToast = BSToast.getInstance(el)
+            if (!bsToast) {
+                bsToast = new BSToast(el, {
+                    delay,
+                    autohide,
+                    animation,
+                })
+                el.addEventListener('hidden.bs.toast', function () {
+                    el.parentElement?.remove()
+                    setHidden(true)
+                })
+                bsToast.show()
+            }
+        })
     })
     if (isHidden) return null
 
