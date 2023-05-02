@@ -2,6 +2,8 @@ import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import type { Ref, RefObject, RefCallback, MutableRefObject } from 'react'
 import { emptyFn, isSSR } from './util.js'
 import { RefElementOrNull, CallbackRef, HTMLElementOrNull } from './types.js'
+import { themeMediaRules } from './theme.js'
+import { useMatchMedia } from './use-match-media.js'
 
 /**
  * Hooks here are an algamation of code from
@@ -227,4 +229,22 @@ export function useToggle(initialValue = false) {
         setEnabled,
         setToggled,
     }),[isEnabled, setDisabled, setEnabled, setToggled])
+}
+
+export function useDidMount(callback: typeof emptyFn): void {
+    useEffect(() => {
+        if (typeof callback === "function") {
+            callback();
+        }
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+export function useDeviceSize(defaultSize: keyof typeof themeMediaRules = 'desktop') {
+    const [names, queries] = useMemo(() => [Object.keys(themeMediaRules), Object.values(themeMediaRules)], [])
+    console.log(names, queries)
+    const sizes = useMatchMedia(queries)
+    for (let i = 0; i < sizes.length; i++) {
+        if (sizes[i]) return names[i]
+    }
+    return defaultSize
 }

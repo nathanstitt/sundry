@@ -12,6 +12,7 @@ import {
     EditingForm,
     SelectField,
     DropdownMenu,
+    useDeviceSize,
     DateTimeField,
     FormSubmitHandler,
     SelectOnChangeHandler,
@@ -27,6 +28,7 @@ interface FormData {
 
 export default function Demo() {
     const [isExpanded, setExpanded] = React.useState(false)
+    const displaySize = useDeviceSize()
     const onSubmit: FormSubmitHandler<FormData> = async (values, _) => {
         console.log(values) // eslint-disable-line no-console
 
@@ -42,6 +44,7 @@ export default function Demo() {
             <Message message="hello" hint="This is a test of the MessageBox"
                 prefixIcon={<Icon icon="clock" />}
             />
+            <h6>Display size = {displaySize}</h6>
             <Button onClick={() => Toast.show({ message: 'hello' })}>Show Toast</Button>
             <h6 className="mt-4">Form test</h6>
             <EditingForm

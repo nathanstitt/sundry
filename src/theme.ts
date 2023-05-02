@@ -168,10 +168,16 @@ export const themeBreakpoint = {
     },
 }
 
+export const themeMediaRules = {
+    mobile: `(max-width: ${themeScreenSizes['md']}px)`,
+    tablet: `(min-width: ${themeScreenSizes['md']}px) and (max-width: ${themeScreenSizes['xl']}px)`,
+    desktop: `(min-width: ${themeScreenSizes['xl']}px)`,
+}
+
 export const themeMedia = {
-    mobile: `@media (max-width: ${themeScreenSizes['md']}px)`,
-    tablet: `@media (min-width: ${themeScreenSizes['md']}px) and (max-width: ${themeScreenSizes['xl']}px)`,
-    desktop: `@media (min-width: ${themeScreenSizes['xl']}px)`,
+    mobile: `@media ${themeMediaRules.mobile}`,
+    tablet: `@media ${themeMediaRules.tablet}`,
+    desktop: `@media ${themeMediaRules.desktop}`,
 }
 
 const makeLine = (side: string) => ({
