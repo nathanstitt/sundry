@@ -241,7 +241,6 @@ export function useDidMount(callback: typeof emptyFn): void {
 
 export function useDeviceSize(defaultSize: keyof typeof themeMediaRules = 'desktop') {
     const [names, queries] = useMemo(() => [Object.keys(themeMediaRules), Object.values(themeMediaRules)], [])
-    console.log(names, queries)
     const sizes = useMatchMedia(queries)
     for (let i = 0; i < sizes.length; i++) {
         if (sizes[i]) return names[i]

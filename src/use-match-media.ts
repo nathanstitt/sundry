@@ -12,11 +12,11 @@ export function useMatchMedia<T extends MediaMatchQuery | MediaMatchQuery[]>(
     const queries = useMemo(() => toArray(query), [query])
 
     const mediaQuerys = useMemo(() => isSSR ? [] : queries.map(q => window.matchMedia(q)), [queries])
-    
+
     const getValues = useCallback(() => {
         return mediaQuerys.map(mql => mql.matches)
     }, [mediaQuerys])
-console.log(queries,mediaQuerys, getValues())
+
     const [values, setValues] = useState<Array<MatchedMedia>>(() => {
         if (isSSR) {
             return defaultValue == null ?
@@ -34,5 +34,5 @@ console.log(queries,mediaQuerys, getValues())
 
     // narrowing return type based on conditional isn't currently supported
     // https://github.com/microsoft/TypeScript/issues/24929
-    return (Array.isArray(query) ? values : values[0]) as any   
+    return (Array.isArray(query) ? values : values[0]) as any
 }
