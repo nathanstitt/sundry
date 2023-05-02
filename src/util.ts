@@ -177,3 +177,12 @@ export function objectAssign<Obj extends object, ObjAddendum>(
 ): asserts obj is Obj & ObjAddendum {
     Object.assign(obj, objAddendum)
 }
+
+export function groupBy<T>(array: T[], predicate: (keyof T) | ((value: T, index: number, array: T[]) => string|number)) {
+    return array.reduce((acc, value, index, array) => {
+        const key = (typeof predicate == 'function') ? predicate(value, index, array) : value[predicate] as string
+        (acc[key] ||= []).push(value);
+        return acc;
+    }, {} as { [key: string]: T[] });
+}
+
