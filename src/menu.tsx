@@ -5,7 +5,7 @@ import type {
     DropdownToggleProps,
     DropdownProps as RUDdProps,
 } from '@restart/ui/Dropdown'
-
+import { getPortalContainer } from './config.js'
 import { createPortal } from 'react-dom'
 import { asyncComponentLoader } from './async-load.js'
 import { Button, ButtonProps } from './button.js'
@@ -93,7 +93,7 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                             >
                                 {children}
                             </div>,
-                            document.body
+                            getPortalContainer(),
                         )
                     }
                 </Menu>
