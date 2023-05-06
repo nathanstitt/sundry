@@ -1,7 +1,9 @@
 import { React, FCWC, useState, cx, useCallback } from './common.js'
+import { createPortal } from 'react-dom'
 import { usePopper } from 'react-popper'
 import { useOutsideClickRef, useRefElement } from './hooks.js'
 import { Box, extractBoxibleProps } from 'boxible'
+import { getPortalContainer } from './config.js'
 
 interface ControlledPopoverProps {
     show: boolean
@@ -36,7 +38,7 @@ export const ControlledPopover = React.forwardRef<
     }
 
     const pos = (attributes.popper || {})['data-popper-placement']
-    return (
+    return createPortal((
         <div
             className={cx(type, className, 'fade', `bs-${type}-${pos}`, { show })}
             role="tooltip"
@@ -57,7 +59,7 @@ export const ControlledPopover = React.forwardRef<
                 {children}
             </div>
         </div>
-    )
+    ), getPortalContainer())
 })
 ControlledPopover.displayName = 'ControlledPopover'
 
