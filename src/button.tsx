@@ -1,5 +1,6 @@
 import { React, PropsWithOptionalChildren, CSSObject, styled, cx } from './common.js'
 import { BSVariants, bsClassNames } from './bs.js'
+import { Popover, PopoverProps, Tooltip, TooltipProps } from './popover.js'
 import { LoadingDots as LD } from './loading-dots.js'
 import { IconKey, Icon } from './icon.js'
 import { usePendingState } from './pending.js'
@@ -66,6 +67,10 @@ export interface ButtonProps extends BSVariants, React.ButtonHTMLAttributes<HTML
     iconOnly?: boolean
     active?: boolean
     reverse?: boolean
+    tooltip?: React.ReactNode
+    tooltipProps?: Omit<TooltipProps, 'children' | 'target' | 'popover'>
+    popover?: React.ReactNode
+    popoverProps?: Omit<PopoverProps, 'children' | 'target' | 'popover'>
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChildren<ButtonProps>>(
@@ -84,6 +89,10 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
             iconOnly = !children,
             active,
             reverse,
+            tooltip,
+            tooltipProps = {},
+            popover,
+            popoverProps = {},
             ...otherProps
         } = forwardedProps
 
@@ -107,6 +116,25 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
         if (icon) {
             message = <span>{message}</span>
         }
+        let content: any = [icon]
+        if (iconOnly !== true) {
+            content.push(message)
+        }
+        if (tooltip) {
+            content = (
+                <Tooltip tooltip={tooltip} {...tooltipProps}>
+                    {content}
+                </Tooltip>
+            )
+        }
+
+        if (popover) {
+            content = (
+                <Popover popover={popover} {...popoverProps}>
+                    {content}
+                </Popover>
+            )
+        }
 
         return (
             <StyledButton
@@ -129,8 +157,7 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
                 )}
                 {...props}
             >
-                {icon}
-                {iconOnly !== true && message}
+                {content}
             </StyledButton>
         )
     }

@@ -49,6 +49,7 @@ export default function Demo() {
             />
             <h6>Display size = {displaySize}</h6>
             <Button
+                tooltip="Click to show a Toast Message"
                 onClick={() =>
                     Toast.show({
                         title: 'cool title!',
@@ -78,11 +79,7 @@ export default function Demo() {
                 defaultValues={
                     {
                         name: '',
-                        nested: [
-                            {
-                                name: 'b',
-                            },
-                        ],
+                        nested: [ { name: 'b' } ],
                         cbv: true,
                         bc: 'a',
                         rbv: 'c',
@@ -103,9 +100,11 @@ export default function Demo() {
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
+                    size={3}
                     onChange={logSelectChange}
                     placeholder="Select an option..."
                     label="Options"
+
                     options={[
                         { label: 'A', value: 'a' },
                         { label: 'B', value: 'b' },
@@ -114,6 +113,7 @@ export default function Demo() {
                     name="nested[0].name"
                 />
                 <SelectField
+
                     placeholder="Select without a label"
                     options={[
                         { label: 'A', value: 'a' },
@@ -141,7 +141,7 @@ export default function Demo() {
                 <h4>hi</h4>
                 <Section
                     id="section-test"
-                    onToggle={(v) => setExpanded(!isExpanded)}
+                    onToggle={() => setExpanded(!isExpanded)}
                     isExpanded={isExpanded}
                     className="mb-4"
                     heading="This is a section"
