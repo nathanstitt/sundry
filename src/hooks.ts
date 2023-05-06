@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import type { Ref, RefObject, RefCallback, MutableRefObject } from 'react'
 import { emptyFn, isSSR } from './util.js'
 import { RefElementOrNull, CallbackRef, HTMLElementOrNull } from './types.js'
-import { themeMediaRules } from './theme.js'
+import { DeviceSize, themeMediaRules } from './theme.js'
 import { useMatchMedia } from './use-match-media.js'
 
 /**
@@ -239,8 +239,8 @@ export function useDidMount(callback: typeof emptyFn): void {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 }
 
-export function useDeviceSize(defaultSize: keyof typeof themeMediaRules = 'desktop') {
-    const [names, queries] = useMemo(() => [Object.keys(themeMediaRules), Object.values(themeMediaRules)], [])
+export function useDeviceSize(defaultSize: DeviceSize = 'desktop'): DeviceSize {
+    const [names, queries] = useMemo(() => [Object.keys(themeMediaRules) as DeviceSize[], Object.values(themeMediaRules)], [])
     const sizes = useMatchMedia(queries)
     for (let i = 0; i < sizes.length; i++) {
         if (sizes[i]) return names[i]

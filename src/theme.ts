@@ -174,6 +174,8 @@ export const themeMediaRules = {
     desktop: `(min-width: ${themeScreenSizes['xl']}px)`,
 }
 
+export type DeviceSize = keyof typeof themeMediaRules
+
 export const themeMedia = {
     mobile: `@media ${themeMediaRules.mobile}`,
     tablet: `@media ${themeMediaRules.tablet}`,
