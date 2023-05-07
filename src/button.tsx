@@ -100,26 +100,29 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
 
         const [bsClasses, props] = bsClassNames('btn', otherProps, { default: 'light' })
 
+        let content = <></>
+
         if (typeof icon === 'string') {
             icon = <Icon icon={icon as IconKey} />
         }
+
+        if (icon) content = <>{content}{icon}</>
+
         const isBusy = usePendingState(busyProp, 150)
 
-        let message = isBusy ? (
-            <Busy>
-                {busyMessage}
-                <LD />
-            </Busy>
-        ) : (
-            children
-        )
-        if (icon) {
-            message = <span>{message}</span>
+        if (!icon || iconOnly !== true) {
+            const message = isBusy ? (
+                <Busy>
+                    {busyMessage}
+                    <LD />
+                </Busy>
+            ) : (
+                children
+            )
+
+            content = <>{content}<span>{message}</span></>
         }
-        let content: any = [icon]
-        if (iconOnly !== true) {
-            content.push(message)
-        }
+
         if (tooltip) {
             content = (
                 <Tooltip tooltip={tooltip} {...tooltipProps}>
@@ -142,7 +145,7 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
                 ref={ref}
                 disabled={busyProp || disabled}
                 rowReverse={!!reverse}
-                iconOnly={icon && !message}
+                iconOnly={icon && iconOnly === true}
                 className={cx(
                     'btn',
                     bsClasses,
