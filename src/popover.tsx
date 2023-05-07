@@ -94,6 +94,7 @@ export const Popover: FCWC<PopoverProps> = ({
 
     return (
         <Box
+            gap
             centered
             {...boxibleProps}
             ref={(s) => setWrapperRef(s || undefined)}
@@ -124,6 +125,7 @@ export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...p
     const [boxibleProps, tooltipProps] = extractBoxibleProps(props)
     return (
         <Box
+            gap
             centered
             {...boxibleProps}
             ref={setWrapperRef}
