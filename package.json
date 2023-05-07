@@ -6,9 +6,7 @@
     "version": "1.5.0",
     "typesVersions": {
         "*": {
-            "*": [
-                "dist/*"
-            ]
+            "*": ["dist/*"]
         }
     },
     "exports": {
@@ -23,10 +21,7 @@
             "require": "./dist/*.cjs"
         }
     },
-    "files": [
-        "src",
-        "dist"
-    ],
+    "files": ["src", "dist"],
     "typings": "dist/index.d.ts",
     "scripts": {
         "demo": "vite --host --open",
@@ -35,6 +30,7 @@
         "typecheck": "tsc --noemit",
         "build": "vite build",
         "test": "vitest run",
+        "update-snapshots": "vitest run -u",
         "ci": "vitest run",
         "lint:scripts": "eslint . --ext .ts",
         "lint:styles": "stylelint ./**/*.{css,scss}",
