@@ -1,7 +1,7 @@
 import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
 import type { AnyObjectSchema } from 'yup'
 import { isShallowEqual, errorToString } from './util.js'
-import { usePreviousValue } from './hooks.js'
+import { usePreviousValue, useToggle } from './hooks.js'
 import {
     useForm,
     useWatch as useFormValue,
@@ -44,7 +44,7 @@ export type FormSubmitHandler<FV extends FormValues = object> = (
     ctx: FormContext<FV>
 ) => void | Promise<void>
 export type FormCancelHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => void
-export type FormDeleteHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => void
+export type FormDeleteHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => Promise<void>
 
 export type FormValues = Record<string, any>
 
@@ -226,12 +226,16 @@ export function SaveCancelBtn({
     const fc = useFormContext()
 
     const { isDirty, isSubmitting, isSubmitted } = useFormState()
+    const { isEnabled: isDeleting,  setEnabled: setDeleting, setDisabled: setDeleteFinished } = useToggle()
 
-    if (!showControls && !isDirty && !isSubmitted) {
+    if (!onDelete && !showControls && !isDirty && !isSubmitted) {
         return null
     }
 
-    const onFormDelete = () => onDelete?.(fc)
+    const onFormDelete = () => {
+        setDeleting()
+        onDelete?.(fc).then(setDeleteFinished)
+    }
 
     return (
         <Footer justify={onDelete ? 'between' : 'end'}>
@@ -241,6 +245,8 @@ export function SaveCancelBtn({
                     data-testid="form-delete-btn"
                     disabled={isSubmitting}
                     onClick={onFormDelete}
+                    busyMessage="Deleting"
+                    busy={isDeleting}
                 >
                     {deleteLabel}
                 </Button>
