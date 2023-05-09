@@ -100,28 +100,22 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
 
         const [bsClasses, props] = bsClassNames('btn', otherProps, { default: 'light' })
 
-        let content = <></>
-
         if (typeof icon === 'string') {
             icon = <Icon icon={icon as IconKey} />
         }
 
-        if (icon) content = <>{content}{icon}</>
-
         const isBusy = usePendingState(busyProp, 150)
 
-        if (!icon || iconOnly !== true) {
-            const message = isBusy ? (
-                <Busy>
-                    {busyMessage}
-                    <LD />
-                </Busy>
-            ) : (
-                children
-            )
+        const message = isBusy ? (
+            <Busy>
+                {busyMessage}
+                <LD />
+            </Busy>
+        ) : (
+            children
+        )
 
-            content = <>{content}<span>{message}</span></>
-        }
+        let content = icon ? <>{icon}<span>{message}</span></> : <>{message}</>
 
         if (tooltip) {
             content = (

@@ -49,6 +49,7 @@ export default function Demo() {
             />
             <h6>Display size = {displaySize}</h6>
             <Button
+                icon="clock"
                 tooltip="Click to show a Toast Message"
                 onClick={() =>
                     Toast.show({
@@ -65,12 +66,12 @@ export default function Demo() {
             <Button
                 onClick={() =>
                     Toast.show({
-                        message: 'hello',
+                        message: <>hello it is <b>time</b></>,
                         autohide: false,
                     })
                 }
             >
-                Show Toast without title
+                <Icon icon="clock"/>Show Toast without title
             </Button>
             <h6 className="mt-4">Form test</h6>
             <EditingForm
