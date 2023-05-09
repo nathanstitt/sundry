@@ -187,3 +187,28 @@ export function groupBy<T>(array: T[], predicate: (keyof T) | ((value: T, index:
     }, {} as { [key: string]: T[] });
 }
 
+export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
+    callback: F,
+    debounceDelay: number = 10,
+    options: { immediate: boolean } = { immediate: false }
+) {
+    let timeout: ReturnType<typeof setTimeout> | null;
+
+    return function <U>(this: U, ...args: Parameters<typeof callback>) {
+        const context = this;
+
+        if (options.immediate && !timeout) {
+            callback.apply(context, args)
+        }
+        if (typeof timeout === "number") {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            timeout = null;
+            if (!options.immediate) {
+                callback.apply(context, args)
+            }
+        }, debounceDelay);
+    }
+}
+

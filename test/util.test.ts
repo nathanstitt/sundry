@@ -1,5 +1,5 @@
-import { test, expect } from 'vitest'
-import { pick, omit, groupBy } from '../src/util.js'
+import { test, expect, vi, describe } from 'vitest'
+import { pick, omit, groupBy, debounce } from '../src/util.js'
 
 test('pick & omit', async () => {
     const o = { a: 1, b: 2, c: 3, d: 4 }
@@ -20,5 +20,31 @@ test('groupBy', async () => {
     expect(groupBy([{a: 1, b:2}, {a:1, b:3}, {a: 2, d: 12}], 'a')).toEqual({
         1: [{a: 1, b:2}, {a:1, b:3}],
         2: [{a: 2, d: 12}],
+    })
+})
+
+describe('debounce', () => {
+    test('std', async () => {
+        const spy = vi.fn()
+        const fn = debounce(spy, 5)
+        fn()
+        expect(spy).not.toHaveBeenCalled()
+        await new Promise(resolve => setTimeout(resolve, 10))
+        expect(spy).toHaveBeenCalled()
+    })
+
+    test('immediate', async () => {
+        const spy = vi.fn()
+        const fn = debounce(spy, 5, { immediate: true })
+        fn(42)
+        fn('no')
+        fn()
+        expect(spy).toHaveBeenCalledWith(42)
+        expect(spy).toHaveBeenCalledTimes(1)
+        await new Promise(resolve => setTimeout(resolve, 10))
+        fn('second')
+        expect(spy).toHaveBeenCalledTimes(2)
+        expect(spy).toHaveBeenCalledWith('second')
+        expect(spy).not.toHaveBeenCalledWith('no')
     })
 })

@@ -248,14 +248,4 @@ export function useDeviceSize(defaultSize: DeviceSize = 'desktop'): DeviceSize {
     return defaultSize
 }
 
-export function debounce<F extends (...args: Parameters<F>) =>  ReturnType<F>>(
-  func: F,
-  waitFor: number = 10,
-) {
-  let timeout: any
-  const debounced = (...args: Parameters<F>) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), waitFor)
-  }
-  return debounced
-}
+
