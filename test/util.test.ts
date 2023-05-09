@@ -35,14 +35,13 @@ describe('debounce', () => {
 
     test('immediate', async () => {
         const spy = vi.fn()
-        const fn = debounce(spy, 5, { immediate: true })
+        const fn = debounce((a: number) => spy(a), 5, { immediate: true })
         fn(42)
-        fn('no')
-        fn()
+        fn('no' as any)
         expect(spy).toHaveBeenCalledWith(42)
         expect(spy).toHaveBeenCalledTimes(1)
         await new Promise(resolve => setTimeout(resolve, 10))
-        fn('second')
+        fn('second' as any)
         expect(spy).toHaveBeenCalledTimes(2)
         expect(spy).toHaveBeenCalledWith('second')
         expect(spy).not.toHaveBeenCalledWith('no')
