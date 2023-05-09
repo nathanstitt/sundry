@@ -65,7 +65,7 @@ export const usePreviousValue = <TValue>(value?: TValue): TValue | undefined => 
 
 interface useEventListenerOptions<T extends Document | Window | HTMLElement>
     extends AddEventListenerOptions {
-    target?: T
+    target?: T | null | undefined
     useCapture?: boolean
     pause?: boolean
 }
@@ -246,4 +246,16 @@ export function useDeviceSize(defaultSize: DeviceSize = 'desktop'): DeviceSize {
         if (sizes[i]) return names[i]
     }
     return defaultSize
+}
+
+export function debounce<F extends (...args: Parameters<F>) =>  ReturnType<F>>(
+  func: F,
+  waitFor: number = 10,
+) {
+  let timeout: any
+  const debounced = (...args: Parameters<F>) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func(...args), waitFor)
+  }
+  return debounced
 }
