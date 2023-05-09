@@ -3,10 +3,12 @@
     "private": false,
     "type": "module",
     "sideEffects": false,
-    "version": "1.5.2",
+    "version": "1.5.3",
     "typesVersions": {
         "*": {
-            "*": ["dist/*"]
+            "*": [
+                "dist/*"
+            ]
         }
     },
     "exports": {
@@ -21,7 +23,10 @@
             "require": "./dist/*.cjs"
         }
     },
-    "files": ["src", "dist"],
+    "files": [
+        "src",
+        "dist"
+    ],
     "typings": "dist/index.d.ts",
     "scripts": {
         "demo": "vite --host --open",
