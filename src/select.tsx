@@ -67,7 +67,7 @@ const CUSTOM_COMPONENTS = {
 }
 
 // https://github.com/JedWatson/react-select/blob/master/packages/react-select/src/styles.js
-const stdStyles = {
+export const SelectStyles = {
     container: (provided: any) => ({
         ...provided,
     }),
@@ -109,11 +109,11 @@ const stdStyles = {
     }),
 }
 
-const smallStyles = {
-    ...stdStyles,
+export const SelectSmallStyles = {
+    ...SelectStyles,
 
     control: (provided: any, state: any) => {
-        const base = stdStyles.control(provided, state)
+        const base = SelectStyles.control(provided, state)
         return {
             ...base,
             background: '#fff',
@@ -158,10 +158,10 @@ const smallStyles = {
     }),
 }
 
-const tinyStyles = {
-    ...smallStyles,
+export const SelectTinyStyles = {
+    ...SelectSmallStyles,
     control: (provided: any, state: any) => {
-        const base = smallStyles.control(provided, state)
+        const base = SelectSmallStyles.control(provided, state)
         return {
             ...base,
             minHeight: '30px',
@@ -218,6 +218,7 @@ export function Select<O extends SelectOption = SelectOption>({
     value,
     onChange,
     options,
+    styles,
     className,
     allowCreate,
     onCreateOption,
@@ -261,7 +262,7 @@ export function Select<O extends SelectOption = SelectOption>({
             })}
             options={options}
             loadOptions={loadOptions}
-            styles={tiny ? tinyStyles : small ? smallStyles : stdStyles}
+            styles={styles ? styles : tiny ? SelectTinyStyles : small ? SelectSmallStyles : SelectStyles}
             {...props}
             defaultOptions={loadOptions ? options : undefined}
             onCreateOption={onCreateOption}
