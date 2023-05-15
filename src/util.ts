@@ -189,13 +189,13 @@ export function groupBy<T>(array: T[], predicate: (keyof T) | ((value: T, index:
 
 export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
     callback: F,
-    debounceDelay: number = 10,
+    debounceDelay = 10,
     options: { immediate: boolean } = { immediate: false }
 ) {
     let timeout: ReturnType<typeof setTimeout> | null;
 
     return function <U>(this: U, ...args: Parameters<typeof callback>) {
-        const context = this;
+        const context = this; // eslint-disable-line @typescript-eslint/no-this-alias
 
         if (options.immediate && !timeout) {
             callback.apply(context, args)
