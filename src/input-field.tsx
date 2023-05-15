@@ -141,7 +141,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 readOnly={readOnly}
                 placeholder={placeholder || ''}
                 type={type}
-                className={cx({
+                className={cx( (label ? null : className), {
                     'form-control': !isCheckLike,
                     'form-check-input': isCheckLike,
                     'is-invalid': !!fieldState.error,
