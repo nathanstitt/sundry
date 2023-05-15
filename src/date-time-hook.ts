@@ -4,7 +4,7 @@ import { toDateTime } from './date.js'
 import { useFormContext } from './form-hooks.js'
 
 export const useDateTimeField = (name: string, rangeNames?: [string, string]) => {
-    const { getFieldState, getValues, watch } = useFormContext()
+    const { getFieldState, getValues, watch, isReadOnly } = useFormContext()
 
     const fieldNames = useMemo<string[]>(
         () => (Array.isArray(rangeNames) ? rangeNames : [name]),
@@ -27,5 +27,5 @@ export const useDateTimeField = (name: string, rangeNames?: [string, string]) =>
         [fieldNames, getFieldState]
     ).filter(Boolean)
 
-    return { fields, fieldNames, values }
+    return { fields, fieldNames, values, isReadOnly }
 }

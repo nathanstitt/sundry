@@ -42,10 +42,11 @@ export const DateTime: React.FC<DateTimeProps> = ({
     options = {},
     ...domProps
 }) => {
-    const isReadOnly = false
-    const { control, setValue: setFieldValue } = useFormContext()
+    const { control, setValue: setFieldValue, isReadOnly } = useFormContext()
     const [fields, setFields] = useState<RegisteredField[]>([])
+
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
+
     const autoId = useId()
     const id = providedId || autoId
     const [flatpickrEl, setFlatpickrEl] = useState<HTMLInputElement | null>(null)
