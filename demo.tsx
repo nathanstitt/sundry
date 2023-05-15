@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import styled from '@emotion/styled'
 import * as React from 'react'
 import {
     Box,
@@ -26,6 +27,18 @@ import 'flatpickr/dist/flatpickr.css'
 interface FormData {
     [key: string]: string | boolean | Date | { name: string }[]
 }
+
+const StyledCheckbox = styled(InputField)({
+    border: 0,
+    '.form-check-input, &.form-check-input': {
+        height: 16,
+        width: 16,
+        '&:checked': {
+            backgroundColor: 'gray',
+            borderColor: 'red',
+        }
+    },
+})
 
 export default function Demo() {
     const [isExpanded, setExpanded] = React.useState(false)
@@ -95,7 +108,7 @@ export default function Demo() {
                 onSubmit={onSubmit}
             >
                 <InputField sm={10} data-testid="name" name="name" label="Name" />
-                <InputField sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CB" />
+                <StyledCheckbox sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CheckBox field" />
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
                 <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
