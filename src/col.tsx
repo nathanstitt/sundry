@@ -52,7 +52,7 @@ export const Col: FCWC<ColProps> = ({
                 [`col-xl-${xl}`]: !!xl,
                 [`col-xxl-${xxl}`]: !!xxl,
                 'col-fluid': !!fluid,
-                [`offset-xs-${offset.sm}`]: !!offset.xs,
+                [`offset-xs-${offset.xs}`]: !!offset.xs,
                 [`offset-sm-${offset.sm}`]: !!offset.sm,
                 [`offset-md-${offset.md}`]: !!offset.md,
                 [`offset-lg-${offset.lg}`]: !!offset.lg,
