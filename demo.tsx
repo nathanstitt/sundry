@@ -98,7 +98,7 @@ export default function Demo() {
                 className="row"
                 defaultValues={
                     {
-                        name: '',
+                        name: 'hi',
                         nested: [{ name: 'b' }],
                         cbv: true,
                         bc: 'a',
@@ -159,7 +159,7 @@ export default function Demo() {
                     name="bc"
                 />
                 <DateTimeField name="simpleDate" label="Simple Date" />
-                <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
+                {/* <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" /> */}
                 <FormValidDisplay />
             </EditingForm>
 

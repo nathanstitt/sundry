@@ -1,7 +1,6 @@
 import { React, styled, useId, useMemo, useState, useCallback, cx } from './common.js'
 import { Box } from 'boxible'
-import { DateTime, DateTimeProps } from './date-time.js'
-import { useFormContext } from './form-hooks.js'
+import { DateTime, DateTimeProps, DateTimeApiInstance } from './date-time.js'
 import { FloatingField, FloatingFieldProps } from './floating-field.js'
 import { FloatingLabel } from './label.js'
 import { Icon } from './icon.js'
@@ -53,17 +52,14 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     rangeNames,
     ...props
 }) => {
-    const { setValue } = useFormContext()
-
+    const flatPickrRef = React.useRef<DateTimeApiInstance>(null)
     const autoId = useId()
     const id = providedId || autoId
 
-    const { fieldNames, fields, values } = useDateTimeField(name, rangeNames)
+    const { fields, values } = useDateTimeField(name, rangeNames)
 
     const [isFocused, setFocused] = useState(false)
-    const onClear = useCallback(() => {
-        fieldNames.forEach((fn) => setValue(fn, null, { shouldValidate: true }))
-    }, [fieldNames, setValue])
+    const onClear = useCallback(() => flatPickrRef.current?.clear() , [flatPickrRef])
 
     const hasValue = useMemo(() => !!values.find(Boolean), [values])
     const hasError = useMemo(() => !!fields.find((f) => f.error), [fields])
@@ -89,6 +85,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
                 <Box flex>
                     <DateTime
                         id={id}
+                        apiRef={flatPickrRef}
                         name={name}
                         onOpen={onOpen}
                         onClose={onClose}
