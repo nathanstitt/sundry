@@ -3,6 +3,8 @@ import { FloatingField, FloatingFieldProps } from './floating-field.js'
 import { useField } from './form-hooks.js'
 import { useCallback } from 'react'
 import { useForkRef } from './hooks.js'
+import { isNil } from './util.js'
+import { omitColSizeProps } from './col.js'
 
 const inputFieldToggleStyle = {
     padding: 0,
@@ -13,7 +15,7 @@ const inputFieldToggleStyle = {
 export const InputFieldCheckbox = styled.input(inputFieldToggleStyle)
 export const InputFieldRadio = styled.input(inputFieldToggleStyle)
 export const InputFieldTextarea = styled.textarea(({ height = '110' }: any) => ({
-    '&.form-control': { minHeight: `${height}px` },
+    '&.form-control': { minHeight: `${height}px`, height: '100%' },
 }))
 const INPUTS = {
     checkbox: InputFieldCheckbox,
@@ -31,6 +33,11 @@ export const CheckboxFieldWrapper = styled(FloatingField)({
     overflow: 'hidden',
     label: {
         flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%',
+        lineHeight: '105%',
+        opacity: '0.85',
     },
 })
 
@@ -42,7 +49,7 @@ const Label = styled.label({
 export interface InputProps
     extends Omit<
             React.HTMLProps<HTMLInputElement>,
-            'name' | 'height' | 'width' | 'wrap' | 'label' | 'onResize' | 'onResizeCapture'
+            'name' | 'size' | 'height' | 'width' | 'wrap' | 'label' | 'onResize' | 'onResizeCapture'
         >,
         Omit<FloatingFieldProps, 'label' | 'id'> {
     name: string
@@ -78,7 +85,8 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
             disabled: propsDisabled,
             type = 'text',
             onChange: onChangeProp,
-            placeholder,
+            placeholder = label,
+            addOnControls,
             ...props
         } = forwardedProps
         const autoId = useId()
@@ -101,10 +109,14 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         )
         const onChange = useCallback(
             (ev: React.ChangeEvent<HTMLInputElement>) => {
-                field.onChange(ev)
-                onChangeProp?.(ev)
+                const { value } = ev.target
+                const changeEvent = (type !== 'number') ?
+                    ev : { ...ev, target: { ...ev.target, value: value === '' ? null : Number(value) } }
+
+                field.onChange(changeEvent)
+                onChangeProp?.(changeEvent)
             },
-            [onChangeProp, field]
+            [onChangeProp, field, type]
         )
 
         let checked: boolean | undefined = undefined
@@ -113,11 +125,12 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
         } else if (type === 'checkbox') {
             checked = !!field.value
         }
-        const value = props.value || field.value || ''
+        const value = isNil(props.value) ? (isNil(field.value) ? '' : field.value) : props.value
+
         const input = (
             <InputComponent
                 {...field}
-                {...props}
+                {...omitColSizeProps(props)}
                 value={value}
                 id={id}
                 ref={ref}
@@ -128,7 +141,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 readOnly={readOnly}
                 placeholder={placeholder || ''}
                 type={type}
-                className={cx({
+                className={cx( (label ? null : className), {
                     'form-control': !isCheckLike,
                     'form-check-input': isCheckLike,
                     'is-invalid': !!fieldState.error,
@@ -143,6 +156,7 @@ export const InputField = React.forwardRef<HTMLInputElement | HTMLTextAreaElemen
                 id={id}
                 name={name}
                 label={labelEl}
+                addOnControls={addOnControls}
                 {...props}
                 className={cx(className, {
                     'form-control': isCheckLike,

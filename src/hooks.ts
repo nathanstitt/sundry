@@ -2,6 +2,8 @@ import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import type { Ref, RefObject, RefCallback, MutableRefObject } from 'react'
 import { emptyFn, isSSR } from './util.js'
 import { RefElementOrNull, CallbackRef, HTMLElementOrNull } from './types.js'
+import { DeviceSize, themeMediaRules } from './theme.js'
+import { useMatchMedia } from './use-match-media.js'
 
 /**
  * Hooks here are an algamation of code from
@@ -63,14 +65,14 @@ export const usePreviousValue = <TValue>(value?: TValue): TValue | undefined => 
 
 interface useEventListenerOptions<T extends Document | Window | HTMLElement>
     extends AddEventListenerOptions {
-    target?: T
+    target?: T | null | undefined
     useCapture?: boolean
     pause?: boolean
 }
 
 type WindowEventHandler<T extends keyof WindowEventMap> = (event: WindowEventMap[T]) => void
 type DocumentEventHandler<T extends keyof DocumentEventMap> = (event: DocumentEventMap[T]) => void
-type ElementEventHandler<T extends keyof HTMLElementEventMap> = HTMLElementEventMap[T]
+type ElementEventHandler<T extends keyof HTMLElementEventMap> = (event: HTMLElementEventMap[T]) => void
 
 export function useEventListener<K extends keyof WindowEventMap, T extends Window>(
     eventName: K,
@@ -205,7 +207,7 @@ export function useInterval(
     }
 
     useEffect(() => {
-        if (pause) {
+        if (pause || isSSR) {
             return emptyFn
         }
         if (immediate && !wasCalled.current) {
@@ -215,3 +217,35 @@ export function useInterval(
         return () => window.clearInterval(interval)
     }, [intervalDurationMs, pause, immediate])
 }
+
+export function useToggle(initialValue = false) {
+    const [isEnabled, setValue] = useState(initialValue)
+    const setEnabled = useCallback(() => setValue(true), [setValue])
+    const setDisabled = useCallback(() => setValue(false), [setValue])
+    const setToggled = useCallback((v: boolean) => setValue(v), [])
+    return useMemo(() => ({
+        isEnabled,
+        setDisabled,
+        setEnabled,
+        setToggled,
+    }),[isEnabled, setDisabled, setEnabled, setToggled])
+}
+
+export function useDidMount(callback: typeof emptyFn): void {
+    useEffect(() => {
+        if (typeof callback === "function") {
+            callback();
+        }
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+}
+
+export function useDeviceSize(defaultSize: DeviceSize = 'desktop'): DeviceSize {
+    const [names, queries] = useMemo(() => [Object.keys(themeMediaRules) as DeviceSize[], Object.values(themeMediaRules)], [])
+    const sizes = useMatchMedia(queries)
+    for (let i = 0; i < sizes.length; i++) {
+        if (sizes[i]) return names[i]
+    }
+    return defaultSize
+}
+
+

@@ -1,26 +1,54 @@
 import { createRoot } from 'react-dom/client'
+import styled from '@emotion/styled'
 import * as React from 'react'
-import { Box, DropdownMenu, Section, Yup } from './src'
 import {
+    Box,
+    Button,
     DateTimeField,
+    DropdownMenu,
     EditingForm,
     FormSubmitHandler,
+    Icon,
     InputField,
+    Message,
+    Section,
     SelectField,
     SelectOnChangeHandler,
-} from './src/form'
+    Toast,
+    useDeviceSize,
+    whenDomReady,
+    Yup,
+    Modal,
+} from './src/all.js'
+import './test/setup-select.js'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
 
 interface FormData {
-    [key: string]: string | boolean | Date
+    [key: string]: string | boolean | Date | { name: string }[]
 }
 
+const StyledCheckbox = styled(InputField)({
+    border: 0,
+    '.form-check-input, &.form-check-input': {
+        height: 16,
+        width: 16,
+        '&:checked': {
+            backgroundColor: 'gray',
+            borderColor: 'red',
+        },
+    },
+})
+
 export default function Demo() {
-    const onSubmit: FormSubmitHandler<FormData> = (values, _) => {
+    const [isExpanded, setExpanded] = React.useState(false)
+    const displaySize = useDeviceSize()
+    const onSubmit: FormSubmitHandler<FormData> = async (values, _) => {
         console.log(values) // eslint-disable-line no-console
-        throw 'uh oh'
+
+        await new Promise((r) => setTimeout(r, 2000))
+        //throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
     const logSelectChange: SelectOnChangeHandler = (v) => {
@@ -28,21 +56,57 @@ export default function Demo() {
     }
     return (
         <div className="container mt-5">
+            <Message
+                message="hello"
+                hint="This is a test of the MessageBox"
+                prefixIcon={<Icon icon="clock" />}
+            />
+            <h6>Display size = {displaySize}</h6>
+            <Button
+                icon="clock"
+                tooltip="Click to show a Toast Message"
+                onClick={() =>
+                    Toast.show({
+                        title: 'cool title!',
+                        message: 'hello',
+                        autohide: false,
+                        placement: 'topRight',
+                    })
+                }
+            >
+                Show Toast
+            </Button>
+
+            <Button
+                onClick={() =>
+                    Toast.show({
+                        message: (
+                            <>
+                                hello it is <b>time</b>
+                            </>
+                        ),
+                        autohide: false,
+                    })
+                }
+            >
+                <Icon icon="clock" />
+                Show Toast without title
+            </Button>
             <h6 className="mt-4">Form test</h6>
             <EditingForm
+                name="Demo Form"
                 className="row"
-                defaultValues={{
-                    name: '',
-                    nested: [
-                        {
-                            name: 'b',
-                        },
-                    ],
-                    cbv: true,
-                    rbv: 'c',
-                    from: new Date('2022-10-21'),
-                    to: new Date('2022-11-02'),
-                }}
+                defaultValues={
+                    {
+                        name: '',
+                        nested: [{ name: 'b' }],
+                        cbv: true,
+                        bc: 'a',
+                        rbv: 'c',
+                        from: new Date('2022-10-21'),
+                        to: new Date('2022-11-02'),
+                    } satisfies FormData
+                }
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
                 })}
@@ -50,12 +114,19 @@ export default function Demo() {
                 onSubmit={onSubmit}
             >
                 <InputField sm={10} data-testid="name" name="name" label="Name" />
-                <InputField sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CB" />
+                <StyledCheckbox
+                    sm={2}
+                    type="checkbox"
+                    data-testid="cbv"
+                    name="cbv"
+                    label="CheckBox field"
+                />
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
                 <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
                 <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
                 <SelectField
+                    size={3}
                     onChange={logSelectChange}
                     placeholder="Select an option..."
                     label="Options"
@@ -90,16 +161,18 @@ export default function Demo() {
             </div>
 
             <h6 className="mt-4">Section test</h6>
-            <Box direction="column">
+            <Box direction="column" style={{ minHeight: '300px' }}>
                 <h4>hi</h4>
                 <Section
                     id="section-test"
+                    onToggle={() => setExpanded(!isExpanded)}
+                    isExpanded={isExpanded}
                     className="mb-4"
                     heading="This is a section"
                     footer={<Box justify="end">This is footer</Box>}
                 >
                     <div style={{ border: '1px solid blue', margin: 20 }}>
-                        <h5>Hello world</h5>
+                        <h5>Hello World</h5>
                         <button
                             onClick={(ev) => {
                                 ev.currentTarget.parentElement!.style!.height = '200px'
@@ -142,9 +215,9 @@ const ModalExamples = () => {
     )
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
+whenDomReady(() => {
     const el = document.getElementById('app')
-    const root = createRoot(el)
+    const root = createRoot(el!)
     root.render(
         <React.StrictMode>
             <Demo />

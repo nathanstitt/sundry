@@ -6,8 +6,10 @@ import { themeColors as colors } from './theme.js'
 import { LoadingDots as LD } from './loading-dots.js'
 import { ErrorTypes } from './types.js'
 import { errorToString } from './util.js'
+import type { Property } from 'csstype'
 
 const DEFAULT_DISPLAY_AFTER = 250
+const ICON_HEIGHT = 30 // px
 
 const { useState, useEffect } = React
 
@@ -15,21 +17,25 @@ const H = styled.h3`
     margin: 0;
 `
 
-export const StyledMessage = styled(Box)`
-    padding: 1.2rem 2rem;
-    border: 1px solid ${colors.border};
-    background: ${colors.well};
-    svg {
-        min-width: 20px;
-        width: 20px;
+export const StyledMessage = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'border',
+})(({ border = `1px solid ${colors.wellBorder}` }: { border?: Property.Border | false }) => {
+    return {
+        padding: '1.2rem 2rem',
+        border: border ? border : undefined,
+        background: colors.well,
+        svg: {
+            minWidth: 20,
+            width: 20,
+        },
+        'h3 + svg': {
+            marginRight: '0.5rem',
+        },
+        'svg + h3': {
+            marginLeft: '0.5rem',
+        },
     }
-    h3 + svg {
-        margin-right: 0.5rem;
-    }
-    svg + h3 {
-        margin-left: 0.5rem;
-    }
-`
+})
 
 const BOX_WIDTH = 360
 
@@ -46,7 +52,9 @@ export const MessageBox = styled(Box)({
 
 export interface MessageProps {
     message: React.ReactNode
+    hint?: React.ReactNode
     variant?: string
+    border?: string | false
     className?: string
     prefixIcon?: React.ReactNode
     suffixIcon?: React.ReactNode
@@ -54,30 +62,47 @@ export interface MessageProps {
     overlay?: boolean
 }
 
+const Hint = styled.span({
+    fontSize: '0.9rem',
+    color: colors.lightText,
+})
+
 export const Message: FC<MessageProps> = ({
     variant,
     message,
+    border,
     prefixIcon,
     suffixIcon,
     className,
     expandWidth,
     overlay,
-}) => (
-    <MessageBox
-        className={cx(className, { overlay })}
-        data-variant={variant}
-        data-test-id="message-box"
-        align="center"
-        justify="center"
-    >
-        <StyledMessage align="center" justify="center" width={expandWidth ? 'auto' : '450px'}>
-            {prefixIcon}
-            <H>{message}</H>
-            {suffixIcon}
-        </StyledMessage>
-    </MessageBox>
-)
+    hint,
+}) => {
+    return (
+        <MessageBox
+            className={cx('message-box', className, { overlay })}
+            data-variant={variant}
+            data-testid="message-box"
+            align="center"
+            justify="center"
+        >
+            <StyledMessage
+                direction="column"
+                centered
+                border={border}
+                width={expandWidth ? 'auto' : '450px'}
+            >
+                <Box centered>
+                    {prefixIcon}
+                    <H>{message}</H>
+                    {suffixIcon}
+                </Box>
+                {hint && <Hint>{hint}</Hint>}
+            </StyledMessage>
 
+        </MessageBox>
+    )
+}
 export interface BusyMessageProps extends MessageProps {
     variant?: string
 }
@@ -95,24 +120,30 @@ export interface SuccessPropsI {
     message: React.ReactNode
 }
 export const SuccessMessage: FC<BusyMessageProps> = ({ message }) => (
-    <Message variant="success" message={message} prefixIcon={<Icon icon="thumbsUp" />} />
+    <Message
+        variant="success"
+        message={message}
+        prefixIcon={<Icon height={ICON_HEIGHT} icon="thumbsUp" />}
+    />
 )
 
 export interface LoadingMessageProps extends Omit<BusyMessageProps, 'message'> {
-    name: string
+    name?: string
     verb?: string
+    message?: string
 }
 export const LoadingMessage: FC<LoadingMessageProps> = ({
     name,
     className,
     overlay,
     verb = 'Loading',
+    message = `${verb} ${name}`,
     ...props
 }) => (
     <BusyMessage
         variant="loading"
         overlay={overlay}
-        message={`${verb} ${name}`}
+        message={message}
         className={className}
         {...props}
     />
@@ -131,39 +162,51 @@ export interface ErrorProps extends Omit<MessageProps, 'message'> {
 export const ErrorMessage: FC<ErrorProps> = ({ error, ...props }) => (
     <Message
         message={`Failure: ${errorToString(error)}`}
-        prefixIcon={<Icon icon="exclamationCircle" />}
+        prefixIcon={<Icon height={ICON_HEIGHT} icon="exclamationCircle" />}
         {...props}
     />
 )
 
 export const WarningMessage: FC<MessageProps> = ({ message, ...props }) => (
-    <Message {...props} message={message} prefixIcon={<Icon icon="exclamationTriangle" />} />
+    <Message
+        {...props}
+        message={message}
+        prefixIcon={<Icon height={ICON_HEIGHT} icon="exclamationTriangle" />}
+    />
 )
 
-interface OptionalMessageProps {
-    className?: string
+interface OptionalMessageProps extends Omit<MessageProps, 'message'> {
     message?: string
 }
 export const NotFound: FC<OptionalMessageProps> = ({ message = 'Not Found', ...props }) => (
     <Message
         {...props}
-        data-test-id="not-found-msg-box"
-        prefixIcon={<Icon icon="exclamationCircle" />}
+        data-testid="not-found-msg-box"
+        prefixIcon={<Icon height={ICON_HEIGHT} icon="exclamationCircle" />}
         message={message}
     />
 )
 
 export interface DelayedProps {
     children: React.ReactElement
+    onShown?: () => void
     delayAmount?: number
 }
 
-export const Delayed: FC<DelayedProps> = ({ children, delayAmount = DEFAULT_DISPLAY_AFTER }) => {
+export const Delayed: FC<DelayedProps> = ({
+    children,
+    onShown,
+    delayAmount = DEFAULT_DISPLAY_AFTER,
+}) => {
     const [isVisible, setVisible] = useState<boolean>(false)
+    const setShown = React.useCallback(() => {
+        setVisible(true)
+        onShown?.()
+    }, [onShown, setVisible])
     useEffect(() => {
-        const timeoutId = setTimeout(() => setVisible(true), delayAmount)
+        const timeoutId = setTimeout(setShown, delayAmount)
         return () => clearTimeout(timeoutId)
-    }, [delayAmount])
+    }, [delayAmount, setShown])
     if (isVisible) {
         return children
     }

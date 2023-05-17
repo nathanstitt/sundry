@@ -1,20 +1,25 @@
-import { React, FCWC, FC, cx, useId } from './common.js'
+import { React, FCWC, cx, useId } from './common.js'
 import type {
     UseDropdownMenuOptions,
     DropdownMenuProps as RUDdMProps,
     DropdownToggleProps,
     DropdownProps as RUDdProps,
 } from '@restart/ui/Dropdown'
-
+import { getPortalContainer } from './config.js'
+import { createPortal } from 'react-dom'
+import { asyncComponentLoader } from './async-load.js'
 import { Button, ButtonProps } from './button.js'
 
-interface DD extends FC<RUDdProps> {
-    Toggle: FC<DropdownToggleProps>
-    Menu: FC<RUDdMProps>
-}
+const Toggle = asyncComponentLoader<DropdownToggleProps>(() =>
+    import('@restart/ui/Dropdown').then((m) => m.default.Toggle)
+)
+const Menu = asyncComponentLoader<RUDdMProps>(() =>
+    import('@restart/ui/Dropdown').then((m) => m.default.Menu)
+)
 
-let Dropdown: DD | null = null
-import('@restart/ui/Dropdown').then((dd) => (Dropdown = dd.default))
+const Dropdown = asyncComponentLoader<RUDdProps>(() =>
+    import('@restart/ui/Dropdown').then((m) => m.default)
+)
 
 export const dropDownMenuDefaultOptions: UseDropdownMenuOptions = {
     flip: true,
@@ -59,7 +64,7 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                     'btn-group': inGroup,
                 })}
             >
-                <Dropdown.Toggle>
+                <Toggle>
                     {(props) => (
                         <Button
                             className={cx('dropdown-toggle', toggleClassName)}
@@ -70,25 +75,28 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                             {label}
                         </Button>
                     )}
-                </Dropdown.Toggle>
-                <Dropdown.Menu {...options} placement={placement}>
-                    {(menuProps, meta) => (
-                        <div
-                            {...menuProps}
-                            aria-labelledby={btnId}
-                            className={cx('dropdown-menu', menuClassName)}
-                            style={{
-                                transition: 'visibility 500ms, opacity 500ms',
-                                visibility: meta.show ? 'visible' : 'hidden',
-                                opacity: meta.show ? '1' : '0',
-                                display: 'block',
-                                ...menuProps.style,
-                            }}
-                        >
-                            {children}
-                        </div>
-                    )}
-                </Dropdown.Menu>
+                </Toggle>
+                <Menu {...options} placement={placement}>
+                    {(menuProps, meta) =>
+                        createPortal(
+                            <div
+                                {...menuProps}
+                                aria-labelledby={btnId}
+                                className={cx('dropdown-menu', menuClassName)}
+                                style={{
+                                    transition: 'visibility 500ms, opacity 500ms',
+                                    visibility: meta.show ? 'visible' : 'hidden',
+                                    opacity: meta.show ? '1' : '0',
+                                    display: 'block',
+                                    ...menuProps.style,
+                                }}
+                            >
+                                {children}
+                            </div>,
+                            getPortalContainer(),
+                        )
+                    }
+                </Menu>
             </div>
         </Dropdown>
     )

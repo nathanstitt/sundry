@@ -10,6 +10,7 @@ export interface DateTimeProps {
     format?: string
     readOnly?: boolean
     options?: FlatPickr.Options.Options
+    placeholder?: string
 
     onOpen?: FlatPickr.Options.Hook
     onClose?: FlatPickr.Options.Hook
@@ -41,10 +42,11 @@ export const DateTime: React.FC<DateTimeProps> = ({
     options = {},
     ...domProps
 }) => {
-    const isReadOnly = false
-    const { control, setValue: setFieldValue } = useFormContext()
+    const { control, setValue: setFieldValue, isReadOnly } = useFormContext()
     const [fields, setFields] = useState<RegisteredField[]>([])
+
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
+
     const autoId = useId()
     const id = providedId || autoId
     const [flatpickrEl, setFlatpickrEl] = useState<HTMLInputElement | null>(null)
@@ -54,15 +56,18 @@ export const DateTime: React.FC<DateTimeProps> = ({
     const { fieldNames, values } = useDateTimeField(name, rangeNames)
 
     const onChange = useCallback(
-        (newDates: Date[], a: any, b: any, c: any) => {
+        (newDates: Date[], value: any, fltpkr: FlatPickr.Instance, data: any) => {
             for (let i = 0; i < fieldNames.length; i++) {
                 if (newDates[i] && newDates[i].getTime() !== values[i]?.getTime()) {
                     setFieldValue(fieldNames[i], newDates[i], { shouldDirty: true })
                 }
             }
-            onChangeProp?.(newDates, a, b, c)
+            if (endRangePickrEl && newDates.length < 2) {
+                endRangePickrEl.value = ''
+            }
+            onChangeProp?.(newDates, value, fltpkr, data)
         },
-        [fieldNames, setFieldValue, onChangeProp, values]
+        [fieldNames, setFieldValue, onChangeProp, values, endRangePickrEl]
     )
 
     const onClose = useCallback(
@@ -97,6 +102,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
             flatpickr.set('onChange', onChange)
             flatpickr.set('onClose', onClose)
             flatpickr.set('onOpen', onOpenProp)
+            flatpickr.set('clickOpens', !readOnly)
 
             if (!values.length) {
                 flatpickr.clear()
@@ -104,7 +110,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
                 if (
                     values.find((dt, i) => dt?.getTime() !== flatpickr.selectedDates[i]?.getTime())
                 ) {
-                    flatpickr.setDate(values, true)
+                    flatpickr.setDate(values)
                 }
             }
         } else {
@@ -142,7 +148,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
     useEffect(() => {
         return () => {
             fieldNames.forEach((fldName) => {
-                control.unregister(fldName)
+                control.unregister(fldName, { keepValue: true, keepDefaultValue: true })
             })
         }
     }, [fieldNames, control])

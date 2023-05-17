@@ -1,5 +1,6 @@
 import { React, PropsWithOptionalChildren, CSSObject, styled, cx } from './common.js'
 import { BSVariants, bsClassNames } from './bs.js'
+import { Popover, PopoverProps, Tooltip, TooltipProps } from './popover.js'
 import { LoadingDots as LD } from './loading-dots.js'
 import { IconKey, Icon } from './icon.js'
 import { usePendingState } from './pending.js'
@@ -66,6 +67,10 @@ export interface ButtonProps extends BSVariants, React.ButtonHTMLAttributes<HTML
     iconOnly?: boolean
     active?: boolean
     reverse?: boolean
+    tooltip?: React.ReactNode
+    tooltipProps?: Omit<TooltipProps, 'children' | 'target' | 'popover'>
+    popover?: React.ReactNode
+    popoverProps?: Omit<PopoverProps, 'children' | 'target' | 'popover'>
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChildren<ButtonProps>>(
@@ -84,6 +89,10 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
             iconOnly = !children,
             active,
             reverse,
+            tooltip,
+            tooltipProps = {},
+            popover,
+            popoverProps = {},
             ...otherProps
         } = forwardedProps
 
@@ -94,9 +103,10 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
         if (typeof icon === 'string') {
             icon = <Icon icon={icon as IconKey} />
         }
+
         const isBusy = usePendingState(busyProp, 150)
 
-        let message = isBusy ? (
+        const message = isBusy ? (
             <Busy>
                 {busyMessage}
                 <LD />
@@ -104,8 +114,23 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
         ) : (
             children
         )
-        if (icon) {
-            message = <span>{message}</span>
+
+        let content = icon ? <>{icon}<span>{message}</span></> : <>{message}</>
+
+        if (tooltip) {
+            content = (
+                <Tooltip tooltip={tooltip} {...tooltipProps}>
+                    {content}
+                </Tooltip>
+            )
+        }
+
+        if (popover) {
+            content = (
+                <Popover popover={popover} {...popoverProps}>
+                    {content}
+                </Popover>
+            )
         }
 
         return (
@@ -114,7 +139,7 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
                 ref={ref}
                 disabled={busyProp || disabled}
                 rowReverse={!!reverse}
-                iconOnly={icon && !message}
+                iconOnly={icon && iconOnly === true}
                 className={cx(
                     'btn',
                     bsClasses,
@@ -129,8 +154,7 @@ export const Button = React.forwardRef<HTMLButtonElement, PropsWithOptionalChild
                 )}
                 {...props}
             >
-                {icon}
-                {iconOnly !== true && message}
+                {content}
             </StyledButton>
         )
     }

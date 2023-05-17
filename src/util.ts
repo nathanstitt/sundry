@@ -9,19 +9,39 @@ export function isString(s: any): s is string {
 export function isNumber(n: any): n is number {
     return typeof n === 'number'
 }
-export function isNil(val: any): val is { val: null } | { val: undefined } {
+export function isNil(val: unknown): val is null | undefined {
     return val == null
 }
+export function nonNil<TValue>(value: TValue | null | undefined): value is TValue {
+    return !isNil(value)
+}
+export function isDefined<Value>(value: Value | undefined | null): value is Value {
+    return value != null
+}
 
-export function compact<T>(a: Array<any>): Array<T> {
-    return a.filter(Boolean)
+export function compact<T>(a: Array<T | null | undefined>): Array<T> {
+    return a.filter(isDefined)
 }
 
 export function coalesce<T>(target?: any, defaultVal?: T): T {
     return isNil(target) ? defaultVal : target
 }
 
-export function isEmpty(obj: null | undefined | string | Record<string, any>) {
+export function invert<T extends Record<PropertyKey, PropertyKey>>(
+    obj: T
+): {
+    [K in keyof T as T[K]]: K
+} {
+    return Object.entries(obj).reduce(
+        (acc, [key, value]) => ({
+            ...acc,
+            [value]: key,
+        }),
+        {} as any
+    )
+}
+
+export function isEmpty(obj: null | undefined | string | Record<string, any>): boolean {
     if (isString(obj)) {
         return obj === ''
     } else if (obj == null) {
@@ -85,6 +105,7 @@ export function retry<T>(
 }
 
 export function emptyFn() {} // eslint-disable-line
+export const emptyObject = Object.create(null)
 
 export async function getFetchBody(resp: Response) {
     const text = await resp.text()
@@ -132,3 +153,62 @@ export function isShallowEqual(object1: Record<any, any>, object2: Record<any, a
 }
 
 export const isSSR = typeof document == 'undefined'
+
+export function toArray<T>(aryOrEl: T | Array<T>) {
+    return Array.isArray(aryOrEl) ? aryOrEl : [aryOrEl]
+}
+
+export function whenDomReady(fn: () => void): void {
+    if (isSSR) return
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(fn, 1)
+    } else {
+        document.addEventListener('DOMContentLoaded', fn)
+    }
+}
+
+export function firstNonNil(...values: Array<null | undefined | number>): number | null {
+    return values.find(nonNil) || null
+}
+
+// Same as `Object.assign()` but with type inference
+export function objectAssign<Obj extends object, ObjAddendum>(
+    obj: Obj,
+    objAddendum: ObjAddendum
+): asserts obj is Obj & ObjAddendum {
+    Object.assign(obj, objAddendum)
+}
+
+export function groupBy<T>(array: T[], predicate: (keyof T) | ((value: T, index: number, array: T[]) => string|number)) {
+    return array.reduce((acc, value, index, array) => {
+        const key = (typeof predicate == 'function') ? predicate(value, index, array) : value[predicate] as string
+        (acc[key] ||= []).push(value);
+        return acc;
+    }, {} as { [key: string]: T[] });
+}
+
+export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
+    callback: F,
+    debounceDelay = 10,
+    options: { immediate: boolean } = { immediate: false }
+) {
+    let timeout: ReturnType<typeof setTimeout> | null;
+
+    return function <U>(this: U, ...args: Parameters<typeof callback>) {
+        const context = this; // eslint-disable-line @typescript-eslint/no-this-alias
+
+        if (options.immediate && !timeout) {
+            callback.apply(context, args)
+        }
+        if (typeof timeout === "number") {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            timeout = null;
+            if (!options.immediate) {
+                callback.apply(context, args)
+            }
+        }, debounceDelay);
+    }
+}
+

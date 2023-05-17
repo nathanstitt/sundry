@@ -6,6 +6,7 @@ export const themeColors = {
     border: '#284770',
     tableStripe: '#e8e8e8',
     well: '#fafafa',
+    wellBorder: '#bdbdbd',
 
     input: { border: '#ced4da' },
     line: '#cfcfcf',
@@ -167,10 +168,18 @@ export const themeBreakpoint = {
     },
 }
 
+export const themeMediaRules = {
+    mobile: `(max-width: ${themeScreenSizes['md']}px)`,
+    tablet: `(min-width: ${themeScreenSizes['md']}px) and (max-width: ${themeScreenSizes['xl']}px)`,
+    desktop: `(min-width: ${themeScreenSizes['xl']}px)`,
+}
+
+export type DeviceSize = keyof typeof themeMediaRules
+
 export const themeMedia = {
-    mobile: `@media (max-width: ${themeScreenSizes['md']}px)`,
-    tablet: `@media (min-width: ${themeScreenSizes['md']}px) and (max-width: ${themeScreenSizes['xl']}px)`,
-    desktop: `@media (min-width: ${themeScreenSizes['xl']}px)`,
+    mobile: `@media ${themeMediaRules.mobile}`,
+    tablet: `@media ${themeMediaRules.tablet}`,
+    desktop: `@media ${themeMediaRules.desktop}`,
 }
 
 const makeLine = (side: string) => ({

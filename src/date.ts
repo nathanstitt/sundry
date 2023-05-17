@@ -11,14 +11,18 @@ export { dayjs }
 
 export type DateTimeInputs = Date | string | number | dayjs.Dayjs
 
-export function formatHoursDuration(hours?: number, empty: any = ''): string {
-    if (hours == null) {
+export function formatHoursDuration(hours: number | null | undefined, empty: any = ''): string {
+    if (isNil(hours)) {
         return empty
     }
     const negative = hours < 0
-    const posHours = Math.abs(hours)
-    const h = String(Math.round(60 * (posHours % 1)))
-    return `${negative ? '-' : ''}${Math.floor(posHours)}:${h.padStart(2, '0')}`
+    let posHours = Math.abs(hours)
+    let mins = String(Math.round(60 * (posHours % 1)))
+    if (mins == '60') {
+        mins = '0'
+        posHours += 1
+    }
+    return `${negative ? '-' : ''}${Math.floor(posHours)}:${mins.padStart(2, '0')}`
 }
 
 export const toDayJS = (dateThing: DateTimeInputs): dayjs.Dayjs => {
@@ -44,12 +48,15 @@ export const toDateTime = (dateThing: DateTimeInputs): Date => {
     return toDayJS(dateThing).toDate()
 }
 
-export const formatDate = (dateThing?: DateTimeInputs | null, format = 'll'): string | null => {
-    if (!dateThing) return null
+export const formatDate = (dateThing: DateTimeInputs, format = 'll'): string => {
     return toDayJS(dateThing).format(format)
 }
 
-export const distance = (
+export const formatDateTime = (dateThing: DateTimeInputs, format = 'll LT'): string => {
+    return toDayJS(dateThing).format(format)
+}
+
+export const distanceBetween = (
     fromDateThing: DateTimeInputs,
     toDateThing: DateTimeInputs,
     unit: OpUnitType,
@@ -84,9 +91,19 @@ export const durationToDecimal = (t: string) => {
     return parseFloat(arr[0] + '.' + (dec < 10 ? '0' : '') + dec)
 }
 
+export const durationOrDigitsToDecimal = (durationOrHours: string | undefined) => {
+    const hours = (durationOrHours || '').replace(',', '.').replace(/[^\d|.|:]+/, '')
+    if (hours.match(/:/)) {
+        return durationToDecimal(hours)
+    }
+    return Number(hours)
+}
+
 export const nowDayOnly = () => dayjs().format('YYYY-MM-DD')
+
 export const toDayOnly = (dateThing?: DateTimeInputs) =>
     toDayJS(dateThing || '').format('YYYY-MM-DD')
+
 export const convertPropertyToDayOnly = (obj: any, property: string) => {
     if (isNil(obj[property])) return obj[property]
     return (obj[property] = dayjs(obj[property]).format('YYYY-MM-DD'))
@@ -94,4 +111,8 @@ export const convertPropertyToDayOnly = (obj: any, property: string) => {
 
 export function toIsoStr(dateThing: DateTimeInputs) {
     return toDayJS(dateThing).toISOString()
+}
+
+export function isIsoDateLike(s: string) {
+    return Boolean(s.match(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d/))
 }

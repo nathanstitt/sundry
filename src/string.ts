@@ -16,7 +16,7 @@ export const capitalize = (str: string) => (str ? str.charAt(0).toUpperCase() + 
 export const titleize = (input: string) => {
     return input
         .toLowerCase()
-        .replace('_', ' ')
+        .replace(/_/g, ' ')
         .replace(/(?:^|\s|-)\S/g, (x) => x.toUpperCase())
 }
 

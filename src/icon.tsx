@@ -27,6 +27,7 @@ export type IconSpec = IconKey | IconifyIconDefinition | IconifyIcon
 export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' | 'width'> {
     icon: IconSpec
     title?: string
+    iconName?: string
     color?: string
     className?: string
     busy?: boolean
@@ -39,7 +40,7 @@ export interface IconProps extends Omit<IconifyIcon, 'icon' | 'body' | 'height' 
     buttonType?: 'button' | 'submit' | 'reset'
     height?: number | string
     onClick?: (ev: React.MouseEvent<HTMLButtonElement>) => void
-    ['data-test-id']?: string
+    ['data-testid']?: string
 }
 
 const IconBtn = styled.button({
@@ -63,55 +64,61 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
             children,
             busy,
             className,
+            iconName,
             tooltipProps = {},
             popoverProps = {},
-            'data-test-id': dti,
+            'data-testid': dti,
             buttonType = 'button',
             buttonStyles = {},
             ...iconProps
         } = props
 
         const icon = busy ? 'spin' : iconProp
-        let iconEl = (
+        let content = (
             <IconifyIconComponent
+                data-icon-name={iconName}
                 ref={ref || undefined}
-                data-test-id={onClick ? undefined : dti}
+                data-testid={onClick ? undefined : dti}
                 icon={typeof icon === 'object' ? icon : ICON_DEFINITIONS[icon]}
                 className={cx(className, icon === 'spin' ? spinCSS : '')}
+
                 {...iconProps}
             />
         )
 
-        if (tooltip) {
-            iconEl = (
-                <Tooltip tooltip={tooltip} {...tooltipProps}>
-                    {iconEl}
-                </Tooltip>
-            )
-        }
-        if (popover) {
-            iconEl = (
-                <Popover popover={popover} {...popoverProps}>
-                    {iconEl}
-                </Popover>
-            )
-        }
-
         if (onClick) {
-            return (
+            content = (
                 <IconBtn
-                    data-test-id={dti}
+                    data-button-icon={iconName}
+                    data-testid={dti}
                     type={buttonType}
                     disabled={busy}
                     onClick={onClick}
                     className={css(buttonStyles)}
                 >
-                    {iconEl}
+                    {content}
                     {children}
                 </IconBtn>
             )
         }
-        return iconEl
+
+        if (tooltip) {
+            content = (
+                <Tooltip tooltip={tooltip} {...tooltipProps}>
+                    {content}
+                </Tooltip>
+            )
+        }
+
+        if (popover) {
+            content = (
+                <Popover popover={popover} {...popoverProps}>
+                    {content}
+                </Popover>
+            )
+        }
+
+        return content
     }
 )
 

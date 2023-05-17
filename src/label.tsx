@@ -45,6 +45,8 @@ export const ExtraInfo = styled.div({
         color: '#6c757d',
         fontStyle: 'italic',
         marginBottom: '0px',
+        fontSize: '12px',
+        lineHeight: '14px',
     },
 })
 

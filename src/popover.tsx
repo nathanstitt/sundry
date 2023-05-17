@@ -1,6 +1,9 @@
 import { React, FCWC, useState, cx, useCallback } from './common.js'
+import { createPortal } from 'react-dom'
 import { usePopper } from 'react-popper'
 import { useOutsideClickRef, useRefElement } from './hooks.js'
+import { Box, extractBoxibleProps } from 'boxible'
+import { getPortalContainer } from './config.js'
 
 interface ControlledPopoverProps {
     show: boolean
@@ -35,7 +38,7 @@ export const ControlledPopover = React.forwardRef<
     }
 
     const pos = (attributes.popper || {})['data-popper-placement']
-    return (
+    return createPortal((
         <div
             className={cx(type, className, 'fade', `bs-${type}-${pos}`, { show })}
             role="tooltip"
@@ -56,7 +59,7 @@ export const ControlledPopover = React.forwardRef<
                 {children}
             </div>
         </div>
-    )
+    ), getPortalContainer())
 })
 ControlledPopover.displayName = 'ControlledPopover'
 
@@ -74,10 +77,11 @@ export const Popover: FCWC<PopoverProps> = ({
     className,
     onShow: onShowProp,
     onHide: onHideProp,
-    ...popoverProps
+    ...props
 }) => {
     const [isShown, setIsShown] = useState(false)
     const [wrapperRef, setWrapperRef] = useState<HTMLDivElement | undefined>()
+    const [boxibleProps, popoverProps] = extractBoxibleProps(props)
     const onShow = useCallback(() => {
         setIsShown(true)
         setTimeout(() => onShowProp?.(), 1)
@@ -89,7 +93,10 @@ export const Popover: FCWC<PopoverProps> = ({
     const [ref] = useOutsideClickRef(onHide)
 
     return (
-        <div
+        <Box
+            gap
+            centered
+            {...boxibleProps}
             ref={(s) => setWrapperRef(s || undefined)}
             className={cx('popover-wrapper', className)}
             onClick={onShow}
@@ -104,7 +111,7 @@ export const Popover: FCWC<PopoverProps> = ({
             <ControlledPopover ref={ref} target={wrapperRef} show={isShown} {...popoverProps}>
                 {popover}
             </ControlledPopover>
-        </div>
+        </Box>
     )
 }
 
@@ -112,12 +119,15 @@ export interface TooltipProps extends Omit<ControlledPopoverProps, 'show'> {
     tooltip: React.ReactNode
 }
 
-export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...tooltipProps }) => {
+export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...props }) => {
     const [isHovered, setIsHovered] = useState(false)
     const [setWrapperRef, wrapperRef] = useRefElement<HTMLElement>()
-
+    const [boxibleProps, tooltipProps] = extractBoxibleProps(props)
     return (
-        <div
+        <Box
+            gap
+            centered
+            {...boxibleProps}
             ref={setWrapperRef}
             className={cx('tooltip-wrapper', className)}
             onMouseEnter={() => {
@@ -136,6 +146,6 @@ export const Tooltip: FCWC<TooltipProps> = ({ tooltip, children, className, ...t
             >
                 {tooltip}
             </ControlledPopover>
-        </div>
+        </Box>
     )
 }

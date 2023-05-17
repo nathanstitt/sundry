@@ -19,7 +19,11 @@ export interface FloatingFieldProps extends BoxProps, ColProps {
     marginBottom?: boolean | number
 }
 
-const Wrapper = styled(Col)({})
+const Wrapper = styled(Col)({
+    'input.form-control': {
+        minHeight: '100%',
+    },
+})
 
 const Body = styled.div({
     flex: 1,
@@ -67,7 +71,7 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
     return (
         <Wrapper
             className={cx('field-wrapper', wrapperClassName, {
-                [`mb-${marginBottom || 2}`]: marginBottom !== false,
+                [`mb-${marginBottom || 1}`]: marginBottom !== false,
             })}
             data-field-name={name}
             {...props}

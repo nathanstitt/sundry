@@ -1,10 +1,11 @@
 import { React, styled, cx, FCWC } from './common.js'
-import { FC } from './types.js'
 import type { BaseModalProps } from '@restart/ui/Modal'
 import { Icon } from './icon.js'
+import { asyncComponentLoader } from './async-load.js'
 
-let OverlayModal: FC<BaseModalProps> | null = null
-import('@restart/ui/Modal').then((om) => (OverlayModal = om.default))
+const RestartModal = asyncComponentLoader<BaseModalProps>(() =>
+    import('@restart/ui/Modal').then((m) => m.default)
+)
 
 const renderBackdrop = (props: any) => {
     return <div className="modal-backdrop fade show" {...props} />
@@ -57,10 +58,8 @@ const Modal: ModalI = ({
     center = false,
     ...props
 }) => {
-    if (!OverlayModal) return null
-
     return (
-        <OverlayModal
+        <RestartModal
             {...props}
             show={show}
             className={cx(className, 'modal', 'fade', {
@@ -88,8 +87,8 @@ const Modal: ModalI = ({
                             <h5 className="modal-title">{title}</h5>
                             {closeBtn && (
                                 <Icon
-                                    data-test-id="modal-close-btn"
-                                    icon="cancel"
+                                    data-testid="modal-close-btn"
+                                    icon="close"
                                     onClick={onHide}
                                     height={28}
                                     width={28}
@@ -109,7 +108,7 @@ const Modal: ModalI = ({
                     {children}
                 </Content>
             </div>
-        </OverlayModal>
+        </RestartModal>
     )
 }
 
