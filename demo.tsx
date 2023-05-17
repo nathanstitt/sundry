@@ -18,6 +18,7 @@ import {
     useDeviceSize,
     FormSubmitHandler,
     SelectOnChangeHandler,
+    useFormState,
 } from './src/all.js'
 import './test/setup-select.js'
 
@@ -36,7 +37,7 @@ const StyledCheckbox = styled(InputField)({
         '&:checked': {
             backgroundColor: 'gray',
             borderColor: 'red',
-        }
+        },
     },
 })
 
@@ -79,12 +80,17 @@ export default function Demo() {
             <Button
                 onClick={() =>
                     Toast.show({
-                        message: <>hello it is <b>time</b></>,
+                        message: (
+                            <>
+                                hello it is <b>time</b>
+                            </>
+                        ),
                         autohide: false,
                     })
                 }
             >
-                <Icon icon="clock"/>Show Toast without title
+                <Icon icon="clock" />
+                Show Toast without title
             </Button>
             <h6 className="mt-4">Form test</h6>
             <EditingForm
@@ -92,23 +98,42 @@ export default function Demo() {
                 className="row"
                 defaultValues={
                     {
-                        name: '',
-                        nested: [ { name: 'b' } ],
+                        name: 'hi',
+                        nested: [{ name: 'b' }],
                         cbv: true,
                         bc: 'a',
                         rbv: 'c',
+                        simpleDate: new Date(),
                         from: new Date('2022-10-21'),
                         to: new Date('2022-11-02'),
                     } satisfies FormData
                 }
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
+                    simpleDate: Yup.date().required(),
+                    from: Yup.date().required(),
                 })}
                 validateOnMount
                 onSubmit={onSubmit}
             >
                 <InputField sm={10} data-testid="name" name="name" label="Name" />
-                <StyledCheckbox sm={2} type="checkbox" data-testid="cbv" name="cbv" label="CheckBox field" />
+                <StyledCheckbox
+                    sm={2}
+                    type="checkbox"
+                    data-testid="cbv"
+                    name="cbv"
+                    label="CheckBox field"
+                />
+                <Box>
+                    <StyledCheckbox
+                        sm={2}
+                        type="checkbox"
+                        id="custom-checkbox"
+                        data-testid="cbv2"
+                        name="cbv2"
+                    />
+                    <label htmlFor="custom-checkbox">Custom and cool!</label>
+                </Box>
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
                 <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
@@ -118,7 +143,6 @@ export default function Demo() {
                     onChange={logSelectChange}
                     placeholder="Select an option..."
                     label="Options"
-
                     options={[
                         { label: 'A', value: 'a' },
                         { label: 'B', value: 'b' },
@@ -127,7 +151,6 @@ export default function Demo() {
                     name="nested[0].name"
                 />
                 <SelectField
-
                     placeholder="Select without a label"
                     options={[
                         { label: 'A', value: 'a' },
@@ -136,8 +159,9 @@ export default function Demo() {
                     ]}
                     name="bc"
                 />
-
+                <DateTimeField name="simpleDate" label="Simple Date" />
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
+                <FormValidDisplay />
             </EditingForm>
 
             <h6 className="mt-4">Dropdown test</h6>
@@ -177,6 +201,10 @@ export default function Demo() {
     )
 }
 
+const FormValidDisplay: React.FC = () => {
+    const { isValid } = useFormState()
+    return <h3> {isValid ? 'Valid' : 'Invalid'} </h3>
+}
 
 whenDomReady(() => {
     const el = document.getElementById('app')
@@ -187,4 +215,3 @@ whenDomReady(() => {
         </React.StrictMode>
     )
 })
-

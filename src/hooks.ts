@@ -117,7 +117,7 @@ export function useEventListener<
 
 export type PossibleRef<T> = Ref<T> | undefined
 
-function setRef<T>(ref: PossibleRef<T> | null, value: T) {
+export function setRef<T>(ref: PossibleRef<T> | null, value: T) {
     if (typeof ref === 'function') {
         ref(value)
     } else if (ref !== null && ref !== undefined) {

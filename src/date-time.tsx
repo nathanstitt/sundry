@@ -4,6 +4,11 @@ import { Box } from 'boxible'
 import { rangePlugin } from './flatpickr-range-plugin.js'
 import { useFormContext, RegisteredField } from './form-hooks.js'
 import { useDateTimeField } from './date-time-hook.js'
+import { setRef } from './hooks.js'
+
+type DateTimeApiInstance = FlatPickr.Instance
+
+export type { DateTimeApiInstance }
 
 export interface DateTimeProps {
     id?: string
@@ -21,6 +26,7 @@ export interface DateTimeProps {
     name: string
     className?: string
     align?: 'center' | 'end' | 'start' | 'baseline' | 'stretch'
+    apiRef?: React.Ref<FlatPickr.Instance | null>
 }
 
 export const DateTimeFormats = {
@@ -33,6 +39,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
     name,
     className,
     withTime,
+    apiRef,
     format = withTime ? DateTimeFormats.shortDateTime : DateTimeFormats.shortDate,
     readOnly: propsReadonly,
     rangeNames,
@@ -51,15 +58,18 @@ export const DateTime: React.FC<DateTimeProps> = ({
     const id = providedId || autoId
     const [flatpickrEl, setFlatpickrEl] = useState<HTMLInputElement | null>(null)
     const [endRangePickrEl, setEndRangePickrEl] = useState<HTMLInputElement | null>(null)
-    const [flatpickr, setFlatpickr] = useState<FlatPickr.Instance | null>(null)
-
+    const [flatpickr, _setFlatpickr] = useState<FlatPickr.Instance | null>(null)
+    const setFlatpickr = useCallback((fp: FlatPickr.Instance) => {
+        _setFlatpickr(fp)
+        setRef(apiRef, fp)
+    },[_setFlatpickr, apiRef])
     const { fieldNames, values } = useDateTimeField(name, rangeNames)
 
     const onChange = useCallback(
         (newDates: Date[], value: any, fltpkr: FlatPickr.Instance, data: any) => {
             for (let i = 0; i < fieldNames.length; i++) {
-                if (newDates[i] && newDates[i].getTime() !== values[i]?.getTime()) {
-                    setFieldValue(fieldNames[i], newDates[i], { shouldDirty: true })
+                if ( newDates[i]?.getTime() !== values[i]?.getTime()) {
+                    setFieldValue(fieldNames[i], newDates[i], { shouldValidate: true, shouldDirty: true, shouldTouch: true })
                 }
             }
             if (endRangePickrEl && newDates.length < 2) {
@@ -141,6 +151,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
         control,
         onOpenProp,
         onChange,
+        setFlatpickr,
         endRangePickrEl,
         values,
     ])
