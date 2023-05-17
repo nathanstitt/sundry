@@ -3,22 +3,23 @@ import styled from '@emotion/styled'
 import * as React from 'react'
 import {
     Box,
-    Yup,
-    Icon,
-    Toast,
     Button,
-    Message,
-    Section,
-    InputField,
-    EditingForm,
-    SelectField,
-    whenDomReady,
-    DropdownMenu,
     DateTimeField,
-    useDeviceSize,
+    DropdownMenu,
+    EditingForm,
     FormSubmitHandler,
+    Icon,
+    InputField,
+    Message,
+    Modal,
+    Section,
+    SelectField,
     SelectOnChangeHandler,
+    Toast,
+    useDeviceSize,
     useFormState,
+    whenDomReady,
+    Yup,
 } from './src/all.js'
 import './test/setup-select.js'
 
@@ -62,43 +63,46 @@ export default function Demo() {
                 prefixIcon={<Icon icon="clock" />}
             />
             <h6>Display size = {displaySize}</h6>
-            <Button
-                icon="clock"
-                tooltip="Click to show a Toast Message"
-                onClick={() =>
-                    Toast.show({
-                        title: 'cool title!',
-                        message: 'hello',
-                        autohide: false,
-                        placement: 'topRight',
-                    })
-                }
-            >
-                Show Toast
-            </Button>
+            <Box gap="large">
+                <Button
+                    icon="clock"
+                    tooltip="Click to show a Toast Message"
+                    onClick={() =>
+                        Toast.show({
+                            title: 'cool title!',
+                            message: 'hello',
+                            autohide: false,
+                            placement: 'topRight',
+                        })
+                    }
+                >
+                    Show Toast
+                </Button>
 
-            <Button
-                onClick={() =>
-                    Toast.show({
-                        message: (
-                            <>
-                                hello it is <b>time</b>
-                            </>
-                        ),
-                        autohide: false,
-                    })
-                }
-            >
-                <Icon icon="clock" />
-                Show Toast without title
-            </Button>
+                <Button
+                    onClick={() =>
+                        Toast.show({
+                            message: (
+                                <>
+                                    hello it is <b>time</b>
+                                </>
+                            ),
+                            autohide: false,
+                        })
+                    }
+                >
+                    <Icon icon="clock" />
+                    Show Toast without title
+                </Button>
+            </Box>
+
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 name="Demo Form"
                 className="row"
                 defaultValues={
                     {
-                        name: 'hi',
+                        name: '',
                         nested: [{ name: 'b' }],
                         cbv: true,
                         bc: 'a',
@@ -124,6 +128,7 @@ export default function Demo() {
                     name="cbv"
                     label="CheckBox field"
                 />
+
                 <Box>
                     <StyledCheckbox
                         sm={2}
@@ -134,6 +139,7 @@ export default function Demo() {
                     />
                     <label htmlFor="custom-checkbox">Custom and cool!</label>
                 </Box>
+
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
                 <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
@@ -197,7 +203,36 @@ export default function Demo() {
                     </div>
                 </Section>
             </Box>
+
+            <ModalExamples />
         </div>
+    )
+}
+
+const ModalExamples = () => {
+    const [show1, setShow1] = React.useState<boolean>(false)
+    const [show2, setShow2] = React.useState<boolean>(false)
+    const [show3, setShow3] = React.useState<boolean>(false)
+    return (
+        <Box direction="column" width="20%" gap="large">
+            <h3>Modal Example</h3>
+
+            <Button onClick={() => setShow1(true)}>With close btn and no header</Button>
+            <Modal center show={show1} onHide={() => setShow1(false)}>
+                <Modal.Body>test</Modal.Body>
+            </Modal>
+
+            <Button onClick={() => setShow2(true)}>No close button</Button>
+            <Modal center show={show2} closeBtn={false} onHide={() => setShow2(false)}>
+                <Modal.Body>test</Modal.Body>
+            </Modal>
+
+            <Button onClick={() => setShow3(true)}>With header</Button>
+            <Modal center show={show3} onHide={() => setShow3(false)}>
+                <Modal.Header>A Header</Modal.Header>
+                <Modal.Body>Body Text</Modal.Body>
+            </Modal>
+        </Box>
     )
 }
 
