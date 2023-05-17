@@ -1,7 +1,7 @@
 import { useMemo } from './common.js'
 import { isDate } from './util.js'
 import { toDateTime } from './date.js'
-import { useFormContext } from './form-hooks.js'
+import { useFormContext, useFormState } from './form-hooks.js'
 
 export const useDateTimeField = (name: string, rangeNames?: [string, string]) => {
     const { getFieldState, getValues, watch, isReadOnly } = useFormContext()
@@ -10,6 +10,7 @@ export const useDateTimeField = (name: string, rangeNames?: [string, string]) =>
         () => (Array.isArray(rangeNames) ? rangeNames : [name]),
         [rangeNames, name]
     )
+    const formState = useFormState(fieldNames as any)
 
     for (const fn of fieldNames) {
         watch(fn)
@@ -22,10 +23,7 @@ export const useDateTimeField = (name: string, rangeNames?: [string, string]) =>
         })
         .filter(Boolean) as Date[]
 
-    const fields = useMemo(
-        () => fieldNames.map((fn) => getFieldState(fn)),
-        [fieldNames, getFieldState]
-    ).filter(Boolean)
+    const fields =  fieldNames.map((fn) => getFieldState(fn, formState)).filter(Boolean)
 
     return { fields, fieldNames, values, isReadOnly }
 }

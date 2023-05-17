@@ -11,14 +11,15 @@ import {
     Icon,
     InputField,
     Message,
+    Modal,
     Section,
     SelectField,
     SelectOnChangeHandler,
     Toast,
     useDeviceSize,
+    useFormState,
     whenDomReady,
     Yup,
-    Modal,
 } from './src/all.js'
 import './test/setup-select.js'
 
@@ -106,12 +107,15 @@ export default function Demo() {
                         cbv: true,
                         bc: 'a',
                         rbv: 'c',
+                        simpleDate: new Date(),
                         from: new Date('2022-10-21'),
                         to: new Date('2022-11-02'),
                     } satisfies FormData
                 }
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
+                    simpleDate: Yup.date().required(),
+                    from: Yup.date().required(),
                 })}
                 validateOnMount
                 onSubmit={onSubmit}
@@ -124,6 +128,18 @@ export default function Demo() {
                     name="cbv"
                     label="CheckBox field"
                 />
+
+                <Box>
+                    <StyledCheckbox
+                        sm={2}
+                        type="checkbox"
+                        id="custom-checkbox"
+                        data-testid="cbv2"
+                        name="cbv2"
+                    />
+                    <label htmlFor="custom-checkbox">Custom and cool!</label>
+                </Box>
+
                 <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
                 <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
                 <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
@@ -149,8 +165,9 @@ export default function Demo() {
                     ]}
                     name="bc"
                 />
-
+                <DateTimeField name="simpleDate" label="Simple Date" />
                 <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
+                <FormValidDisplay />
             </EditingForm>
 
             <h6 className="mt-4">Dropdown test</h6>
@@ -217,6 +234,11 @@ const ModalExamples = () => {
             </Modal>
         </Box>
     )
+}
+
+const FormValidDisplay: React.FC = () => {
+    const { isValid } = useFormState()
+    return <h3> {isValid ? 'Valid' : 'Invalid'} </h3>
 }
 
 whenDomReady(() => {
