@@ -187,7 +187,6 @@ export default function Demo() {
                 </Section>
             </Box>
 
-            <h3>Modal Example</h3>
             <ModalExamples />
         </div>
     )
@@ -199,6 +198,8 @@ const ModalExamples = () => {
     const [show3, setShow3] = React.useState<boolean>(false)
     return (
         <Box direction="column" width="20%" gap="large">
+            <h3>Modal Example</h3>
+
             <Button onClick={() => setShow1(true)}>With close btn and no header</Button>
             <Modal center show={show1} onHide={() => setShow1(false)}>
                 <Modal.Body>test</Modal.Body>
