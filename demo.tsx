@@ -62,36 +62,39 @@ export default function Demo() {
                 prefixIcon={<Icon icon="clock" />}
             />
             <h6>Display size = {displaySize}</h6>
-            <Button
-                icon="clock"
-                tooltip="Click to show a Toast Message"
-                onClick={() =>
-                    Toast.show({
-                        title: 'cool title!',
-                        message: 'hello',
-                        autohide: false,
-                        placement: 'topRight',
-                    })
-                }
-            >
-                Show Toast
-            </Button>
+            <Box gap="large">
+                <Button
+                    icon="clock"
+                    tooltip="Click to show a Toast Message"
+                    onClick={() =>
+                        Toast.show({
+                            title: 'cool title!',
+                            message: 'hello',
+                            autohide: false,
+                            placement: 'topRight',
+                        })
+                    }
+                >
+                    Show Toast
+                </Button>
 
-            <Button
-                onClick={() =>
-                    Toast.show({
-                        message: (
-                            <>
-                                hello it is <b>time</b>
-                            </>
-                        ),
-                        autohide: false,
-                    })
-                }
-            >
-                <Icon icon="clock" />
-                Show Toast without title
-            </Button>
+                <Button
+                    onClick={() =>
+                        Toast.show({
+                            message: (
+                                <>
+                                    hello it is <b>time</b>
+                                </>
+                            ),
+                            autohide: false,
+                        })
+                    }
+                >
+                    <Icon icon="clock" />
+                    Show Toast without title
+                </Button>
+            </Box>
+
             <h6 className="mt-4">Form test</h6>
             <EditingForm
                 name="Demo Form"
