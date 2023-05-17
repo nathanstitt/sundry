@@ -18,13 +18,12 @@ import {
     useDeviceSize,
     FormSubmitHandler,
     SelectOnChangeHandler,
+    useFormState,
 } from './src/all.js'
 import './test/setup-select.js'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'flatpickr/dist/flatpickr.css'
-import { useFormState } from 'react-hook-form'
-import { FC } from 'react'
 
 interface FormData {
     [key: string]: string | boolean | Date | { name: string }[]
@@ -201,7 +200,7 @@ export default function Demo() {
     )
 }
 
-const FormValidDisplay: FC = () => {
+const FormValidDisplay: React.FC = () => {
     const { isValid } = useFormState()
     return <h3> {isValid ? 'Valid' : 'Invalid'} </h3>
 }

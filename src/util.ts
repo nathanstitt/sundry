@@ -179,36 +179,41 @@ export function objectAssign<Obj extends object, ObjAddendum>(
     Object.assign(obj, objAddendum)
 }
 
-export function groupBy<T>(array: T[], predicate: (keyof T) | ((value: T, index: number, array: T[]) => string|number)) {
+export function groupBy<T>(
+    array: T[],
+    predicate: keyof T | ((value: T, index: number, array: T[]) => string | number)
+) {
     return array.reduce((acc, value, index, array) => {
-        const key = (typeof predicate == 'function') ? predicate(value, index, array) : value[predicate] as string
-        (acc[key] ||= []).push(value);
-        return acc;
-    }, {} as { [key: string]: T[] });
+        const key =
+            typeof predicate == 'function'
+                ? predicate(value, index, array)
+                : (value[predicate] as string)
+        ;(acc[key] ||= []).push(value)
+        return acc
+    }, {} as { [key: string]: T[] })
 }
 
 export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
     callback: F,
-    debounceDelay: number = 10,
+    debounceDelay = 10,
     options: { immediate: boolean } = { immediate: false }
 ) {
-    let timeout: ReturnType<typeof setTimeout> | null;
+    let timeout: ReturnType<typeof setTimeout> | null
 
-    return function <U>(this: U, ...args: Parameters<typeof callback>) {
-        const context = this;
+    return function <U>(ctx: U, ...args: Parameters<typeof callback>) {
+        const context = ctx
 
         if (options.immediate && !timeout) {
             callback.apply(context, args)
         }
-        if (typeof timeout === "number") {
-            clearTimeout(timeout);
+        if (typeof timeout === 'number') {
+            clearTimeout(timeout)
         }
         timeout = setTimeout(() => {
-            timeout = null;
+            timeout = null
             if (!options.immediate) {
                 callback.apply(context, args)
             }
-        }, debounceDelay);
+        }, debounceDelay)
     }
 }
-
