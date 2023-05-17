@@ -62,7 +62,7 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
 
     const [isFocused, setFocused] = useState(false)
     const onClear = useCallback(() => {
-        fieldNames.forEach((fn) => setValue(fn, null))
+        fieldNames.forEach((fn) => setValue(fn, null, { shouldValidate: true }))
     }, [fieldNames, setValue])
 
     const hasValue = useMemo(() => !!values.find(Boolean), [values])
