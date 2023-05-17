@@ -200,8 +200,8 @@ export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
 ) {
     let timeout: ReturnType<typeof setTimeout> | null
 
-    return function <U>(ctx: U, ...args: Parameters<typeof callback>) {
-        const context = ctx
+    return function <U>(this: U, ...args: Parameters<typeof callback>) {
+        const context = this // eslint-disable-line @typescript-eslint/no-this-alias
 
         if (options.immediate && !timeout) {
             callback.apply(context, args)
