@@ -111,6 +111,7 @@ export default function Demo() {
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
                     simpleDate: Yup.date().required(),
+                    from: Yup.date().required(),
                 })}
                 validateOnMount
                 onSubmit={onSubmit}
@@ -159,7 +160,7 @@ export default function Demo() {
                     name="bc"
                 />
                 <DateTimeField name="simpleDate" label="Simple Date" />
-                {/* <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" /> */}
+                <DateTimeField name="dates" rangeNames={['from', 'to']} label="Date Range" />
                 <FormValidDisplay />
             </EditingForm>
 

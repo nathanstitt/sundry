@@ -62,13 +62,15 @@ export const DateTimeField: React.FC<DateTimeFieldFieldProps> = ({
     const onClear = useCallback(() => flatPickrRef.current?.clear() , [flatPickrRef])
 
     const hasValue = useMemo(() => !!values.find(Boolean), [values])
-    const hasError = useMemo(() => !!fields.find((f) => f.error), [fields])
+    const errorMessage = useMemo(() => fields.find((f) => f.error)?.error, [fields])
+    const hasError = !!errorMessage
     const onOpen = useCallback(() => setFocused(true), [setFocused])
     const onClose = useCallback(() => setFocused(false), [setFocused])
 
     return (
         <Wrapper
             {...props}
+            error={errorMessage}
             name={name}
             label={
                 <FloatingLabel htmlFor={id} isRaised={hasValue || isFocused || readOnly}>
