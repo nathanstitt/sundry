@@ -50,6 +50,7 @@
         "@emotion/styled": "^11.10",
         "@restart/ui": "^1.6",
         "bootstrap": "^5.2.3",
+        "boxible": "^1.7",
         "dayjs": "^1.11",
         "react": "^18.2",
         "react-dom": "^18.2"
@@ -73,6 +74,7 @@
         "@typescript-eslint/parser": "^5.54.0",
         "babel-preset-env": "^1.7.0",
         "bootstrap": "^5.2.3",
+        "boxible": "^1.7.5",
         "dayjs": "^1.11",
         "dts-bundle-generator": "^7.2.0",
         "eslint": "^8.35.0",
@@ -106,7 +108,6 @@
         "@popperjs/core": "^2.11",
         "@react-aria/ssr": "^3.5.0",
         "@restart/ui": "^1.6",
-        "boxible": "^1.7",
         "flatpickr": "^4.6",
         "graphql": "^16.6",
         "react-hook-form": "^7.43",
