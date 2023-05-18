@@ -10,7 +10,7 @@ import { ErrorTypes } from './types.js'
 
 export interface AlertProps extends BSVariants, ColProps {
     icon?: React.ReactNode
-    message?: string
+    message?: React.ReactNode
     onDismiss?(): void
     className?: string
     canDismiss?: boolean
