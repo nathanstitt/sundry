@@ -167,8 +167,9 @@ export function whenDomReady(fn: () => void): void {
     }
 }
 
-export function firstNonNil(...values: Array<null | undefined | number>): number | null {
-    return values.find(nonNil) || null
+export function firstNonNil<T>(...values: Array<null | undefined | T>): T | null {
+    const v = values.find(nonNil)
+    return isNil(v) ? null : v
 }
 
 // Same as `Object.assign()` but with type inference
