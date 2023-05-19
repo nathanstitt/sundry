@@ -7,7 +7,7 @@ import close from '@iconify/icons-bi/x-square.js'
 import spin from '@iconify/icons-bi/arrow-clockwise.js'
 import plusSquare from '@iconify/icons-bi/plus-square.js'
 import minusSquare from '@iconify/icons-bi/dash-square.js'
-import xSimple from '@iconify/icons-bi/x'
+import xSimple from '@iconify/icons-bi/x.js'
 
 import type { IconifyIcon } from '@iconify/react'
 
