@@ -1,4 +1,4 @@
-import { React, FC, FCWC, cx, omit } from './common.js'
+import { React, FC, FCWC, cx, omit, pick } from './common.js'
 import { Box, BoxProps } from 'boxible'
 
 export type ColumnSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -23,8 +23,14 @@ export interface ColProps extends BoxProps {
     }
 }
 
+export const colSizePropNames = ['auto', 'size', 'sm', 'md', 'lg', 'xl', 'xxl', 'fluid', 'offset']
+
 export function omitColSizeProps(props: Record<string,any>) {
-    return omit(props, 'auto', 'size', 'sm', 'md', 'lg', 'xl', 'xxl', 'fluid', 'offset')
+    return omit(props, colSizePropNames)
+}
+
+export function extractColSizeProps(props: Record<string,any>) {
+    return pick(props, colSizePropNames) as ColProps
 }
 
 export const Col: FCWC<ColProps> = ({

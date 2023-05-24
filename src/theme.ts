@@ -17,6 +17,15 @@ export const themeColors = {
     subtleLine: '#e0e6ee',
     danger: '#a82a2a', // red1
 
+
+    panel: {
+        icon: '#738694',
+        headingBackground: '#eeeeee',
+        headingBackgroundGradientTo: '#f6f6f6',
+        bodyBackground: '#fafafa',
+        border: '#eeeeee',
+    },
+
     dropHover: '#d1d1d1',
     rowHover: '#e1e8ed',
     buttonIcon: '#738694',

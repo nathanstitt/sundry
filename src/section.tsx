@@ -5,6 +5,8 @@ import { Box } from 'boxible'
 import { themeColors, themeMedia } from './theme.js'
 import { useRetainedCollapse, useCollapse, useControlledCollapse } from './use-collapse.js'
 
+const panelColors = themeColors.panel
+
 const Heading = styled(Box)({
     cursor: 'pointer',
     position: 'sticky',
@@ -13,10 +15,11 @@ const Heading = styled(Box)({
     fontSize: '0.9rem',
     margin: 0,
     color: '#666',
-    backgroundColor: '#eee',
+
+    backgroundColor: panelColors.headingBackground,
     top: 'var(--section-sticky-top)',
     textShadow: '1px 1px #fff',
-    background: 'linear-gradient(to bottom,#eeeeee,#f6f6f6)',
+    background: `linear-gradient(to bottom,${panelColors.headingBackground},${panelColors.headingBackgroundGradientTo})`,
     borderBottom: '1px solid #ddd',
 })
 
@@ -31,15 +34,21 @@ type BodyProps = {
 const Body = styled.div(({
     noPad, noBorder, maxHeight, minHeight, padding = '1rem',
 }: BodyProps) => ({
+    margin: 0,
     padding: noPad ? 0 : padding,
     [themeMedia.mobile]: {
         padding: noPad ? '0' : '0.3rem',
     },
     minHeight,
     maxHeight,
+
+    borderStyle: 'solid',
+    borderWidth: noBorder ? 0 : 1,
+    borderColor: panelColors.border,
+    backgroundColor: panelColors.bodyBackground,
+
     alignContent: 'flex-start',
     overflow: maxHeight ? 'auto' : 'visible',
-    borderWidth: noBorder ? 0 : 1,
 }))
 
 const SectionWrapper = styled.section({
@@ -49,10 +58,12 @@ const SectionWrapper = styled.section({
     '& + &': {
         marginTop: '2rem',
     },
+
 })
 
 const SectionFooter = styled.div(({ noPad }: { noPad: boolean | undefined }) => ({
     padding: noPad ? 0 : '0 1rem 1rem 1rem',
+    backgroundColor: panelColors.bodyBackground,
 }))
 
 export interface SectionProps {
@@ -96,7 +107,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
     isRow,
     controls,
     fullWidth,
-    noPad,
+    noPad = isRow,
     dispayAsExpanded,
     hideCollapsedControls = false,
     bodyPadding,
@@ -117,7 +128,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
                 <Box flex align="center" padding="default" onClick={onClick}>
                     <Icon
                         className="me-1"
-                        color={themeColors.gray2}
+                        color={panelColors.icon}
                         icon={dispayAsExpanded ? 'minusSquare' : 'plusSquare'}
                     />
                     {heading}
@@ -133,7 +144,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
                     minHeight={isExpanded ? minHeight : 0}
                     className={cx('secbody', bodyClassName, {
                         'container-lg': !fullWidth,
-                        row: isRow != false,
+                        row: isRow,
                     })}
                 >
                     {children}

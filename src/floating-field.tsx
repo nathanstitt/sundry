@@ -34,7 +34,7 @@ const Body = styled.div({
 })
 
 export const FloatingField: FCWC<FloatingFieldProps> = ({
-    id: _,
+    id,
     reversed: __,
     loadOptions: ___,
     hint,
@@ -53,7 +53,7 @@ export const FloatingField: FCWC<FloatingFieldProps> = ({
     let body = (
         <Body className={cx(className, { 'is-invalid': !!error })}>
             {children}
-            {label}
+            <label htmlFor={id}>{label}</label>
             <ExtraInfo>
                 {hint && <span className="hint">{hint}</span>}
                 {error && <span className="invalid">{error.message}</span>}
