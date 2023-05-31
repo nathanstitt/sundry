@@ -2,6 +2,8 @@ import { createRoot } from 'react-dom/client'
 import styled from '@emotion/styled'
 import * as React from 'react'
 import {
+    Row,
+    Col,
     Box,
     Button,
     DateTimeField,
@@ -139,11 +141,14 @@ export default function Demo() {
                     />
                     <label htmlFor="custom-checkbox">Custom and cool!</label>
                 </Box>
-
-                <InputField sm={3} type="radio" name="rbv" value="a" label="A" />
-                <InputField sm={3} type="radio" name="rbv" value="b" label="B" />
-                <InputField sm={3} type="radio" name="rbv" value="c" label="C" />
-                <InputField sm={3} type="radio" name="rbv" value="d" label="D" />
+                <Col size={12}>
+                    <Row>
+                        <InputField sm={3} type="radio" name="rbv" value="a" label="A" order={{ md: 4 }} />
+                        <InputField sm={3} type="radio" name="rbv" value="b" label="B" order={{ md: 3 }} />
+                        <InputField sm={3} type="radio" name="rbv" value="c" label="C" order={{ md: 2 }} />
+                        <InputField sm={3} type="radio" name="rbv" value="d" label="D" order={{ md: 1 }} />
+                    </Row>
+                </Col>
                 <SelectField
                     size={3}
                     onChange={logSelectChange}

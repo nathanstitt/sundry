@@ -1,7 +1,10 @@
 import { React, FC, FCWC, cx, omit, pick } from './common.js'
 import { Box, BoxProps } from 'boxible'
+import { isNil } from './util.js'
 
 export type ColumnSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
+export type ColumnBreakpoints = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
 
 export interface ColProps extends BoxProps {
     className?: string
@@ -13,17 +16,12 @@ export interface ColProps extends BoxProps {
     xl?: ColumnSize
     xxl?: ColumnSize
     fluid?: boolean
-    offset?: {
-        xs?: ColumnSize
-        sm?: ColumnSize
-        md?: ColumnSize
-        lg?: ColumnSize
-        xl?: ColumnSize
-        xxl?: ColumnSize
-    }
+    order?: ColumnSize | Partial<Record<ColumnBreakpoints, ColumnSize>>
+    offset?: ColumnSize | Partial<Record<ColumnBreakpoints, ColumnSize>>
 }
 
-export const colSizePropNames = ['auto', 'size', 'sm', 'md', 'lg', 'xl', 'xxl', 'fluid', 'offset']
+
+export const colSizePropNames = ['auto', 'size', 'sm', 'md', 'lg', 'xl', 'xxl', 'fluid', 'offset', 'order']
 
 export function omitColSizeProps(props: Record<string,any>) {
     return omit(props, colSizePropNames)
@@ -33,38 +31,50 @@ export function extractColSizeProps(props: Record<string,any>) {
     return pick(props, colSizePropNames) as ColProps
 }
 
+const objectOrValueSizes = (prop: 'order' | 'offset', value?: ColumnSize | Partial<Record<ColumnBreakpoints, ColumnSize>>) => {
+    const cls:Array<string> = []
+    if (typeof value === 'object') {
+        for (const [name, size] of Object.entries(value)) {
+            cls.push(`${prop}-${name}-${size}`)
+        }
+    } else if (!isNil(value)) {
+        cls.push(`${prop}-${value}`)
+    }
+    return cls
+}
+
 export const Col: FCWC<ColProps> = ({
     children,
     auto,
-    size,
     sm,
     md,
     lg,
     xl,
     xxl,
     fluid,
+    size,
+    order,
     className,
-    offset = {},
+    offset,
     ...props
 }) => {
     return (
         <Box
-            className={cx(className, {
-                col: auto,
-                [`col-${size}`]: !!size,
-                [`col-sm-${sm}`]: !!sm,
-                [`col-md-${md}`]: !!md,
-                [`col-lg-${lg}`]: !!lg,
-                [`col-xl-${xl}`]: !!xl,
-                [`col-xxl-${xxl}`]: !!xxl,
-                'col-fluid': !!fluid,
-                [`offset-xs-${offset.xs}`]: !!offset.xs,
-                [`offset-sm-${offset.sm}`]: !!offset.sm,
-                [`offset-md-${offset.md}`]: !!offset.md,
-                [`offset-lg-${offset.lg}`]: !!offset.lg,
-                [`offset-xl-${offset.xl}`]: !!offset.xl,
-                [`offset-xxl-${offset.xxl}`]: !!offset.xxl,
-            })}
+            className={cx(
+                className,
+                ...objectOrValueSizes('offset', offset),
+                ...objectOrValueSizes('order', order),
+                {
+                    col: auto,
+                    [`col-${size}`]: !!size,
+                    [`col-sm-${sm}`]: !!sm,
+                    [`col-md-${md}`]: !!md,
+                    [`col-lg-${lg}`]: !!lg,
+                    [`col-xl-${xl}`]: !!xl,
+                    [`col-xxl-${xxl}`]: !!xxl,
+                    'col-fluid': !!fluid,
+                },
+            )}
             direction="column"
             {...props}
         >

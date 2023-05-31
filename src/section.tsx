@@ -37,7 +37,7 @@ const Body = styled.div(({
     margin: 0,
     padding: noPad ? 0 : padding,
     [themeMedia.mobile]: {
-        padding: noPad ? '0' : '0.3rem',
+        padding: noPad ? '0' : `calc(${padding} * 0.3)`,
     },
     minHeight,
     maxHeight,
