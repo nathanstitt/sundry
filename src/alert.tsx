@@ -1,12 +1,11 @@
 import { React, FC, useEffect, cx, styled, useState } from './common.js'
 import { ColProps } from './col.js'
 import { Box } from 'boxible'
-import { CombinedError } from 'urql'
 import { errorToString } from './util.js'
 import { BSVariants, bsClassNames } from './bs.js'
 import { Delayed } from './ui-state.js'
 import { Icon } from './icon.js'
-import { ErrorTypes } from './types.js'
+import { ErrorTypes, CombinedError } from './types.js'
 
 export interface AlertProps extends BSVariants, ColProps {
     icon?: React.ReactNode

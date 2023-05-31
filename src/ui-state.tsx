@@ -1,10 +1,9 @@
 import { Box } from 'boxible'
 import { FC, React, styled, cx } from './common.js'
 import { Icon } from './icon.js'
-import { CombinedError } from 'urql'
 import { themeColors as colors } from './theme.js'
 import { LoadingDots as LD } from './loading-dots.js'
-import { ErrorTypes } from './types.js'
+import { ErrorTypes, CombinedError } from './types.js'
 import { errorToString } from './util.js'
 import type { Property } from 'csstype'
 

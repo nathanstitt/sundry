@@ -1,9 +1,21 @@
-import { CombinedError } from 'urql'
 import type { WeakValidationMap, FC as RFC, ReactElement, ReactNode, ValidationMap } from 'react'
 
 type EmptyProps = Record<string, unknown>
 export type PropsWithChildren<P = EmptyProps> = P & {
     children: ReactNode | ReactNode[] | undefined
+}
+
+interface GraphQLError extends Error {
+    originalError?: Error
+    extensions: Record<string, unknown>
+}
+// copy definition of CombinedError type from urql vs importing it
+export interface CombinedError extends Error {
+    name: string;
+    message: string;
+    graphQLErrors: GraphQLError[];
+    networkError?: Error;
+    response?: any;
 }
 
 export type PropsWithOptionalChildren<P = EmptyProps> = P & {
