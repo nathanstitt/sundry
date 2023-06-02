@@ -43,7 +43,8 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     submittedMessage = `${name} was saved`,
 }) => {
     const [err, onDismiss] = useFormError()
-    const { isSubmitting, isDirty } = useFormState()
+    const { isSubmitting, isDirty, isSubmitSuccessful } = useFormState()
+
     const wasSubmitting = usePreviousValue(isSubmitting)
 
     const [wasShown, _setWasShown] = useState(false)
@@ -62,12 +63,12 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     }
     if (err) body = <ErrorAlert error={err} onDismiss={onDismiss} />
 
-    if (!body && wasShown && submittedMessage) {
+    if (!body && wasShown && submittedMessage && isSubmitSuccessful) {
         body = <Alert message={submittedMessage} onDismiss={hideWasShown} />
     }
 
     useEffect(() => {
-        if (wasSubmitting && !isSubmitting) {
+        if (wasSubmitting && !isSubmitting && isSubmitSuccessful) {
             setWasShown()
         }
         if (wasShown && isDirty) {

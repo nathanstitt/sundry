@@ -287,13 +287,13 @@ export function EditingForm<FV extends FormValues>({
     return (
         <Form {...props} className={cx('editing', 'row', className)}>
             {children}
-            {name && (
-                <FormStatusAlert
-                    name={name}
-                    submittingMessage={submittingMessage}
-                    submittedMessage={submittedMessage}
-                />
-            )}
+
+            <FormStatusAlert
+                name={name}
+                submittingMessage={submittingMessage}
+                submittedMessage={submittedMessage}
+            />
+
             <SaveCancelBtn
                 saveLabel={saveLabel}
                 cancelLabel={cancelLabel}
