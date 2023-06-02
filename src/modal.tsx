@@ -53,6 +53,7 @@ const Modal: ModalI = ({
     large,
     small,
     fullscreen,
+    enforceFocus = false,
     scrollable = true,
     closeBtn = true,
     center = false,
@@ -60,6 +61,9 @@ const Modal: ModalI = ({
 }) => {
     return (
         <RestartModal
+            enforceFocus={enforceFocus}
+            onEscapeKeyDown={onHide}
+            onBackdropClick={onHide}
             {...props}
             show={show}
             className={cx(className, 'modal', 'fade', {
@@ -67,7 +71,6 @@ const Modal: ModalI = ({
             })}
             style={{ display: 'block', pointerEvents: 'none', overflow: scrollable ? '' : 'auto' }}
             renderBackdrop={renderBackdrop}
-            onBackdropClick={onHide}
         >
             <div
                 className={cx('modal-dialog', {
