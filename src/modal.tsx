@@ -53,6 +53,7 @@ const Modal: ModalI = ({
     large,
     small,
     fullscreen,
+    restoreFocus = false,
     enforceFocus = false,
     scrollable = true,
     closeBtn = true,
@@ -61,6 +62,7 @@ const Modal: ModalI = ({
 }) => {
     return (
         <RestartModal
+            restoreFocus={restoreFocus}
             enforceFocus={enforceFocus}
             onEscapeKeyDown={onHide}
             onBackdropClick={onHide}
