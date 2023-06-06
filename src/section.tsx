@@ -32,12 +32,12 @@ type BodyProps = {
     noPad?: boolean
 }
 const Body = styled.div(({
-    noPad, noBorder, maxHeight, minHeight, padding = '1rem',
+    noPad, noBorder, maxHeight, minHeight, padding = '0.5rem',
 }: BodyProps) => ({
     margin: 0,
     padding: noPad ? 0 : padding,
     [themeMedia.mobile]: {
-        padding: noPad ? '0' : `calc(${padding} * 0.3)`,
+        padding: noPad ? '0' : `calc(${padding} * 0.5)`,
     },
     minHeight,
     maxHeight,
@@ -107,7 +107,7 @@ const SectionDOM: FCWC<URSectionProps> = ({
     isRow,
     controls,
     fullWidth,
-    noPad = isRow,
+    noPad,
     dispayAsExpanded,
     hideCollapsedControls = false,
     bodyPadding,
