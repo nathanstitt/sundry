@@ -1,4 +1,5 @@
 import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
+import type { ReactNode } from 'react'
 import type { AnyObjectSchema } from 'yup'
 import { isShallowEqual, errorToString } from './util.js'
 import { usePreviousValue, useToggle } from './hooks.js'
@@ -64,6 +65,16 @@ interface FormProps<FV extends FormValues> {
     validationSchema?: AnyObjectSchema
 }
 
+const KEEP_STATE = {
+    keepTouched: true,
+    keepIsSubmitted: true,
+    keepIsValid: true,
+    keepSubmitCount: true,
+    keepDirty: true,
+    keepErrors: true,
+//    keepDirtyValues: true,
+}
+
 export function Form<FV extends FormValues>({
     action,
     children,
@@ -90,7 +101,7 @@ export function Form<FV extends FormValues>({
     useEffect(() => {
         if (enableReinitialize) {
             if (prevDefaultValues && !isShallowEqual(prevDefaultValues, defaultValues)) {
-                fc.reset(defaultValues, { keepDirtyValues: true })
+                fc.reset(defaultValues, KEEP_STATE)
             }
         }
     }, [fc, prevDefaultValues, enableReinitialize, defaultValues])
@@ -116,13 +127,9 @@ export function Form<FV extends FormValues>({
         async (values) => {
             try {
                 await onSubmit(values, extCtx)
-                if (!fc.getFieldState('FORM_ERROR').error) {
-                    fc.reset(values, {
-                        keepTouched: true,
-                        keepIsSubmitted: true,
-                        keepSubmitCount: true,
-                    })
-                }
+                // if (!fc.getFieldState('FORM_ERROR').error) {
+                //     fc.reset(values, KEEP_STATE)
+                // }
             } catch (err: any) {
                 extCtx.setFormError(err)
             }
@@ -207,6 +214,7 @@ export const FormSaveButton: FCWC<Omit<ButtonProps, 'busy'>> = ({
 }
 
 export interface SaveCancelBtnProps {
+    children?: ReactNode
     showControls?: boolean
     onDelete?: FormDeleteHandler<any>
     onCancel?: FormCancelHandler<any>
@@ -218,6 +226,7 @@ export interface SaveCancelBtnProps {
 export function SaveCancelBtn({
     onCancel,
     onDelete,
+    children,
     showControls,
     saveLabel = 'Save',
     cancelLabel = 'Cancel',
@@ -251,6 +260,7 @@ export function SaveCancelBtn({
                     {deleteLabel}
                 </Button>
             )}
+            {children}
             <Box gap>
                 {(isDirty || onCancel) && (
                     <FormCancelButton onCancel={onCancel}>{cancelLabel}</FormCancelButton>
@@ -287,13 +297,6 @@ export function EditingForm<FV extends FormValues>({
     return (
         <Form {...props} className={cx('editing', 'row', className)}>
             {children}
-
-            <FormStatusAlert
-                name={name}
-                submittingMessage={submittingMessage}
-                submittedMessage={submittedMessage}
-            />
-
             <SaveCancelBtn
                 saveLabel={saveLabel}
                 cancelLabel={cancelLabel}
@@ -301,7 +304,14 @@ export function EditingForm<FV extends FormValues>({
                 onCancel={onCancel}
                 onDelete={onDelete}
                 showControls={showControls}
-            />
+            >
+                <FormStatusAlert
+                    name={name}
+                    showPending={false}
+                    submittingMessage={submittingMessage}
+                    submittedMessage={submittedMessage}
+                />
+            </SaveCancelBtn>
         </Form>
     )
 }

@@ -1,6 +1,5 @@
-import { FC, React, styled, useState } from './common.js'
+import { FC, React, styled, useState, cx, css } from './common.js'
 import { ErrorTypes } from './types.js'
-import { usePreviousValue } from './hooks.js'
 import { FORM_ERROR_KEY, useFormState, useFormContext } from './form-hooks.js'
 import { ErrorAlert, Alert } from './alert.js'
 import { Delayed, LoadingMessage } from './ui-state.js'
@@ -24,7 +23,7 @@ export const FormError: FC = () => {
 }
 
 const StatusWrapper = styled.div({
-    minHeight: '60px',
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -34,50 +33,52 @@ const StatusWrapper = styled.div({
 interface FormStatusAlertProps {
     verb?: string
     name: string
+    showPending?: boolean
     submittingMessage?: string
     submittedMessage?: string
 }
+
+
 export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     name,
+    showPending = true,
     submittingMessage = `${name} is saving`,
     submittedMessage = `${name} was saved`,
 }) => {
-    const [err, onDismiss] = useFormError()
-    const { isSubmitting, isDirty, isSubmitSuccessful } = useFormState()
-
-    const wasSubmitting = usePreviousValue(isSubmitting)
-
-    const [wasShown, _setWasShown] = useState(false)
+    const [err, _onDismiss] = useFormError()
+    const { isSubmitting, isSubmitSuccessful } = useFormState()
+    const [wasShown, setWasShown] = useState<false | 'pending' | 'shown' | 'error' | 'success'>(false)
 
     let body: React.ReactElement<any, any> | null = null
 
-    const setWasShown = useCallback(() => _setWasShown(true), [_setWasShown])
-    const hideWasShown = useCallback(() => _setWasShown(false), [_setWasShown])
+    const onDismiss = useCallback(() => {
+        setWasShown(false)
+        _onDismiss()
+    }, [_onDismiss])
+    useEffect(() => {
+        if (err) {
+            setWasShown('error')
+        } else if (showPending && isSubmitting) {
+            setWasShown('pending')
+        } else if (isSubmitSuccessful) {
+            setWasShown('success')
+        }
+    }, [isSubmitting, wasShown, isSubmitSuccessful, err])
 
-    if (isSubmitting) {
+    if (wasShown == 'pending' || wasShown == 'shown') {
         body = (
-            <Delayed onShown={setWasShown}>
-                <LoadingMessage message={submittingMessage} />
+            <Delayed onShown={() => setWasShown('shown')}>
+                <LoadingMessage padding={12} message={submittingMessage} />
             </Delayed>
         )
+    } else if (wasShown == 'error') {
+        body = <ErrorAlert height="100%" error={err} onDismiss={onDismiss} />
+    } else if (wasShown == 'success') {
+        body = <Alert height="100%" message={submittedMessage} />
     }
-    if (err) body = <ErrorAlert error={err} onDismiss={onDismiss} />
 
-    if (!body && wasShown && submittedMessage && isSubmitSuccessful) {
-        body = <Alert message={submittedMessage} onDismiss={hideWasShown} />
-    }
-
-    useEffect(() => {
-        if (wasSubmitting && !isSubmitting && isSubmitSuccessful) {
-            setWasShown()
-        }
-        if (wasShown && isDirty) {
-            hideWasShown()
-        }
-    }, [err, isSubmitting, wasSubmitting, wasShown, isDirty, hideWasShown, setWasShown])
-
-    if (body || wasShown) {
-        return <StatusWrapper>{body}</StatusWrapper>
+    if (body) {
+        return <StatusWrapper className="form-status">{body}</StatusWrapper>
     }
 
     return null
