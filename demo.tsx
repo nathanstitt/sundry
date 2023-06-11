@@ -5,6 +5,7 @@ import {
     Row,
     Col,
     Box,
+    Alert,
     Button,
     DateTimeField,
     DropdownMenu,
@@ -46,11 +47,24 @@ const StyledCheckbox = styled(InputField)({
 
 export default function Demo() {
     const [isExpanded, setExpanded] = React.useState(false)
+    const [defaultValue, setDefaultValue] = React.useState({
+        name: 'test',
+        nested: [{ name: 'b' }],
+        cbv: true,
+        bc: 'a',
+        rbv: 'c',
+        simpleDate: new Date(),
+        from: new Date('2022-10-21'),
+        to: new Date('2022-11-02'),
+    } satisfies FormData)
     const displaySize = useDeviceSize()
-    const onSubmit: FormSubmitHandler<FormData> = async (values, _) => {
+    const onSubmit: FormSubmitHandler<FormData> = async (values, fc) => {
         console.log(values) // eslint-disable-line no-console
 
         await new Promise((r) => setTimeout(r, 2000))
+
+        setDefaultValue({...defaultValue, name: values.name + `-${fc.formState.submitCount}` })
+
         //throw 'uh oh'
         //fc.setFormError(new Error('a save error occured'))
     }
@@ -64,7 +78,10 @@ export default function Demo() {
                 hint="This is a test of the MessageBox"
                 prefixIcon={<Icon icon="clock" />}
             />
+            <Alert height="33px" danger onDismiss={() => {}} message="this is test" />
+
             <h6>Display size = {displaySize}</h6>
+
             <Box gap="large">
                 <Button
                     icon="clock"
@@ -102,18 +119,7 @@ export default function Demo() {
             <EditingForm
                 name="Demo Form"
                 className="row"
-                defaultValues={
-                    {
-                        name: '',
-                        nested: [{ name: 'b' }],
-                        cbv: true,
-                        bc: 'a',
-                        rbv: 'c',
-                        simpleDate: new Date(),
-                        from: new Date('2022-10-21'),
-                        to: new Date('2022-11-02'),
-                    } satisfies FormData
-                }
+                defaultValues={defaultValue}
                 validationSchema={Yup.object().shape({
                     name: Yup.string().required(),
                     simpleDate: Yup.date().required(),

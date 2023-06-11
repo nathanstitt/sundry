@@ -1,6 +1,6 @@
 import { React, FC, useEffect, cx, styled, useState } from './common.js'
 import { ColProps } from './col.js'
-import { Box } from 'boxible'
+import { Box, BoxProps } from 'boxible'
 import { errorToString } from './util.js'
 import { BSVariants, bsClassNames } from './bs.js'
 import { Delayed } from './ui-state.js'
@@ -13,14 +13,25 @@ export interface AlertProps extends BSVariants, ColProps {
     onDismiss?(): void
     className?: string
     canDismiss?: boolean
+    height?: BoxProps['height']
 }
 
-const Wrapper = styled.div({
+const Wrapper = styled(Box)({
     '.row > &': {
         marginLeft: 'calc(var(--bs-gutter-x) * 0.5)',
         marginRight: 'calc(var(--bs-gutter-x) * 0.5)',
         flex: 1,
     },
+    '--bs-alert-padding-y': '0',
+    alignItems: 'center',
+    '&.alert-dismissible': {
+        paddingRight: 0,
+        '.btn-close': {
+            position: 'initial',
+            height: '100%',
+            padding: '0 1rem',
+        }
+    }
 })
 
 export const Alert: FC<AlertProps> = ({
@@ -29,6 +40,7 @@ export const Alert: FC<AlertProps> = ({
     icon,
     className = '',
     canDismiss = true,
+    height = '55px',
     ...types
 }) => {
     const [visible, setVisible] = useState(canDismiss)
@@ -48,12 +60,13 @@ export const Alert: FC<AlertProps> = ({
     return (
         <Wrapper
             role="alert"
+            height={height}
             data-testid="alert"
             className={cx('alert', bsClassNames('alert', types)[0], className, {
                 'alert-dismissible': canDismiss,
             })}
         >
-            <Box gap align={'center'}>{icon}{message}</Box>
+            <Box gap align={'center'} flex>{icon}{message}</Box>
             {canDismiss && (
                 <button
                     type="button"
@@ -67,11 +80,11 @@ export const Alert: FC<AlertProps> = ({
     )
 }
 
-interface ErrorAlertProps {
+interface ErrorAlertProps extends AlertProps {
     error?: ErrorTypes
     onDismiss?(): void
 }
-export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissProp }) => {
+export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissProp, ...alertProps}) => {
     const [err, setError] = useState<ErrorTypes>(error)
     useEffect(() => {
         setError(error)
@@ -84,7 +97,7 @@ export const ErrorAlert: FC<ErrorAlertProps> = ({ error, onDismiss: onDismissPro
         onDismissProp?.()
     }
 
-    return <Alert icon="exclamationCircle" danger message={errorToString(error)} onDismiss={onDismiss} />
+    return <Alert {...alertProps} icon="exclamationCircle" danger message={errorToString(error)} onDismiss={onDismiss} />
 }
 
 const Pending = styled.span({

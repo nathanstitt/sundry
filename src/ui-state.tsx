@@ -1,11 +1,12 @@
 import { Box } from 'boxible'
-import { FC, React, styled, cx } from './common.js'
+import { FC, React, CSSObject, styled, cx } from './common.js'
 import { Icon } from './icon.js'
 import { themeColors as colors } from './theme.js'
 import { LoadingDots as LD } from './loading-dots.js'
 import { ErrorTypes, CombinedError } from './types.js'
 import { errorToString } from './util.js'
 import type { Property } from 'csstype'
+
 
 const DEFAULT_DISPLAY_AFTER = 250
 const ICON_HEIGHT = 30 // px
@@ -15,12 +16,20 @@ const { useState, useEffect } = React
 const H = styled.h3`
     margin: 0;
 `
+type StyledMessageProps = {
+    border?: Property.Border | false
+    padding?: false | CSSObject['padding']
+}
 
 export const StyledMessage = styled(Box, {
     shouldForwardProp: (prop) => prop !== 'border',
-})(({ border = `1px solid ${colors.wellBorder}` }: { border?: Property.Border | false }) => {
+})(({
+    border = `1px solid ${colors.wellBorder}`,
+    padding = '1.2rem 2rem',
+}: StyledMessageProps) => {
+      console.log(padding)
     return {
-        padding: '1.2rem 2rem',
+        padding: padding ? padding : undefined,
         border: border ? border : undefined,
         background: colors.well,
         svg: {
@@ -59,6 +68,7 @@ export interface MessageProps {
     suffixIcon?: React.ReactNode
     expandWidth?: boolean
     overlay?: boolean
+    padding?: false | CSSObject['padding']
 }
 
 const Hint = styled.span({
@@ -70,6 +80,7 @@ export const Message: FC<MessageProps> = ({
     variant,
     message,
     border,
+    padding = '1.2rem 2rem',
     prefixIcon,
     suffixIcon,
     className,
@@ -88,6 +99,7 @@ export const Message: FC<MessageProps> = ({
             <StyledMessage
                 direction="column"
                 centered
+                padding={padding}
                 border={border}
                 width={expandWidth ? 'auto' : '450px'}
             >
