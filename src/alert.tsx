@@ -13,6 +13,7 @@ export interface AlertProps extends BSVariants, ColProps {
     onDismiss?(): void
     className?: string
     canDismiss?: boolean
+    'data-testid'?: string
     height?: BoxProps['height']
 }
 
@@ -40,6 +41,7 @@ export const Alert: FC<AlertProps> = ({
     icon,
     className = '',
     canDismiss = true,
+    'data-testid': dataTestId = 'alert',
     height = '55px',
     ...types
 }) => {
@@ -61,7 +63,7 @@ export const Alert: FC<AlertProps> = ({
         <Wrapper
             role="alert"
             height={height}
-            data-testid="alert"
+            data-testid={dataTestId}
             className={cx('alert', bsClassNames('alert', types)[0], className, {
                 'alert-dismissible': canDismiss,
             })}

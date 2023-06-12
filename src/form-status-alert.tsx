@@ -72,9 +72,9 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
             </Delayed>
         )
     } else if (wasShown == 'error') {
-        body = <ErrorAlert height="100%" error={err} onDismiss={onDismiss} />
+        body = <ErrorAlert data-testid="form-save-error-alert" height="100%" error={err} onDismiss={onDismiss} />
     } else if (wasShown == 'success') {
-        body = <Alert height="100%" message={submittedMessage} />
+        body = <Alert data-testid="form-save-success-alert" height="100%" message={submittedMessage} />
     }
 
     if (body) {
