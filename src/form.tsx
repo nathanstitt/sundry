@@ -273,6 +273,7 @@ export function SaveCancelBtn({
 
 interface EditingFormProps<FV extends FormValues> extends FormProps<FV> {
     name: string
+    hideStatus?: boolean
     submittingMessage?: string
     submittedMessage?: string
     saveLabel?: React.ReactNode
@@ -287,6 +288,7 @@ export function EditingForm<FV extends FormValues>({
     onCancel,
     onDelete,
     saveLabel,
+    hideStatus,
     cancelLabel,
     deleteLabel,
     name,
@@ -306,6 +308,7 @@ export function EditingForm<FV extends FormValues>({
                 showControls={showControls}
             >
                 <FormStatusAlert
+                    enabled={!hideStatus}
                     name={name}
                     showPending={false}
                     submittingMessage={submittingMessage}

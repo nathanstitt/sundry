@@ -33,6 +33,7 @@ const StatusWrapper = styled.div({
 interface FormStatusAlertProps {
     verb?: string
     name: string
+    enabled?: boolean
     showPending?: boolean
     submittingMessage?: string
     submittedMessage?: string
@@ -41,6 +42,7 @@ interface FormStatusAlertProps {
 
 export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     name,
+    enabled = true,
     showPending = true,
     submittingMessage = `${name} is saving`,
     submittedMessage = `${name} was saved`,
@@ -55,7 +57,10 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
         setWasShown(false)
         _onDismiss()
     }, [_onDismiss])
+
     useEffect(() => {
+        if (!enabled) return
+
         if (err) {
             setWasShown('error')
         } else if (showPending && isSubmitting) {
@@ -63,7 +68,7 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
         } else if (isSubmitSuccessful) {
             setWasShown('success')
         }
-    }, [isSubmitting, wasShown, isSubmitSuccessful, err])
+    }, [isSubmitting, wasShown, isSubmitSuccessful, err, enabled])
 
     if (wasShown == 'pending' || wasShown == 'shown') {
         body = (
