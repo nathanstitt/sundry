@@ -1,4 +1,4 @@
-import { FC, React, styled, useState, cx, css, emptyFn } from './common.js'
+import { FC, React, styled, useState, emptyFn } from './common.js'
 import { ErrorTypes } from './types.js'
 import { FORM_ERROR_KEY, useFormState, useFormContext } from './form-hooks.js'
 import { ErrorAlert, Alert } from './alert.js'
@@ -59,7 +59,7 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
         setWasShown(false)
         _onDismiss()
         onDismiss?.()
-    }, [_onDismiss])
+    }, [_onDismiss, onDismiss])
 
     useEffect(() => {
         if (!enabled) return
@@ -71,7 +71,7 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
         } else if (isSubmitSuccessful) {
             setWasShown('success')
         }
-    }, [isSubmitting, wasShown, isSubmitSuccessful, err, enabled])
+    }, [isSubmitting, wasShown, isSubmitSuccessful, err, enabled, showPending])
 
     if (wasShown == 'pending' || wasShown == 'shown') {
         body = (

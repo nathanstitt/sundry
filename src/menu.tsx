@@ -5,6 +5,7 @@ import type {
     DropdownToggleProps,
     DropdownProps as RUDdProps,
 } from '@restart/ui/Dropdown'
+import type { UserDropdownMenuProps, UseDropdownMenuMetadata } from '@restart/ui/DropdownMenu'
 import { getPortalContainer } from './config.js'
 import { createPortal } from 'react-dom'
 import { asyncComponentLoader } from './async-load.js'
@@ -65,7 +66,7 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                 })}
             >
                 <Toggle>
-                    {(props) => (
+                    {(props: ButtonProps) => (
                         <Button
                             className={cx('dropdown-toggle', toggleClassName)}
                             {...buttonProps}
@@ -77,7 +78,7 @@ export const DropdownMenu: FCWC<DropdownMenuProps> = ({
                     )}
                 </Toggle>
                 <Menu {...options} placement={placement}>
-                    {(menuProps, meta) =>
+                    {(menuProps: UserDropdownMenuProps, meta: UseDropdownMenuMetadata) =>
                         createPortal(
                             <div
                                 {...menuProps}

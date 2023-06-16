@@ -98,7 +98,7 @@ export const Message: FC<MessageProps> = ({
             <StyledMessage
                 direction="column"
                 centered
-                padding={padding}
+                padding={padding ? padding : undefined}
                 border={border}
                 width={expandWidth ? 'auto' : '450px'}
             >

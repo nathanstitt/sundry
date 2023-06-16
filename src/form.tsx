@@ -127,14 +127,11 @@ export function Form<FV extends FormValues>({
         async (values) => {
             try {
                 await onSubmit(values, extCtx)
-                // if (!fc.getFieldState('FORM_ERROR').error) {
-                //     fc.reset(values, KEEP_STATE)
-                // }
             } catch (err: any) {
                 extCtx.setFormError(err)
             }
         },
-        [onSubmit, extCtx, fc]
+        [onSubmit, extCtx]
     )
 
     return (
