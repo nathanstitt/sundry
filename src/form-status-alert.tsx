@@ -1,4 +1,4 @@
-import { FC, React, styled, useState, cx, css } from './common.js'
+import { FC, React, styled, useState, cx, css, emptyFn } from './common.js'
 import { ErrorTypes } from './types.js'
 import { FORM_ERROR_KEY, useFormState, useFormContext } from './form-hooks.js'
 import { ErrorAlert, Alert } from './alert.js'
@@ -37,6 +37,7 @@ interface FormStatusAlertProps {
     showPending?: boolean
     submittingMessage?: string
     submittedMessage?: string
+    onDismiss?: typeof emptyFn,
 }
 
 
@@ -44,6 +45,7 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
     name,
     enabled = true,
     showPending = true,
+    onDismiss,
     submittingMessage = `${name} is saving`,
     submittedMessage = `${name} was saved`,
 }) => {
@@ -53,9 +55,10 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
 
     let body: React.ReactElement<any, any> | null = null
 
-    const onDismiss = useCallback(() => {
+    const onHide = useCallback(() => {
         setWasShown(false)
         _onDismiss()
+        onDismiss?.()
     }, [_onDismiss])
 
     useEffect(() => {
@@ -77,9 +80,9 @@ export const FormStatusAlert: FC<FormStatusAlertProps> = ({
             </Delayed>
         )
     } else if (wasShown == 'error') {
-        body = <ErrorAlert data-testid="form-save-error-alert" height="100%" error={err} onDismiss={onDismiss} />
+        body = <ErrorAlert data-testid="form-save-error-alert" height="100%" error={err} onDismiss={onHide} />
     } else if (wasShown == 'success') {
-        body = <Alert data-testid="form-save-success-alert" height="100%" message={submittedMessage} />
+        body = <Alert data-testid="form-save-success-alert" height="100%" message={submittedMessage} onDismiss={onHide} />
     }
 
     if (body) {
