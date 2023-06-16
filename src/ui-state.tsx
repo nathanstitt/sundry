@@ -27,7 +27,6 @@ export const StyledMessage = styled(Box, {
     border = `1px solid ${colors.wellBorder}`,
     padding = '1.2rem 2rem',
 }: StyledMessageProps) => {
-      console.log(padding)
     return {
         padding: padding ? padding : undefined,
         border: border ? border : undefined,
