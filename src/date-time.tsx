@@ -69,7 +69,7 @@ export const DateTime: React.FC<DateTimeProps> = ({
         (newDates: Date[], value: any, fltpkr: FlatPickr.Instance, data: any) => {
             for (let i = 0; i < fieldNames.length; i++) {
                 if ( newDates[i]?.getTime() !== values[i]?.getTime()) {
-                    setFieldValue(fieldNames[i], newDates[i], { shouldValidate: true, shouldDirty: true, shouldTouch: true })
+                    setFieldValue(fieldNames[i], newDates[i] || null, { shouldValidate: true, shouldDirty: true, shouldTouch: true })
                 }
             }
             if (endRangePickrEl && newDates.length < 2) {
