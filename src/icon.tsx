@@ -14,9 +14,9 @@ const spinKeyframes = keyframes`
   }
 `
 
-const spinCSS = css`
-    animation: 2s linear ${spinKeyframes} infinite;
-`
+const spinCSS = css({
+    animation: `${spinKeyframes} 2s linear infinite`,
+})
 
 export interface IconifyIconDefinition {
     body: string
@@ -81,7 +81,6 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
                 data-testid={onClick ? undefined : dti}
                 icon={typeof icon === 'object' ? icon : ICON_DEFINITIONS[icon]}
                 className={cx(className, icon === 'spin' ? spinCSS : '')}
-
                 {...iconProps}
             />
         )
