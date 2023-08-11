@@ -80,7 +80,7 @@ export const Icon = React.forwardRef<SVGSVGElement, PropsWithOptionalChildren<Ic
                 ref={ref || undefined}
                 data-testid={onClick ? undefined : dti}
                 icon={typeof icon === 'object' ? icon : ICON_DEFINITIONS[icon]}
-                className={cx(className, icon === 'spin' ? spinCSS : '')}
+                className={cx(className, iconName === 'spin' ? spinCSS : '')}
                 {...iconProps}
             />
         )
