@@ -46,6 +46,8 @@ export function useLocalstorageState<S>(
     key: string,
     initialState?: S | (() => S)
 ): UseLocalstorageStateReturnValue<S> {
+    if (isSSR) return [initialState as S, () => {}, () => {}]
+
     const [value, setValue] = useState<S>(() => initialize(key, initialState))
     const isUpdateFromCrossDocumentListener = useRef(false)
     const isUpdateFromWithinDocumentListener = useRef(false)
@@ -106,15 +108,10 @@ export function useLocalstorageState<S>(
 
     const broadcastValueWithinDocument = useCallback(
         function (newValue: S) {
-            // eslint-disable-next-line no-negated-condition
-            if (isSSR) {
-                console.warn('[useLocalstorageState] document is undefined.')
-            } else {
-                const event: BroadcastCustomEvent<S> = new CustomEvent(customEventTypeName, {
-                    detail: { newValue },
-                })
-                document.dispatchEvent(event)
-            }
+            const event: BroadcastCustomEvent<S> = new CustomEvent(customEventTypeName, {
+                detail: { newValue },
+            })
+            document.dispatchEvent(event)
         },
         [customEventTypeName]
     )
