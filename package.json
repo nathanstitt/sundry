@@ -3,7 +3,7 @@
     "private": false,
     "type": "module",
     "sideEffects": false,
-    "version": "1.7.4",
+    "version": "1.7.5",
     "typesVersions": {
         "*": {
             "*": [
