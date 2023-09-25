@@ -1,14 +1,15 @@
-import { FCWC, React, cx, PropsWithChildren, useEffect, useMemo } from './common.js'
+import { cx, FCWC, isSSR, PropsWithChildren, React, useEffect, useMemo } from './common.js'
 import type { ReactNode } from 'react'
+import { useCallback } from 'react'
 import type { AnyObjectSchema } from 'yup'
-import { isShallowEqual, errorToString } from './util.js'
+import { errorToString, isShallowEqual } from './util.js'
 import { usePreviousValue, useToggle } from './hooks.js'
 import {
-    useForm,
-    useWatch as useFormValue,
+    FieldError,
     FormProvider,
     SubmitHandler,
-    FieldError,
+    useForm,
+    useWatch as useFormValue,
 } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box } from 'boxible'
@@ -16,16 +17,16 @@ import { Footer } from './footer.js'
 import { FormStatusAlert } from './form-status-alert.js'
 import { Button, ButtonProps } from './button.js'
 import { ErrorTypes } from './types.js'
-import { useCallback } from 'react'
 
+import type { FieldState, FormContext, RegisteredField } from './form-hooks.js'
 import {
-    FormTriggerValidation,
     FORM_ERROR_KEY,
+    FormTriggerValidation,
     useController,
-    useFormState,
     useFormContext,
+    useFormState,
 } from './form-hooks.js'
-import type { FieldState, RegisteredField, FormContext } from './form-hooks.js'
+
 export * from './form-hooks.js'
 export * from './date-time-field.js'
 export * from './date-time.js'
@@ -45,7 +46,9 @@ export type FormSubmitHandler<FV extends FormValues = object> = (
     ctx: FormContext<FV>
 ) => void | Promise<void>
 export type FormCancelHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => void
-export type FormDeleteHandler<FV extends FormValues = object> = (fc: FormContext<FV>) => Promise<void>
+export type FormDeleteHandler<FV extends FormValues = object> = (
+    fc: FormContext<FV>
+) => Promise<void>
 
 export type FormValues = Record<string, any>
 
@@ -63,6 +66,7 @@ interface FormProps<FV extends FormValues> {
     onReset?: (values: FV, ctx: FormContext<FV>) => void
     onSubmit: FormSubmitHandler<FV>
     validationSchema?: AnyObjectSchema
+    confirmOnNavigate: boolean
 }
 
 const KEEP_STATE = {
@@ -72,7 +76,7 @@ const KEEP_STATE = {
     keepSubmitCount: true,
     keepDirty: true,
     keepErrors: true,
-//    keepDirtyValues: true,
+    //    keepDirtyValues: true,
 }
 
 export function Form<FV extends FormValues>({
@@ -85,6 +89,7 @@ export function Form<FV extends FormValues>({
     validateOnMount,
     validationSchema,
     enableReinitialize = true,
+    confirmOnNavigate = true,
 }: PropsWithChildren<FormProps<FV>>): JSX.Element {
     const fc = useForm({
         mode: 'onBlur',
@@ -133,6 +138,30 @@ export function Form<FV extends FormValues>({
         },
         [onSubmit, extCtx]
     )
+
+    // Ripped from here: https://www.wpeform.io/blog/exit-prompt-on-window-close-react-app/
+    useEffect(() => {
+        if (isSSR || !confirmOnNavigate) return
+
+        // the handler for actually showing the prompt
+        // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+        const handler = (event: BeforeUnloadEvent) => {
+            event.preventDefault()
+            event.returnValue = ''
+        }
+
+        // if the form is NOT unchanged, then set the onbeforeunload
+        if (fc.formState.isDirty) {
+            window.addEventListener('beforeunload', handler)
+            // clean it up, if the dirty state changes
+            return () => {
+                window.removeEventListener('beforeunload', handler)
+            }
+        }
+        // since this is not dirty, don't do anything
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => {}
+    }, [fc.formState.isDirty])
 
     return (
         <FormProvider {...extCtx}>
@@ -232,7 +261,11 @@ export function SaveCancelBtn({
     const fc = useFormContext()
 
     const { isDirty, isSubmitting, isSubmitted } = useFormState()
-    const { isEnabled: isDeleting,  setEnabled: setDeleting, setDisabled: setDeleteFinished } = useToggle()
+    const {
+        isEnabled: isDeleting,
+        setEnabled: setDeleting,
+        setDisabled: setDeleteFinished,
+    } = useToggle()
 
     if (!onDelete && !showControls && !isDirty && !isSubmitted) {
         return null
