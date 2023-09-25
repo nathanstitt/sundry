@@ -150,7 +150,6 @@ export function Form<FV extends FormValues>({
             event.returnValue = ''
         }
 
-        // if the form is NOT unchanged, then set the onbeforeunload
         if (fc.formState.isDirty) {
             window.addEventListener('beforeunload', handler)
             // clean it up, if the dirty state changes
@@ -161,7 +160,7 @@ export function Form<FV extends FormValues>({
         // since this is not dirty, don't do anything
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => {}
-    }, [fc.formState.isDirty])
+    }, [fc.formState.isDirty, confirmOnNavigate])
 
     return (
         <FormProvider {...extCtx}>
