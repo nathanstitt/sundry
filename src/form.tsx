@@ -66,7 +66,7 @@ interface FormProps<FV extends FormValues> {
     onReset?: (values: FV, ctx: FormContext<FV>) => void
     onSubmit: FormSubmitHandler<FV>
     validationSchema?: AnyObjectSchema
-    confirmOnNavigate: boolean
+    confirmOnNavigate?: boolean
 }
 
 const KEEP_STATE = {
