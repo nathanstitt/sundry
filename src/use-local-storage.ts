@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect, useCallback, useRef } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
-import { isSSR } from './util.js'
+import { emptyFn, isSSR } from './util.js'
 import { useEventListener } from './hooks.js'
 
 // https://github.com/imbhargav5/rooks/blob/main/packages/rooks/src/hooks/useLocalstorageState.ts
@@ -46,16 +46,16 @@ export function useLocalstorageState<S>(
     key: string,
     initialState?: S | (() => S)
 ): UseLocalstorageStateReturnValue<S> {
-    if (isSSR) return [initialState as S, () => {}, () => {}]
+    if (isSSR) return [initialState as S, emptyFn, emptyFn]
 
-    const [value, setValue] = useState<S>(() => initialize(key, initialState))
-    const isUpdateFromCrossDocumentListener = useRef(false)
-    const isUpdateFromWithinDocumentListener = useRef(false)
-    const customEventTypeName = useMemo(() => {
+    const [value, setValue] = useState<S>(() => initialize(key, initialState)) // eslint-disable-line react-hooks/rules-of-hooks
+    const isUpdateFromCrossDocumentListener = useRef(false)  // eslint-disable-line react-hooks/rules-of-hooks
+    const isUpdateFromWithinDocumentListener = useRef(false) // eslint-disable-line react-hooks/rules-of-hooks
+    const customEventTypeName = useMemo(() => { // eslint-disable-line react-hooks/rules-of-hooks
         return `sundry-${key}-localstorage-update`
     }, [key])
 
-    useEffect(() => {
+    useEffect(() => { // eslint-disable-line react-hooks/rules-of-hooks
         /**
          * We need to ensure there is no loop of
          * storage events fired. Hence we are using a ref
@@ -70,7 +70,7 @@ export function useLocalstorageState<S>(
         }
     }, [key, value])
 
-    const listenToCrossDocumentStorageEvents = useCallback(
+    const listenToCrossDocumentStorageEvents = useCallback( // eslint-disable-line react-hooks/rules-of-hooks
         (event: StorageEvent) => {
             if (event.storageArea === localStorage && event.key === key) {
                 try {
@@ -86,9 +86,9 @@ export function useLocalstorageState<S>(
         },
         [key, value]
     )
-    useEventListener('storage', listenToCrossDocumentStorageEvents, { target: window })
+    useEventListener('storage', listenToCrossDocumentStorageEvents, { target: window }) // eslint-disable-line react-hooks/rules-of-hooks
 
-    const listenToCustomEventWithinDocument = useCallback(
+    const listenToCustomEventWithinDocument = useCallback( // eslint-disable-line react-hooks/rules-of-hooks
         (event: BroadcastCustomEvent<S>) => {
             try {
                 isUpdateFromWithinDocumentListener.current = true
@@ -102,11 +102,11 @@ export function useLocalstorageState<S>(
         },
         [value]
     )
-    useEventListener(customEventTypeName as any, listenToCustomEventWithinDocument, {
+    useEventListener(customEventTypeName as any, listenToCustomEventWithinDocument, { // eslint-disable-line react-hooks/rules-of-hooks
         target: document,
     })
 
-    const broadcastValueWithinDocument = useCallback(
+    const broadcastValueWithinDocument = useCallback( // eslint-disable-line react-hooks/rules-of-hooks
         function (newValue: S) {
             const event: BroadcastCustomEvent<S> = new CustomEvent(customEventTypeName, {
                 detail: { newValue },
@@ -118,7 +118,7 @@ export function useLocalstorageState<S>(
 
     // any is to work around:
     // 'S' could be instantiated with an arbitrary type which could be unrelated to 'SetStateAction<S>
-    const set: any = useCallback(
+    const set: any = useCallback( // eslint-disable-line react-hooks/rules-of-hooks
         (newValue: S) => {
             isUpdateFromCrossDocumentListener.current = false
             isUpdateFromWithinDocumentListener.current = false
@@ -129,7 +129,7 @@ export function useLocalstorageState<S>(
         [broadcastValueWithinDocument]
     )
 
-    const remove = useCallback(() => {
+    const remove = useCallback(() => { // eslint-disable-line react-hooks/rules-of-hooks
         localStorage.removeItem(key)
     }, [key])
 
