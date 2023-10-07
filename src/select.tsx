@@ -1,6 +1,6 @@
 import { React, cx, isNil } from './common.js'
 import { themeColors as colors } from './theme.js'
-import type { ActionMeta, Props as ReactSelectProps } from 'react-select'
+import type { ActionMeta, Props as ReactSelectProps, StylesConfig, CSSObjectWithLabel } from 'react-select'
 import { getSundryConfig } from './config.js'
 //let ReactSelectOption: any = null
 
@@ -67,53 +67,58 @@ const CUSTOM_COMPONENTS = {
 }
 
 // https://github.com/JedWatson/react-select/blob/master/packages/react-select/src/styles.js
-export const SelectStyles = {
-    container: (provided: any) => ({
+export const SelectStyles: StylesConfig = {
+    container: (provided: CSSObjectWithLabel) => ({
         ...provided,
     }),
-    control: (provided: any, state: any) => ({
+    control: (provided: CSSObjectWithLabel) => ({
         ...provided,
         minWidth: '150px',
         background: 'transparent',
-        boxShadow: state.isFocused ? null : null,
+        boxShadow: 'none',
     }),
-    indicatorSeparator: (provided: any, state: any) => ({
+    indicatorSeparator: (provided: CSSObjectWithLabel, props: ReactSelectProps) => ({
         ...provided,
-        backgroundColor: state.isDisabled ? 'transparent' : provided.backgroundColor,
+        backgroundColor: props.isDisabled ? 'transparent' : provided.backgroundColor,
     }),
-    singleValue: (provided: any) => ({
+    singleValue: (provided: CSSObjectWithLabel) => ({
         ...provided,
         color: colors.text,
     }),
-    multiValueRemove: (provided: any, state: any) => ({
+    multiValue: (provided: CSSObjectWithLabel) => ({
+        ...provided,
+        minWidth: '80px',
+    }),
+    multiValueRemove: (provided: CSSObjectWithLabel, state: any) => ({
         ...provided,
         display: state.isDisabled ? 'none' : provided.display,
     }),
-    dropdownIndicator: (provided: any, state: any) => ({
+    dropdownIndicator: (provided: CSSObjectWithLabel, state: any) => ({
         ...provided,
         color: state.isDisabled ? 'transparent' : provided.color,
     }),
-    menu: (provided: any) => ({
+    menu: (provided: CSSObjectWithLabel) => ({
         ...provided,
         backgroundColor: 'white',
         zIndex: 5,
     }),
-    placeholder: (provided: any) => ({
+    placeholder: (provided: CSSObjectWithLabel) => ({
         ...provided,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
     }),
-    valueContainer: (provided: any) => ({
+    valueContainer: (provided: CSSObjectWithLabel, { selectProps: { wrapDisplayedLabels } }: any) => ({
         ...provided,
-        flexWrap: 'no-wrap',
-    }),
+        flexWrap: wrapDisplayedLabels ? 'wrap' : 'nowrap',
+    })
+
 }
 
-export const SelectSmallStyles = {
+export const SelectSmallStyles:StylesConfig = {
     ...SelectStyles,
 
-    control: (provided: any, state: any) => {
-        const base = SelectStyles.control(provided, state)
+    control: (provided: CSSObjectWithLabel, state: any) => {
+        const base = SelectStyles.control?.(provided, state) || provided
         return {
             ...base,
             background: '#fff',
@@ -121,54 +126,51 @@ export const SelectSmallStyles = {
             minHeight: '30px',
             height: '30px',
             minWidth: '80px',
-            boxShadow: null,
-        }
+        } as CSSObjectWithLabel
     },
-
-    valueContainer: (provided: any) => ({
+    valueContainer: (provided: CSSObjectWithLabel) => ({
         ...provided,
-        flexWrap: 'no-wrap',
+        flexWrap: 'nowrap',
         height: '30px',
         padding: '0 6px',
     }),
-    input: (provided: any) => ({
+    input: (provided: CSSObjectWithLabel) => ({
         ...provided,
         margin: '0px',
     }),
     indicatorSeparator: () => ({
         display: 'none',
     }),
-    multiValueLabel: (provided: any) => ({
+    multiValueLabel: (provided: CSSObjectWithLabel) => ({
         ...provided,
         padding: 0,
         fontSize: '70%',
     }),
-    indicatorsContainer: (provided: any) => ({
+    indicatorsContainer: (provided: CSSObjectWithLabel) => ({
         ...provided,
         height: '30px',
         padding: 0,
     }),
-    dropdownIndicator: (provided: any) => ({
+    dropdownIndicator: (provided: CSSObjectWithLabel) => ({
         ...provided,
         padding: 2,
     }),
-    clearIndicator: (provided: any) => ({
+    clearIndicator: (provided: CSSObjectWithLabel) => ({
         ...provided,
         padding: 2,
     }),
 }
 
-export const SelectTinyStyles = {
+export const SelectTinyStyles: StylesConfig = {
     ...SelectSmallStyles,
-    control: (provided: any, state: any) => {
-        const base = SelectSmallStyles.control(provided, state)
+    control: (provided: CSSObjectWithLabel, state: any) => {
+        const base = SelectStyles.control?.(provided, state) || provided
         return {
             ...base,
             minHeight: '30px',
             height: '30px',
             minWidth: '80px',
-            boxShadow: state.isFocused ? null : null,
-        }
+        } as CSSObjectWithLabel
     },
 }
 
@@ -199,6 +201,7 @@ export interface SelectProps<O extends SelectOption = SelectOption>
     onCreateOption?: (value: string) => void
     value?: SelectValue
     isMulti?: boolean
+    wrapDisplayedLabels?: boolean
     isClearable?: boolean
     cacheOptions?: boolean
     options: Array<O>

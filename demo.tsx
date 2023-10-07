@@ -169,10 +169,17 @@ export default function Demo() {
                 />
                 <SelectField
                     placeholder="Select without a label"
+                    isMulti wrapDisplayedLabels
                     options={[
-                        { label: 'A', value: 'a' },
-                        { label: 'B', value: 'b' },
-                        { label: 'C', value: 'c' },
+                        { label: 'A long choice', value: 'a' },
+                        { label: 'B a longer choice that is not selected', value: 'b' },
+                        { label: 'C an even longer choice than the previous one', value: 'c' },
+                        { label: 'D A long choice', value: 'd' },
+                        { label: 'E a longer choice that is not selected', value: 'e' },
+                        { label: 'F an even longer choice than the previous one', value: 'f' },
+                        { label: 'G A long choice', value: 'g' },
+                        { label: 'H a longer choice that is not selected', value: 'h' },
+                        { label: 'I an even longer choice than the previous one', value: 'i' },
                     ]}
                     name="bc"
                 />
