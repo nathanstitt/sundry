@@ -21,11 +21,14 @@ export const SelectWrapper = styled(FloatingField)({
     paddingTop: 0,
     paddingBottom: 0,
     flexDirection: 'column-reverse',
-    '.select-field > *': {
-        border: 0,
+    '.select-field': {
+        marginTop: 20,
         '> *': {
-            paddingLeft: 0,
-        },
+            border: 0,
+            '> *': {
+                paddingLeft: 0,
+            },
+        }
     },
     '&.is-invalid': {
         backgroundPosition: 'right 0.5rem top 0.5rem',
