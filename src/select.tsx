@@ -85,10 +85,6 @@ export const SelectStyles: StylesConfig = {
         ...provided,
         color: colors.text,
     }),
-    multiValue: (provided: CSSObjectWithLabel) => ({
-        ...provided,
-        minWidth: '80px',
-    }),
     multiValueRemove: (provided: CSSObjectWithLabel, state: any) => ({
         ...provided,
         display: state.isDisabled ? 'none' : provided.display,
@@ -181,7 +177,7 @@ export type SelectOnChangeHandler = (
     value: null | SelectValue,
     option: SelectOption,
     meta: ActionMeta<SelectOptionType>
-) => void
+) => void | SelectValue
 
 const optionForValue = (value: SelectValue | null | undefined, options: SelectOptions) => {
     if (isNil(value)) return null

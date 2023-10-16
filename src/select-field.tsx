@@ -74,8 +74,8 @@ export function SelectField<O extends SelectOption = SelectOption>({
 
     const hasError = Boolean(field && fieldState.error)
 
-    const v = field.value || value
-    const hasValue = Array.isArray(v) ? v.length > 0 : !!v
+    const v = value == null ? field.value : value
+    const hasValue = Array.isArray(v) ? v.length > 0 : v != null
     const readOnly = propsReadonly == null ? isReadOnly : propsReadonly
     const onFocus = React.useCallback(() => {
         setFocusState(true)
@@ -86,8 +86,11 @@ export function SelectField<O extends SelectOption = SelectOption>({
     }, [field, setFocusState])
     const onChange: SelectOnChangeHandler = React.useCallback(
         (value, option, meta) => {
+            const modified = propsOnChange?.(value, option, meta)
+            if (modified != null) {
+                value = modified
+            }
             field.onChange({ target: { ...field, value } })
-            propsOnChange?.(value, option, meta)
         },
         [field, propsOnChange]
     )
