@@ -218,6 +218,9 @@ export interface SaveCancelBtnProps {
     saveLabel?: React.ReactNode
     cancelLabel?: React.ReactNode
     deleteLabel?: React.ReactNode
+    saveBusyMessage?: string
+    cancelBusyMessage?: string
+    deleteBusyMessage?: string
 }
 
 export function SaveCancelBtn({
@@ -226,6 +229,9 @@ export function SaveCancelBtn({
     children,
     showControls,
     saveLabel = 'Save',
+    saveBusyMessage,
+    cancelBusyMessage = 'Canceling',
+    deleteBusyMessage = 'Deleting',
     cancelLabel = 'Cancel',
     deleteLabel = 'Delete',
 }: SaveCancelBtnProps): JSX.Element | null {
@@ -251,7 +257,7 @@ export function SaveCancelBtn({
                     data-testid="form-delete-btn"
                     disabled={isSubmitting}
                     onClick={onFormDelete}
-                    busyMessage="Deleting"
+                    busyMessage={deleteBusyMessage}
                     busy={isDeleting}
                 >
                     {deleteLabel}
@@ -260,9 +266,9 @@ export function SaveCancelBtn({
             {children}
             <Box gap>
                 {(isDirty || onCancel) && (
-                    <FormCancelButton onCancel={onCancel}>{cancelLabel}</FormCancelButton>
+                    <FormCancelButton onCancel={onCancel} busyMessage={cancelBusyMessage}>{cancelLabel}</FormCancelButton>
                 )}
-                <FormSaveButton primary>{saveLabel}</FormSaveButton>
+                <FormSaveButton primary busyMessage={saveBusyMessage}>{saveLabel}</FormSaveButton>
             </Box>
         </Footer>
     )
@@ -276,6 +282,10 @@ interface EditingFormProps<FV extends FormValues> extends FormProps<FV> {
     saveLabel?: React.ReactNode
     cancelLabel?: React.ReactNode
     deleteLabel?: React.ReactNode
+    saveBusyMessage?: string
+    cancelBusyMessage?: string
+    deleteBusyMessage?: string
+    showPendingStatus?: boolean
 }
 
 export function EditingForm<FV extends FormValues>({
@@ -284,13 +294,17 @@ export function EditingForm<FV extends FormValues>({
     className,
     onCancel,
     onDelete,
-    saveLabel,
     hideStatus,
+    name,
     cancelLabel,
     deleteLabel,
-    name,
+    saveLabel,
     submittedMessage,
     submittingMessage,
+    saveBusyMessage,
+    cancelBusyMessage,
+    deleteBusyMessage,
+    showPendingStatus = false,
     ...props
 }: EditingFormProps<FV>): JSX.Element {
     return (
@@ -303,11 +317,14 @@ export function EditingForm<FV extends FormValues>({
                 onCancel={onCancel}
                 onDelete={onDelete}
                 showControls={showControls}
+                saveBusyMessage={saveBusyMessage}
+                cancelBusyMessage={cancelBusyMessage}
+                deleteBusyMessage={deleteBusyMessage}
             >
                 <FormStatusAlert
                     enabled={!hideStatus}
                     name={name}
-                    showPending={false}
+                    showPending={showPendingStatus}
                     submittingMessage={submittingMessage}
                     submittedMessage={submittedMessage}
                 />
