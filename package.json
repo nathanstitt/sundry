@@ -48,15 +48,14 @@
         "format": "run-p format:scripts format:styles"
     },
     "peerDependencies": {
-        "@emotion/css": "^11.10",
-        "@emotion/react": "^11.10",
-        "@emotion/styled": "^11.10",
+        "@emotion/css": ">11.10",
+        "@emotion/react": ">11.10",
+        "@emotion/styled": ">11.10",
         "@restart/ui": "^1.6",
-        "bootstrap": "^5.2.3",
-        "boxible": "^1.7",
-        "dayjs": "^1.11",
-        "react": "^18.2",
-        "react-dom": "^18.2"
+        "boxible": ">1.7",
+        "dayjs": "*",
+        "react": ">18.2",
+        "react-dom": ">18.2"
     },
     "devDependencies": {
         "@emotion/css": "^11.5",
@@ -76,7 +75,7 @@
         "@typescript-eslint/eslint-plugin": "^5.54.0",
         "@typescript-eslint/parser": "^5.54.0",
         "babel-preset-env": "^1.7.0",
-        "bootstrap": "^5.2.3",
+        "bootstrap": "^5.3.2",
         "boxible": "^1.7.5",
         "dayjs": "^1.11",
         "dts-bundle-generator": "^7.2.0",
